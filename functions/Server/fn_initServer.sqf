@@ -476,7 +476,6 @@ call A3E_fnc_buildingLoot;
 [] spawn {
     sleep 30;
     diag_log "GROUP WIPE MONITOR: STARTED";
-    "Group wipe monitor active" remoteExec ["systemChat", 0];
 
     while {true} do {
         sleep 2;
@@ -503,13 +502,6 @@ call A3E_fnc_buildingLoot;
                 !(_x getVariable ["A3E_MP_InLobby", false])
             };
 
-            // DEBUG: show what we see
-            private _unconsciousCount = {_x getVariable ["AT_Revive_isUnconscious", false]} count _activeMembers;
-            private _debugMsg = format ["WipeCheck: grp=%1 active=%2 unconscious=%3 units=%4",
-                groupId _grp, count _activeMembers, _unconsciousCount, count (units _grp)];
-            _debugMsg remoteExec ["systemChat", 0];
-            diag_log _debugMsg;
-
             if (count _activeMembers == 0) then {continue};
 
             private _anyoneUp = false;
@@ -521,7 +513,7 @@ call A3E_fnc_buildingLoot;
 
             if (!_anyoneUp) then {
                 diag_log format ["GROUP WIPE: %1 - %2 members all unconscious!", groupId _grp, count _activeMembers];
-                format ["%1: ALL DOWN - wiping group!", groupId _grp] remoteExec ["systemChat", 0];
+                diag_log format ["%1: ALL DOWN - wiping group!", groupId _grp];
                 _grp setVariable ["A3E_GroupWipeInProgress", true, true];
 
                 // INLINE wipe handler (bypass CfgFunctions)
@@ -568,13 +560,18 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                        _x setPos [0, 0, 100];
+
+                        // Move to safe ground position (NOT in the air!)
+                        _x setPos [0, 0, 0];
 
                         // Force switch out of unconscious animation
                         [_x, ""] remoteExec ["switchMove", 0, false];
 
-                        // Re-initialize ATR revive system on client (re-adds HandleDamage EH + actions)
-                        [true] remoteExec ["ATR_FNC_InitPlayer", _x];
+                        // Keep damage disabled on client too (fn_Unconscious cleanup re-enables it)
+                        [_x, false] remoteExec ["allowDamage", _x];
+
+                        // DON'T re-init ATR here - wait until they actually spawn at prison
+                        // ATR_FNC_InitPlayer calls allowDamage true which causes fall damage
 
                         removeAllAssignedItems _x;
                         removeAllWeapons _x;

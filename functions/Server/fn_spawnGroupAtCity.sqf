@@ -97,8 +97,11 @@ _wp4 setWaypointType "CYCLE";
     _x setVariable ["AT_Revive_isCarrying", objNull, true];
     _x setVariable ["A3E_MP_PrisonPos", _prisonPos, true];
 
-    // Force clear unconscious animation and re-init ATR revive
+    // Force clear unconscious animation
     [_x, ""] remoteExec ["switchMove", 0, false];
+
+    // Re-init ATR revive AFTER player is safely on the ground at prison
+    // (must be here, not during wipe reset, or fall damage re-triggers unconscious)
     [true] remoteExec ["ATR_FNC_InitPlayer", _x];
 } forEach _members;
 

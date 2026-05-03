@@ -100,11 +100,8 @@ A3E_fnc_spawnUI_leaveGroup = {
 };
 
 A3E_fnc_spawnUI_spawnCity = {
-    if (count A3E_MP_SelectedCity == 0) exitWith {
-        hint "Click a city on the map first!";
-    };
-
-    // Check if leader -- leader spawns the whole group
+    // Pick a random city for a fresh escape
+    private _pick = selectRandom A3E_MP_Cities;
     private _grp = group player;
     private _isLeader = (leader _grp == player);
     private _lobbyMembers = (units _grp) select {
@@ -113,16 +110,16 @@ A3E_fnc_spawnUI_spawnCity = {
     };
 
     if (_isLeader && count _lobbyMembers > 0) then {
-        // Leader spawning group -- use server-side group spawn
-        A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
+        A3E_MP_SpawnPos = _pick select 1;
         A3E_MP_SpawnType = "group_city";
         A3E_MP_SpawnSelected = true;
     } else {
-        // Solo player or no lobby members -- normal city spawn
-        A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
+        A3E_MP_SpawnPos = _pick select 1;
         A3E_MP_SpawnType = "city";
         A3E_MP_SpawnSelected = true;
     };
+
+    hint format ["Escaping from: %1", _pick select 0];
 };
 
 A3E_fnc_spawnUI_spawnOnGroup = {
@@ -284,26 +281,9 @@ ctrlMapAnimClear _map;
 _map ctrlMapAnimAdd [0, 0.04, [7700, 8000, 0]];
 ctrlMapAnimCommit _map;
 
-// Draw city markers on map (green icons, yellow when selected)
+// Draw group members on the map (blue dots) - no city markers needed
 _map ctrlAddEventHandler ["Draw", {
     params ["_map"];
-    {
-        _x params ["_name", "_pos"];
-        private _isSelected = _x isEqualTo (missionNamespace getVariable ["A3E_MP_SelectedCity", []]);
-        private _color = if (_isSelected) then {[1, 1, 0.2, 1]} else {[0.2, 0.85, 0.2, 1]};
-        private _size = if (_isSelected) then {30} else {22};
-
-        _map drawIcon [
-            "\A3\ui_f\data\map\markers\military\flag_ca.paa",
-            _color,
-            _pos,
-            _size, _size, 0,
-            _name, 1,
-            0.04, "PuristaMedium", "center"
-        ];
-    } forEach A3E_MP_Cities;
-
-    // Draw alive group members on the map (blue dots)
     {
         if (_x != player && alive _x && !(_x getVariable ["A3E_MP_InLobby", true])) then {
             _map drawIcon [
@@ -318,43 +298,7 @@ _map ctrlAddEventHandler ["Draw", {
     } forEach (units group player);
 }];
 
-// Handle map clicks for city selection
-_map ctrlAddEventHandler ["MouseButtonDown", {
-    params ["_map", "_button", "_xPos", "_yPos"];
-    if (_button != 0) exitWith {};
-
-    private _worldPos = _map ctrlMapScreenToWorld [_xPos, _yPos];
-    private _minDist = 800;
-    private _selected = [];
-
-    {
-        _x params ["_name", "_pos"];
-        private _dist = _worldPos distance2D _pos;
-        if (_dist < _minDist) then {
-            _minDist = _dist;
-            _selected = _x;
-        };
-    } forEach A3E_MP_Cities;
-
-    if (count _selected > 0) then {
-        A3E_MP_SelectedCity = _selected;
-
-        // Update city name display
-        private _display = ctrlParent _map;
-        (_display displayCtrl 58003) ctrlSetText format ["Selected: %1", _selected select 0];
-
-        // Enable spawn city button
-        (_display displayCtrl 58004) ctrlEnable true;
-
-        // Animate map to selected city
-        ctrlMapAnimClear _map;
-        _map ctrlMapAnimAdd [0.3, 0.015, _selected select 1];
-        ctrlMapAnimCommit _map;
-    };
-}];
-
-// Disable spawn buttons initially
-(_display displayCtrl 58004) ctrlEnable false;
+// "START NEW ESCAPE" is always enabled, "SPAWN ON GROUP" starts disabled
 (_display displayCtrl 58005) ctrlEnable false;
 
 // ============================================================================

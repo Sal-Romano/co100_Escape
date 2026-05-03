@@ -217,7 +217,7 @@ class A3E_SpawnDialog
             x = "safezoneX + 0.01 * safezoneW";
             y = "safezoneY + 0.095 * safezoneH";
             w = "0.28 * safezoneW";
-            h = "0.58 * safezoneH";
+            h = "0.48 * safezoneH";
             sizeEx = "0.025 * safezoneH";
             rowHeight = "0.028 * safezoneH";
         };
@@ -226,7 +226,7 @@ class A3E_SpawnDialog
         {
             idc = IDC_SPAWN_GROUPINPUT;
             x = "safezoneX + 0.01 * safezoneW";
-            y = "safezoneY + 0.69 * safezoneH";
+            y = "safezoneY + 0.59 * safezoneH";
             w = "0.28 * safezoneW";
             h = "0.032 * safezoneH";
             sizeEx = "0.024 * safezoneH";
@@ -237,7 +237,7 @@ class A3E_SpawnDialog
             idc = IDC_SPAWN_BTN_CREATE;
             text = "CREATE GROUP";
             x = "safezoneX + 0.01 * safezoneW";
-            y = "safezoneY + 0.73 * safezoneH";
+            y = "safezoneY + 0.63 * safezoneH";
             w = "0.135 * safezoneW";
             h = "0.035 * safezoneH";
             colorBackground[] = {0.12, 0.35, 0.12, 1};
@@ -251,7 +251,7 @@ class A3E_SpawnDialog
             idc = IDC_SPAWN_BTN_JOIN;
             text = "JOIN GROUP";
             x = "safezoneX + 0.155 * safezoneW";
-            y = "safezoneY + 0.73 * safezoneH";
+            y = "safezoneY + 0.63 * safezoneH";
             w = "0.135 * safezoneW";
             h = "0.035 * safezoneH";
             colorBackground[] = {0.12, 0.25, 0.45, 1};
@@ -265,7 +265,7 @@ class A3E_SpawnDialog
             idc = IDC_SPAWN_BTN_LEAVE;
             text = "LEAVE GROUP";
             x = "safezoneX + 0.01 * safezoneW";
-            y = "safezoneY + 0.775 * safezoneH";
+            y = "safezoneY + 0.675 * safezoneH";
             w = "0.28 * safezoneW";
             h = "0.035 * safezoneH";
             colorBackground[] = {0.45, 0.12, 0.12, 1};
@@ -278,9 +278,9 @@ class A3E_SpawnDialog
         {
             idc = IDC_SPAWN_PLAYERINFO;
             x = "safezoneX + 0.01 * safezoneW";
-            y = "safezoneY + 0.82 * safezoneH";
+            y = "safezoneY + 0.72 * safezoneH";
             w = "0.28 * safezoneW";
-            h = "0.16 * safezoneH";
+            h = "0.10 * safezoneH";
             size = "0.024 * safezoneH";
         };
 
@@ -540,7 +540,7 @@ class A3E_SpawnDialog
         class CityNameText: A3E_RscText
         {
             idc = IDC_SPAWN_CITYNAME;
-            text = "Click a city on the map to select your spawn";
+            text = "Select an option to begin your escape";
             x = "safezoneX + 0.32 * safezoneW";
             y = "safezoneY + 0.92 * safezoneH";
             w = "0.33 * safezoneW";
@@ -552,7 +552,7 @@ class A3E_SpawnDialog
         class BtnSpawnCity: A3E_RscButton
         {
             idc = IDC_SPAWN_BTN_CITY;
-            text = "SPAWN IN CITY";
+            text = "START NEW ESCAPE";
             x = "safezoneX + 0.67 * safezoneW";
             y = "safezoneY + 0.92 * safezoneH";
             w = "0.155 * safezoneW";
