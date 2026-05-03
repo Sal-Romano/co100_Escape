@@ -12,7 +12,7 @@ class EditorData
 	};
 	class ItemIDProvider
 	{
-		nextID=769;
+		nextID=869;
 	};
 	class MarkerIDProvider
 	{
@@ -489,7 +489,7 @@ class Mission
 			side="West";
 			class Entities
 			{
-				items=10;
+				items=100;
 				class Item0
 				{
 					dataType="Object";
@@ -503,14 +503,15 @@ class Mission
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="COLONEL";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p1";
+						description="Prisoner";
 						isPlayer=1;
 						isPlayable=1;
 					};
 					id=47;
-					type="CUP_B_USMC_Soldier_SL";
+					type="CUP_B_USMC_Soldier";
 					atlOffset=0.16778564;
 				};
 				class Item1
@@ -518,196 +519,2079 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7930.5361,338.78027,7110.1675};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7933.9189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="MAJOR";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p2";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=48;
-					type="CUP_B_USMC_Soldier_UAV_FROG_WDL";
-					atlOffset=0.17800903;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item2
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7929.8291,338.82196,7112.7144};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7935.4189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="CAPTAIN";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p3";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=49;
-					type="CUP_B_USMC_Soldier_AA";
-					atlOffset=0.1809082;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item3
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7929.7432,338.76672,7111.3472};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7936.9189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="LIEUTENANT";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p4";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=50;
-					type="CUP_B_USMC_Engineer";
-					atlOffset=0.18276978;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item4
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7933.1377,338.93991,7109.4956};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7938.4189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="LIEUTENANT";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p5";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=51;
-					type="CUP_B_USMC_Soldier_GL";
-					atlOffset=0.16821289;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item5
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7934.4717,339.05301,7110.019};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7939.9189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="SERGEANT";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p6";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=52;
-					type="CUP_B_USMC_Soldier_MG";
-					atlOffset=0.16213989;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item6
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7931.7314,338.84238,7109.5464};
-						angles[]={6.2472029,0.062423099,0.070549726};
+						position[]={7941.4189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
-						skill=0.59000003;
-						rank="SERGEANT";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p7";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=53;
-					type="CUP_B_USMC_Soldier_AT";
-					atlOffset=0.17364502;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item7
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7935.6416,339.15762,7110.6519};
-						angles[]={6.247201,0.062423099,0.069221549};
+						position[]={7942.9189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						rank="CORPORAL";
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p8";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=54;
 					type="CUP_B_USMC_Soldier";
-					atlOffset=0.16082764;
 				};
 				class Item8
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7936.4619,339.25388,7111.7456};
-						angles[]={6.247201,0.062423099,0.069221549};
+						position[]={7944.4189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p9";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=55;
-					type="CUP_B_USMC_Soldier_Marksman";
-					atlOffset=0.16226196;
+					type="CUP_B_USMC_Soldier";
 				};
 				class Item9
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7937.083,339.33606,7112.8315};
-						angles[]={6.247201,0.062423099,0.069221549};
+						position[]={7945.9189,338.97781,7111.9595};
 					};
 					side="West";
 					flags=4;
 					class Attributes
 					{
 						skill=0.60000002;
-						init="this setCaptive true; if(this == p2) then {this setUnitTrait ['UavHacker',true];};";
+						rank="PRIVATE";
+						init="this setCaptive true;";
 						name="p10";
+						description="Prisoner";
 						isPlayable=1;
 					};
 					id=56;
-					type="CUP_B_USMC_Medic";
-					atlOffset=0.16073608;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item10
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p11";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=769;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item11
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p12";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=770;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item12
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p13";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=771;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item13
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p14";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=772;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item14
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p15";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=773;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item15
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p16";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=774;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item16
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p17";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=775;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item17
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p18";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=776;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item18
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p19";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=777;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item19
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7113.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p20";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=778;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item20
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p21";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=779;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item21
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p22";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=780;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item22
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p23";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=781;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item23
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p24";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=782;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item24
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p25";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=783;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item25
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p26";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=784;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item26
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p27";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=785;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item27
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p28";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=786;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item28
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p29";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=787;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item29
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7114.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p30";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=788;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item30
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p31";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=789;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item31
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p32";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=790;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item32
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p33";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=791;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item33
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p34";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=792;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item34
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p35";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=793;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item35
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p36";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=794;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item36
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p37";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=795;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item37
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p38";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=796;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item38
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p39";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=797;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item39
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7116.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p40";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=798;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item40
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p41";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=799;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item41
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p42";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=800;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item42
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p43";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=801;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item43
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p44";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=802;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item44
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p45";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=803;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item45
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p46";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=804;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item46
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p47";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=805;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item47
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p48";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=806;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item48
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p49";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=807;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item49
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7117.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p50";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=808;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item50
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p51";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=809;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item51
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p52";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=810;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item52
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p53";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=811;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item53
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p54";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=812;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item54
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p55";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=813;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item55
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p56";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=814;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item56
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p57";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=815;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item57
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p58";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=816;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item58
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p59";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=817;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item59
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7119.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p60";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=818;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item60
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p61";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=819;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item61
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p62";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=820;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item62
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p63";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=821;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item63
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p64";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=822;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item64
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p65";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=823;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item65
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p66";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=824;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item66
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p67";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=825;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item67
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p68";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=826;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item68
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p69";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=827;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item69
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7120.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p70";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=828;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item70
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p71";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=829;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item71
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p72";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=830;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item72
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p73";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=831;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item73
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p74";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=832;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item74
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p75";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=833;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item75
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p76";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=834;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item76
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p77";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=835;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item77
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p78";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=836;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item78
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p79";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=837;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item79
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7122.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p80";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=838;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item80
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p81";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=839;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item81
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p82";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=840;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item82
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p83";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=841;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item83
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p84";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=842;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item84
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p85";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=843;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item85
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p86";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=844;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item86
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p87";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=845;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item87
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p88";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=846;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item88
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p89";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=847;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item89
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7123.9595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p90";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=848;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item90
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7932.4189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p91";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=849;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item91
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7933.9189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p92";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=850;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item92
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7935.4189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p93";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=851;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item93
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7936.9189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p94";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=852;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item94
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7938.4189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p95";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=853;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item95
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7939.9189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p96";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=854;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item96
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7941.4189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p97";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=855;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item97
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7942.9189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p98";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=856;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item98
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7944.4189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p99";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=857;
+					type="CUP_B_USMC_Soldier";
+				};
+				class Item99
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={7945.9189,338.97781,7125.4595};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						rank="PRIVATE";
+						init="this setCaptive true;";
+						name="p100";
+						description="Prisoner";
+						isPlayable=1;
+					};
+					id=858;
+					type="CUP_B_USMC_Soldier";
 				};
 			};
 			class Attributes

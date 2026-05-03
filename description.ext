@@ -9,9 +9,9 @@
 // Mission Header
 class Header
 {
-  gameType = co10esc; //gameType = Escape if not Vietnam CDLC
+  gameType = co100esc; //gameType = Escape if not Vietnam CDLC
   minPlayers = 1;
-  maxPlayers = 10;
+  maxPlayers = 100;
 };
 
 onLoadName = MISSIONNAME;
@@ -98,6 +98,7 @@ class CfgDebriefingSections
 
 #include "include\params.hpp"
 #include "include\functions.hpp"
+#include "include\spawn_dialog.hpp"
 
 #include "Scripts\outlw_magRepack\MagRepack_config.hpp"
 

@@ -20,7 +20,7 @@ if(hmd player != "") then {
 	player unlinkItem _hmd;
 };
 
-// Show spawn menu and wait for selection
+// Show spawn dialog and wait for selection
 private _spawnResult = call A3E_fnc_spawnMenu;
 _spawnResult params ["_spawnPos", "_spawnType"];
 
@@ -43,8 +43,6 @@ if (_spawnType == "group") then {
 	[_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
 	// Wait for server to place us
 	waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
-	// Solo group for PVP
-	[player] joinSilent createGroup [west, true];
 };
 
 // Zeus for server host
@@ -79,16 +77,16 @@ player addeventhandler["InventoryClosed","_this call A3E_FNC_collectIntel;"];
 
 drn_fnc_Escape_DisableLeaderSetWaypoints = {
 	if (!visibleMap) exitwith {};
-	
+
 	{
-		player groupSelectUnit [_x, false]; 
+		player groupSelectUnit [_x, false];
 	} foreach units group player;
 };
 
 // If multiplayer, then disable the cheating "move to" waypoint feature.
 if (isMultiplayer) then {
 	[] spawn {
-		waitUntil {!isNull(findDisplay 46)}; 
+		waitUntil {!isNull(findDisplay 46)};
 		// (findDisplay 46) displayAddEventHandler ["KeyDown","_nil=[_this select 1] call drn_fnc_Escape_DisableLeaderSetWaypoints"];
 		(findDisplay 46) displayAddEventHandler ["MouseButtonDown","_nil=[_this select 1] call drn_fnc_Escape_DisableLeaderSetWaypoints"];
 	};
