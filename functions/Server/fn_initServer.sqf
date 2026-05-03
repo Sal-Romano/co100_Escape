@@ -814,6 +814,62 @@ call A3E_fnc_buildingLoot;
 };
 
 
+// ============================================================================
+// GARBAGE COLLECTOR - despawn AI groups >2km from all players
+// Skips groups marked A3E_Persistent (objectives) and player groups
+// ============================================================================
+[] spawn {
+    sleep 60; // let everything spawn first
+    diag_log "GC: Garbage collector started (2km radius)";
+
+    while {true} do {
+        sleep 30;
+
+        private _players = [] call A3E_fnc_GetPlayers;
+        if (count _players == 0) then {continue};
+
+        private _deleted = 0;
+
+        {
+            private _grp = _x;
+
+            // Skip player side and persistent/objective groups
+            if (side _grp == west) then {continue};
+            if (_grp getVariable ["A3E_Persistent", false]) then {continue};
+            if (count units _grp == 0) then {continue};
+
+            // Check min distance to any player
+            private _leader = leader _grp;
+            if (isNull _leader) then {continue};
+            private _leaderPos = getPos _leader;
+
+            private _nearPlayer = false;
+            {
+                if (_x distance2D _leaderPos < 2000) exitWith {
+                    _nearPlayer = true;
+                };
+            } forEach _players;
+
+            // If no player within 2km, delete the group
+            if (!_nearPlayer) then {
+                // Delete vehicles owned by this group
+                {
+                    if (vehicle _x != _x) then {
+                        deleteVehicle (vehicle _x);
+                    };
+                    deleteVehicle _x;
+                } forEach units _grp;
+                deleteGroup _grp;
+                _deleted = _deleted + 1;
+            };
+        } forEach allGroups;
+
+        if (_deleted > 0) then {
+            diag_log format ["GC: Cleaned up %1 groups (>2km from players)", _deleted];
+        };
+    };
+};
+
 //["A3E_FNC_AmbientAISpawn"] call A3E_FNC_Chronos_Register;
 ["A3E_FNC_RoadBlocks"] call A3E_FNC_Chronos_Register;
 ["A3E_FNC_AmbientPatrols"] call A3E_FNC_Chronos_Register;
