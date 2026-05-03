@@ -82,28 +82,65 @@ _wp3 setWaypointType "MOVE";
 private _wp4 = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
 _wp4 setWaypointType "CYCLE";
 
-// Place all members inside the prison
+// Wait for compound objects to fully spawn before placing players
+sleep 2;
+
+// Show loading text on each client
 {
-    _x setPos _prisonPos;
-    _x allowDamage true;
-    _x enableSimulation true;
-    _x setCaptive true;
-    _x setDamage 0;
-    _x setVariable ["A3E_InSpawnLobby", false, true];
-    _x setVariable ["A3E_MP_InLobby", false, true];
+    [["<t size='1.5' color='#cccccc' align='center'>Preparing escape...</t>", "PLAIN", -1, true, true]] remoteExec ["cutText", _x];
+} forEach _members;
+
+sleep 1;
+
+// Place all members inside the prison with FULL state reset
+{
+    // Clear ALL unconscious/revive state
     _x setVariable ["AT_Revive_isUnconscious", false, true];
     _x setVariable ["AT_Revive_isDragged", objNull, true];
     _x setVariable ["AT_Revive_isDragging", objNull, true];
     _x setVariable ["AT_Revive_isCarrying", objNull, true];
+    _x setVariable ["ACE_Revive_isUnconscious", false, true];
     _x setVariable ["A3E_MP_PrisonPos", _prisonPos, true];
 
-    // Force clear unconscious animation
-    [_x, ""] remoteExec ["switchMove", 0, false];
+    // Place at prison, invulnerable initially
+    _x setPos _prisonPos;
+    _x allowDamage false;
+    _x enableSimulation true;
+    _x setCaptive true;
+    _x setDamage 0;
 
-    // Re-init ATR revive AFTER player is safely on the ground at prison
-    // (must be here, not during wipe reset, or fall damage re-triggers unconscious)
-    [true] remoteExec ["ATR_FNC_InitPlayer", _x];
+    // Client-side: force clear animation, camera, re-init ATR
+    [{
+        player setVariable ["AT_Revive_isUnconscious", false, true];
+        player enableSimulation true;
+        player switchMove "";
+        player setDamage 0;
+        player allowDamage false;
+        player setCaptive true;
+        if (!isNil "ATHSC_Run") then {ATHSC_Run = false};
+        if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit};
+        // Re-init ATR revive
+        if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
+        // Clear screen
+        cutText ["", "PLAIN", 1];
+    }] remoteExec ["call", _x];
+
+    // Mark as spawned
+    _x setVariable ["A3E_InSpawnLobby", false, true];
+    _x setVariable ["A3E_MP_InLobby", false, true];
 } forEach _members;
+
+// Enable damage after 10 seconds (spawn protection)
+[_members] spawn {
+    params ["_units"];
+    sleep 10;
+    {
+        if (alive _x) then {
+            _x allowDamage true;
+            [_x, true] remoteExec ["allowDamage", _x];
+        };
+    } forEach _units;
+};
 
 // Mark group spawn as ready (non-leaders are waiting on this)
 _grp setVariable ["A3E_GroupSpawnReady", true, true];
