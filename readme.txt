@@ -1,106 +1,92 @@
-Escape 1.9
+CO10 Escape
+02.07.2017
+ 
+Requirements
+-----------------
+Arma 3 v1.72 minimum
+ 
 
-The mission (if you are playing as BLUFOR)
-In this mission you and your squad was send out to scout the military CSAT and AAF presence on Altis in preparation for 
-an NATO invasion. But your squad got captured by AAF and you are now held in an improvised prison awaiting CSAT officers 
-to arrife for questioning. But NATO loyal insurgent managed to hide a backpack with weapons in the prison. Your task is 
-now to overwhelm the guards, escape the prison, find a map of the island, make contact with NATO forces, reach the 
-designated evacuation zone and escape Altis!
-
-The mission is fully dynamic. Every playthrough will be different. Also the mission is quite hard to beat completly. 
-You will most likely fail at the first try. But the mission is meant to be played more than once 
-(infact our squad plays it serveral times the week).
-
-
-About the mission
-
-Escape was first devloped by Engima of Östgöta Ops for ArmA2. 
-At that time me (NeoArmageddon) and Scruffy ported the mission to different islands and began customizing the mission.
-When ArmA3 was released, Vormulac and HyperZ made the effort to port the mission over to ArmA3. From that point on Scruffy and me improved and fixed the mission to the current state.
-Most of the scripts are replaced and were updated to A3 standards (but there is still some more room for improvements).
-
-The the official version of this release is 1.9
-
-
-Available versions:
-The version is available with the following mod configurations:
-
-Vanilla
-Vanilla Apex
-CUP
-RHS
-
-The mission is available on the following terrains (with the mods above when applicable):
-Altis
-Stratis
-Tanoa
-Malden 2035
-Bornholm
-Chernarus
-Chernarus (Summer)
-Podagorsk
-Panthera
-Panthera (Winter)
-Isla Duala
-Lingor
-Dingor
-Abramia
-Sahrani
-United Sahrani
-Celle
-Takistan
-Porto
-Thirsk
-Thirsk (Winter)
-Capraia
-Clafghan
-Al Rayak
-Lythium
-Fallujah
-Esseker
-Australia
-Everon (CUP)
-Malden (CUP)
-Kolgujev (CUP)
-Nogova (CUP)
-Beketov
-Isles of Cumbrae
-Schwemlitz
-Diyala
-Kastellorizo
-Valtatie 5
-
-Compiling Basics
-- Clone the repo with git
-- run "git submodule update --init --recursive" in the repo folder to fetch the revive submodule
-- run compile.py
-
-Credits
-Original Mission (Arma2) by Engima of Östgöta Ops.
-Mission ported to Arma3 by Vormulac and HyperZ.
-Continue devlopment by NeoArmageddon and Scruffy.
-Island ports and unit configs by Scruffy.
-Additional scripting and fixing by abelian, dystopian1, FrozenLiquidity, Cyprus, DPM
-Magrepack by outlawled
-
-Additional ports and configs by 
-SurvivorOfZeds (IFA3+LEN)
-Nils5940 (IFA3)
-CRCError1970 (Malden and Kolgujev)
-supercereal4 (Malden 2035)
+Changelog Highlights 1.8
+-----------------
+Islands:
+- added mission to the new Malden 2035 (thanks to the help of supercereal4 and rebitaay)
+- added the mission to Tanoa (thanks to the help of Phantom)
+- added mission to all four classic CWR islands (thanks to the help of CRCError1970)
+- added mission to Al Rayak
+Mods:
+- new CUP versions against Russian Army and US Army (desert) and ION PMC
+- first versions for IFA3 Lite (thanks to Nils5940 and TheSurvivorOfZeds)
+- new version using Massis African Conflict (thanks to Ceithos)
+Features:
+- reworked parameter for search chopper difficulty
+- possibility for an unlimited number of extraction zones (and a few islands already use more than the previously hardcoded 8)
+Bugfixes:
+- a whole bunch of smaller and bigger bugfixes for everything, from the revive script, to extraction, .rpt spam and motorpools
 
 
-Testing: Maikeks, Darcy, Memphis Belle, Aurelia, Freshman, Roy and many more.
+Installation
+-----------------
+Place the mission files in the MPmissions folder inside your Arma 3 installation.
+Your ArmA3 installation should be in yoursteamfolder/steamapps/common
 
-The official co10 Escape mission for Arma3 is currently developed and maintained by NeoArmageddon and Scruffy.
+ 
+Contact us
+-----------------
+BI Forums: NeoArmageddon or Scruffy
+https://forums.bistudio.com/forums/topic/180080-co10-escape/
+http://escape.modfact.net/
+
+ 
+Credits and Thanks
+-----------------
+BIS - OFP to ArmA3
+Engima - Creating one of the greatest Arma missions ever.
+Vormulac - Scripting and general confusion
+NeoArmageddon - Scripting and configs
+Hyperz - Scripting and configs
+Scruffy - breaking Neos scripting, Configs and island porting
+
+Everyone helping us by reporting bugs on the BIF or porting the mission to new islands or to other mods and sharing with the community
+
+Special thanks to all voluntary and non-voluntary testers:
+Armed-Tatics:
+	Darcy
+	Lunatic
+	Heribert
+	Freshman
+	DERyoshi
+Team Generhater:
+	YayOrbitGum
+	Mefy
+	Koda
+	DrKillinger
+	Wilson
+	Dunkar
+	TotalConScience
+	Felix
+	SloppyFresh
+	Holo
 
 
 License
-This mission is released under the APL-SA license.
+-----------------
+This mission and all of it's content is released unter the Creative Commons Attribution Non-Commercial Share Alike Licence.
+This license lets you remix, tweak, and build upon this work non-commercially, as long as you credit the author and license your new creations under the identical terms. Others can download and redistribute this work just like the by-nc-nd license, but you can also translate and make remixes based on this work. All new work based on this will carry the same license, so any derivatives will also be non-commercial in nature.
+ 
+ 
+Disclaimer
+-----------------
+We take no responsibility for (im)possible damage to your game/system that may be caused by installation of this Mission.
+ 
+ 
+Changelog
+-----------------
+For a complete changelog please look at the official BIF-Thread
 
-Modification
-When you release a modified version of this mission, please make sure to change the line #define RELEASE "something" in include/defines.hpp to your user/clan/squadname. This makes collecting feedback and issues for me much easier.
 
-Feedback
-Please post bugs and feedback in our Gitlab at https://gitlab.anzp.de
-You can join us at our Discord server at https://discord.gg/0kV3JvVEhmnMfmq1 
+Development versions
+-----------------
+We don't do a full release often, but you can grab our current development versions here:
+ftp://escape@anzp.de
+user: escape
+You will find new islands and mod versions, as well as all bugfixes or new features here fresh while we work on them, but there might be some additional bugs.
