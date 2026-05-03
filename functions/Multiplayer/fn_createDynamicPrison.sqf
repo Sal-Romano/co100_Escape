@@ -300,14 +300,16 @@ if (isNil "A3E_EscapeHasStarted") then {
     params ["_player", "_prisonPos", "_guardGroups", "_radius"];
 
     // Wait until player picks up weapon or moves beyond compound radius
+    // Bail if player enters lobby (group wipe teleport)
     waitUntil {
         sleep 0.5;
+        if (_player getVariable ["A3E_InSpawnLobby", false]) exitWith {true};
         !alive _player ||
         {count weapons _player > 0} ||
         {_player distance _prisonPos > (_radius * 0.8)}
     };
 
-    if (alive _player) then {
+    if (alive _player && !(_player getVariable ["A3E_InSpawnLobby", false])) then {
         // Release from captive - all guards will now engage
         [_player, false] remoteExec ["setCaptive", _player, false];
 

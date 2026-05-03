@@ -29,9 +29,22 @@ sleep 2;
 cutText ["", "BLACK", 0.5];
 
 // Player is now in spawn lobby state (server already reset us)
-// Mark ourselves as in spawn lobby
 player setVariable ["A3E_InSpawnLobby", true, true];
 player setVariable ["A3E_MP_InLobby", true, true];
+
+// FORCE clear unconscious state for clean respawn
+player setVariable ["AT_Revive_isUnconscious", false, true];
+player setVariable ["AT_Revive_isDragged", objNull, true];
+player setVariable ["AT_Revive_isDragging", objNull, true];
+player setVariable ["AT_Revive_isCarrying", objNull, true];
+player enableSimulation true;
+player setDamage 0;
+player allowDamage false;
+player switchMove "";
+if (!isNil "ATHSC_Run") then {
+    ATHSC_Run = false;
+    if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit};
+};
 
 // Re-enter the spawn flow
 // Check if we're leader or not

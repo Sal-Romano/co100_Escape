@@ -121,9 +121,14 @@ if (isNil "A3E_EscapeHasStarted") then {
 
     waitUntil {
         sleep 0.5;
+        // Bail if group got wiped (teleported away)
+        if (_members findIf {_x getVariable ["A3E_InSpawnLobby", false]} > -1) exitWith {false};
+
         private _anyArmed = false;
         private _anyEscaped = false;
         {
+            if (!alive _x) then {continue};
+            if (_x getVariable ["A3E_InSpawnLobby", false]) then {continue};
             if (count weapons _x > 0) then {_anyArmed = true};
             if (_x distance _prisonPos > 15) then {_anyEscaped = true};
         } forEach _members;
