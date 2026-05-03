@@ -503,6 +503,13 @@ call A3E_fnc_buildingLoot;
                 !(_x getVariable ["A3E_MP_InLobby", false])
             };
 
+            // DEBUG: show what we see
+            private _unconsciousCount = {_x getVariable ["AT_Revive_isUnconscious", false]} count _activeMembers;
+            private _debugMsg = format ["WipeCheck: grp=%1 active=%2 unconscious=%3 units=%4",
+                groupId _grp, count _activeMembers, _unconsciousCount, count (units _grp)];
+            _debugMsg remoteExec ["systemChat", 0];
+            diag_log _debugMsg;
+
             if (count _activeMembers == 0) then {continue};
 
             private _anyoneUp = false;
