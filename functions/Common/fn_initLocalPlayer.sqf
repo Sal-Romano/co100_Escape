@@ -53,6 +53,15 @@ if (_spawnType == "group") then {
 	};
 };
 
+// Spawn protection - invulnerable for 10 seconds after spawning
+player allowDamage false;
+player setCaptive true;
+[] spawn {
+    sleep 10;
+    player allowDamage true;
+    // Don't clear captive here - prison escape trigger handles that
+};
+
 // Zeus for server host
 if (serverCommandAvailable "#kick") then {
     private _zeusModule = (createGroup sideLogic) createUnit ["ModuleCurator_F", [0,0,0], [], 0, "NONE"];
