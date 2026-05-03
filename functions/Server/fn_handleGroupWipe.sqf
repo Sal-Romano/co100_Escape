@@ -9,9 +9,14 @@ params ["_grp"];
 private _members = (units _grp) select {isPlayer _x};
 private _grpName = groupId _grp;
 
-diag_log format ["GroupWipe: %1 - all members down. Grace period starting.", _grpName];
+diag_log format ["GroupWipe: %1 - all members down. Marking as lobby immediately.", _grpName];
 
-// 3-second grace period
+// Mark all members as in spawn lobby IMMEDIATELY to prevent global mission end race
+{
+    _x setVariable ["A3E_InSpawnLobby", true, true];
+} forEach _members;
+
+// 3-second grace period before confirming
 sleep 3;
 
 // Re-verify still all down (in case of edge cases)

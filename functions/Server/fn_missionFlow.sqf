@@ -33,36 +33,11 @@ if(isServer) then {
 	_trigger setTriggerTimeout [3, 3, 3, true];
 	_trigger setTriggerStatements["a3e_var_Escape_MissionFailed_LeftBehind && !a3e_var_Escape_AllPlayersDead", """end3"" call A3E_fnc_endMissionServer;", ""];
 
-	//Mission failed
-	_trigger = createTrigger["EmptyDetector", [0,0,0], false];
-	_trigger setTriggerInterval 2;
-	_trigger setTriggerArea[0, 0, 0, false];
-	_trigger setTriggerActivation["NONE", "PRESENT", false];
-	_trigger setTriggerTimeout [2, 2, 2, true];
-	_trigger setTriggerStatements["a3e_var_Escape_AllPlayersDead", """end1"" call A3E_fnc_endMissionServer;", ""];
-	
-	_trigger = createTrigger["EmptyDetector", [0,0,0], false];
-	_trigger setTriggerInterval 2;
-	_trigger setTriggerArea[0, 0, 0, false];
-	_trigger setTriggerActivation["NONE", "PRESENT", false];
-	_trigger setTriggerTimeout [0, 0, 0, false];
-	A3E_fnc_InlineEverybodyUnconscious = {
-		// Only returns true if ALL active (non-lobby) players are unconscious
-		// Players in spawn lobby are excluded so per-group wipes don't end the whole mission
-		private _activePlayers = ([] call A3E_fnc_GetPlayers) select {
-			!(_x getVariable ["A3E_InSpawnLobby", false]) &&
-			!(_x getVariable ["A3E_MP_InLobby", false])
-		};
-		if (count _activePlayers == 0) exitWith {false};
-		private _return = (
-			(_activePlayers findIf {
-				!(_x getVariable ["AT_Revive_isUnconscious", false]) &&
-				!(_x getVariable ["ACE_Revive_isUnconscious", false])
-			}) == -1
-		);
-		_return;
-	};
-	_trigger setTriggerStatements["A3E_EscapeHasStarted && ([] call A3E_fnc_InlineEverybodyUnconscious)", "missionNamespace setvariable [""a3e_var_Escape_AllPlayersDead"",true,true];[] spawn A3E_FNC_FailTasks;", ""];
+	// Global "all players dead" mission end is DISABLED for multiplayer.
+	// Per-group wipe handling in fn_groupWipeMonitor takes over.
+	// Each group gets "ESCAPE FAILED" independently and respawns.
+	// The mission never fully ends from player deaths.
+	A3E_fnc_InlineEverybodyUnconscious = {false};
 	
 	_trigger = createTrigger["EmptyDetector", [0,0,0], false];
 	_trigger setTriggerInterval 2;
