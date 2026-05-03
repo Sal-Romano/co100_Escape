@@ -521,8 +521,65 @@ call A3E_fnc_buildingLoot;
 
             if (!_anyoneUp) then {
                 diag_log format ["GROUP WIPE: %1 - %2 members all unconscious!", groupId _grp, count _activeMembers];
+                format ["%1: ALL DOWN - wiping group!", groupId _grp] remoteExec ["systemChat", 0];
                 _grp setVariable ["A3E_GroupWipeInProgress", true, true];
-                [_grp] spawn A3E_fnc_handleGroupWipe;
+
+                // INLINE wipe handler (bypass CfgFunctions)
+                [_grp, _activeMembers] spawn {
+                    params ["_grp", "_members"];
+
+                    // Mark as lobby immediately
+                    {
+                        _x setVariable ["A3E_InSpawnLobby", true, true];
+                    } forEach _members;
+
+                    // Grace period
+                    sleep 3;
+
+                    // Re-verify
+                    private _stillDown = true;
+                    {
+                        if (!(_x getVariable ["AT_Revive_isUnconscious", false])) exitWith {
+                            _stillDown = false;
+                        };
+                    } forEach _members;
+
+                    if (!_stillDown) exitWith {
+                        {_x setVariable ["A3E_InSpawnLobby", false, true]} forEach _members;
+                        _grp setVariable ["A3E_GroupWipeInProgress", false, true];
+                    };
+
+                    // Trigger client-side "ESCAPE FAILED" effect on each member
+                    {
+                        [_x] remoteExec ["A3E_fnc_groupWipeClient", _x];
+                    } forEach _members;
+
+                    // Wait for effect
+                    sleep 8;
+
+                    // Reset all members
+                    {
+                        _x setVariable ["AT_Revive_isUnconscious", false, true];
+                        _x setVariable ["ACE_Revive_isUnconscious", false, true];
+                        _x allowDamage false;
+                        _x enableSimulation true;
+                        _x setCaptive true;
+                        _x setDamage 0;
+                        _x setPos [0, 0, 100];
+
+                        removeAllAssignedItems _x;
+                        removeAllWeapons _x;
+                        removeAllItems _x;
+                        removeBackpack _x;
+                        removeVest _x;
+                        removeHeadgear _x;
+                        removeGoggles _x;
+                    } forEach _members;
+
+                    _grp setVariable ["A3E_GroupInLobby", true, true];
+                    _grp setVariable ["A3E_GroupWipeInProgress", false, true];
+                    _grp setVariable ["A3E_GroupSpawnReady", false, true];
+                };
             };
         } forEach _checkedGroups;
     };
