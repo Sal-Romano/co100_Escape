@@ -154,8 +154,19 @@ if (count _guardTypes > 0) then {
 
 private _allGuards = [_guardGroup];
 
-// Place player inside the prison
-_player setPos _spawnPos;
+// Place player inside the prison cell building
+// Find the cell building and use its floor position so player isn't clipped underground
+private _cellBuilding = nearestObject [_spawnPos, "Building"];
+private _playerPos = _spawnPos;
+if (!isNull _cellBuilding && (_cellBuilding distance _spawnPos) < 8) then {
+    private _bpos = _cellBuilding buildingPos 0;
+    if !(_bpos isEqualTo [0,0,0]) then {
+        _playerPos = _bpos;
+    };
+    // Also move the backpack onto the building floor
+    _backpack setPosATL _playerPos;
+};
+_player setPosATL _playerPos;
 _player setCaptive true;
 _player setVariable ["A3E_MP_InLobby", false, true];
 _player setVariable ["A3E_MP_PrisonPos", _spawnPos, true];
