@@ -122,38 +122,26 @@ if (count units _buildingGroup > 0) then {
 };
 
 // --- 2. STATIC WEAPON EMPLACEMENTS: Place manned guns at bunker/nest positions ---
-private _staticGroup = createGroup [A3E_VAR_Side_Opfor, true];
-private _staticWeaponClasses = missionNamespace getVariable ["a3e_arr_ComCenStaticWeapons",
-    ["CUP_O_DSHKM_RU", "CUP_O_KORD_RU"]];
-// Find fortified nests and bunker positions
-private _fortObjects = nearestObjects [_spawnPos,
-    ["Land_fortified_nest_big", "Land_fortified_nest_small",
-     "Land_BagBunker_Large_F", "Land_BagBunker_Small_F", "Land_BagBunker_Tower_F",
-     "Land_fortified_nest_big_EP1", "Land_fortified_nest_small_EP1"],
-    _compoundRadius + 10];
+// Use the same side-appropriate static weapons that comcenters use
+private _staticWeaponClasses = missionNamespace getVariable ["a3e_arr_ComCenStaticWeapons", []];
+if (count _staticWeaponClasses > 0) then {
+    private _fortObjects = nearestObjects [_spawnPos,
+        ["Land_fortified_nest_big", "Land_fortified_nest_small",
+         "Land_BagBunker_Large_F", "Land_BagBunker_Small_F", "Land_BagBunker_Tower_F",
+         "Land_fortified_nest_big_EP1", "Land_fortified_nest_small_EP1"],
+        _compoundRadius + 10];
 
-{
-    private _fortPos = getPos _x;
-    private _fortDir = getDir _x;
-
-    if (count _staticWeaponClasses > 0) then {
-        // Place a static weapon at the fortification
+    {
+        private _fortPos = getPos _x;
+        private _fortDir = getDir _x;
         private _gunClass = selectRandom _staticWeaponClasses;
+
+        // Spawn static weapon and let the engine create a same-side crew
         private _gun = createVehicle [_gunClass, _fortPos, [], 0, "CAN_COLLIDE"];
         _gun setDir _fortDir;
         _gun setPosATL _fortPos;
-
-        // Create gunner
-        private _gunner = _staticGroup createUnit [selectRandom _guardTypes, _fortPos, [], 0, "CAN_COLLIDE"];
-        _gunner moveInGunner _gun;
-        _gunner setSkill (0.3 + random 0.1);
-        _gunner setBehaviour "SAFE";
-        _gunner setCombatMode "YELLOW";
-    };
-} forEach _fortObjects;
-
-if (count units _staticGroup > 0) then {
-    _allGuards pushBack _staticGroup;
+        [_gun, A3E_VAR_Side_Opfor] call A3E_fnc_AddStaticGunner;
+    } forEach _fortObjects;
 };
 
 // --- 3. GATE GUARDS: Standing at the compound entrance ---
@@ -240,7 +228,8 @@ if (random 1 < _zombieSiegeChance) then {
             private _spawnDist = _radius + 60 + (random 40);
             private _spawnPoint = _prisonPos getPos [_spawnDist, _spawnDir];
 
-            private _zombieGroup = createGroup [east, true];
+            // Zombies on civilian side - hostile to all armed factions
+            private _zombieGroup = createGroup [civilian, true];
             // Double the normal enemy squad size for zombie waves
             private _zombieCount = ([-1, -1, 8, 24] call a3e_fnc_getDynamicSquadSize) * 2;
 
