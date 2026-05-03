@@ -557,15 +557,24 @@ call A3E_fnc_buildingLoot;
                     // Wait for effect
                     sleep 8;
 
-                    // Reset all members
+                    // Reset all members - full ATR state clear
                     {
                         _x setVariable ["AT_Revive_isUnconscious", false, true];
+                        _x setVariable ["AT_Revive_isDragged", objNull, true];
+                        _x setVariable ["AT_Revive_isDragging", objNull, true];
+                        _x setVariable ["AT_Revive_isCarrying", objNull, true];
                         _x setVariable ["ACE_Revive_isUnconscious", false, true];
                         _x allowDamage false;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
                         _x setPos [0, 0, 100];
+
+                        // Force switch out of unconscious animation
+                        [_x, ""] remoteExec ["switchMove", 0, false];
+
+                        // Re-initialize ATR revive system on client (re-adds HandleDamage EH + actions)
+                        [true] remoteExec ["ATR_FNC_InitPlayer", _x];
 
                         removeAllAssignedItems _x;
                         removeAllWeapons _x;

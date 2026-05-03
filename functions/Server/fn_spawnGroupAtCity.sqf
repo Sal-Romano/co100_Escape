@@ -92,7 +92,14 @@ _wp4 setWaypointType "CYCLE";
     _x setVariable ["A3E_InSpawnLobby", false, true];
     _x setVariable ["A3E_MP_InLobby", false, true];
     _x setVariable ["AT_Revive_isUnconscious", false, true];
+    _x setVariable ["AT_Revive_isDragged", objNull, true];
+    _x setVariable ["AT_Revive_isDragging", objNull, true];
+    _x setVariable ["AT_Revive_isCarrying", objNull, true];
     _x setVariable ["A3E_MP_PrisonPos", _prisonPos, true];
+
+    // Force clear unconscious animation and re-init ATR revive
+    [_x, ""] remoteExec ["switchMove", 0, false];
+    [true] remoteExec ["ATR_FNC_InitPlayer", _x];
 } forEach _members;
 
 // Mark group spawn as ready (non-leaders are waiting on this)
