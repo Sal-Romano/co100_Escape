@@ -62,7 +62,7 @@ A3E_fnc_spawnUI_createGroup = {
     _newGroup setGroupIdGlobal [_name];
 
     _nameCtrl ctrlSetText "";
-    systemChat format ["Created group: %1", _name];
+    hint format ["Created group: %1", _name];
 };
 
 A3E_fnc_spawnUI_joinGroup = {
@@ -74,34 +74,34 @@ A3E_fnc_spawnUI_joinGroup = {
     private _idx = lbCurSel _list;
 
     if (_idx < 0 || _idx >= count A3E_MP_GroupMap) exitWith {
-        systemChat "Select a group from the list first.";
+        hint "Select a group from the list first.";
     };
 
     private _targetGroup = A3E_MP_GroupMap select _idx;
 
     if (isNull _targetGroup) exitWith {};
     if (_targetGroup == group player) exitWith {
-        systemChat "You are already in this group.";
+        hint "Already in this group.";
     };
 
     [player] joinSilent _targetGroup;
-    systemChat format ["Joined: %1", groupId _targetGroup];
+    hint format ["Joined: %1", groupId _targetGroup];
 };
 
 A3E_fnc_spawnUI_leaveGroup = {
     if (count units group player <= 1) exitWith {
-        systemChat "You are already solo.";
+        hint "Already solo.";
     };
 
     private _soloGroup = createGroup [west, true];
     [player] joinSilent _soloGroup;
     _soloGroup setGroupIdGlobal [format ["Solo_%1", name player]];
-    systemChat "Left group. You are now solo.";
+    hint "Left group. You are now solo.";
 };
 
 A3E_fnc_spawnUI_spawnCity = {
     if (count A3E_MP_SelectedCity == 0) exitWith {
-        systemChat "Click a city on the map first!";
+        hint "Click a city on the map first!";
     };
     A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
     A3E_MP_SpawnType = "city";
@@ -117,7 +117,7 @@ A3E_fnc_spawnUI_spawnOnGroup = {
     } forEach units group player;
 
     if (isNull _nearestMember) exitWith {
-        systemChat "No alive group members to spawn on!";
+        hint "No alive group members to spawn on!";
     };
 
     A3E_MP_SpawnPos = getPos _nearestMember;
