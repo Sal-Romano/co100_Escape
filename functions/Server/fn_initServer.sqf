@@ -541,9 +541,9 @@ call A3E_fnc_buildingLoot;
                         _grp setVariable ["A3E_GroupWipeInProgress", false, true];
                     };
 
-                    // === FULL INLINE WIPE HANDLER (no CfgFunctions dependency) ===
+                    // === FULL INLINE WIPE HANDLER ===
 
-                    // 1. IMMEDIATELY reset unconscious state on server (broadcast)
+                    // 1. Server-side: reset ALL state immediately
                     {
                         _x setVariable ["AT_Revive_isUnconscious", false, true];
                         _x setVariable ["AT_Revive_isDragged", objNull, true];
@@ -555,44 +555,28 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
+                    } forEach _members;
+
+                    // 2. Client-side: clear animation + kill camera (correct remoteExec syntax)
+                    {
                         [_x, ""] remoteExec ["switchMove", 0, false];
                         [_x, false] remoteExec ["allowDamage", _x];
+                        // Kill hindsight camera on client
+                        {if (!isNil "ATHSC_Run") then {ATHSC_Run = false; if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit}}} remoteExec ["call", _x];
                     } forEach _members;
 
-                    // 2. Client-side: kill camera, show ESCAPE FAILED (inline via remoteExec)
-                    {
-                        private _unit = _x;
-                        [{
-                            // Kill hindsight camera
-                            if (!isNil "ATHSC_Run") then {ATHSC_Run = false};
-                            if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit};
-                            // Force clear unconscious on client too
-                            player setVariable ["AT_Revive_isUnconscious", false, true];
-                            player enableSimulation true;
-                            player setDamage 0;
-                            player allowDamage false;
-                            player switchMove "";
-                            // Black screen + ESCAPE FAILED text
-                            cutText ["", "BLACK", 1];
-                        }] remoteExec ["call", _unit];
-                    } forEach _members;
-
+                    // 3. Black screen
+                    {["", "BLACK", 1] remoteExec ["cutText", _x]} forEach _members;
                     sleep 2;
 
-                    // Show big ESCAPE FAILED text
-                    {
-                        [["<t size='3' color='#cc0000' align='center' shadow='2'>ESCAPE FAILED</t><br/><br/><t size='1.2' color='#999999' align='center'>Your group has been wiped</t>", "PLAIN", -1, true, true]] remoteExec ["cutText", _x];
-                    } forEach _members;
-
+                    // 4. ESCAPE FAILED title
+                    {["ESCAPE FAILED", "PLAIN DOWN", 3] remoteExec ["titleText", _x]} forEach _members;
                     sleep 4;
 
-                    {
-                        [["<t size='1.5' color='#cccccc' align='center' shadow='1'>Regrouping...</t>", "PLAIN", -1, true, true]] remoteExec ["cutText", _x];
-                    } forEach _members;
-
+                    {["Regrouping...", "PLAIN", 1] remoteExec ["titleText", _x]} forEach _members;
                     sleep 2;
 
-                    // 3. Move to safe position and strip gear
+                    // 5. Move to safe position and strip gear
                     {
                         _x setPos [0, 0, 0];
                         removeAllAssignedItems _x;
@@ -604,26 +588,26 @@ call A3E_fnc_buildingLoot;
                         removeGoggles _x;
                     } forEach _members;
 
-                    // 4. Open spawn menu on leader's client
+                    // 6. Open spawn menu on leader, waiting screen on others
                     _grp setVariable ["A3E_GroupInLobby", true, true];
                     _grp setVariable ["A3E_GroupSpawnReady", false, true];
 
                     private _leader = leader _grp;
-                    // Leader gets spawn menu, picks city, server spawns group
-                    [{
+
+                    // Leader: open spawn menu, then spawn group
+                    [[], {
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];
                         [group player, _spawnPos] remoteExec ["A3E_fnc_spawnGroupAtCity", 2];
                     }] remoteExec ["spawn", _leader];
 
-                    // Non-leaders get waiting screen
+                    // Non-leaders: wait for leader
                     {
                         if (_x != _leader) then {
-                            [{
-                                private _ldrName = name (leader (group player));
-                                cutText [format ["<t size='1.5' color='#cccccc' align='center'>Waiting for %1 to select spawn...</t>", _ldrName], "PLAIN", -1, true, true];
+                            [[], {
+                                titleText [format ["Waiting for %1 to select spawn...", name (leader (group player))], "BLACK", 0.5];
                                 waitUntil {sleep 0.5; (group player) getVariable ["A3E_GroupSpawnReady", false]};
-                                cutText ["", "BLACK IN", 1];
+                                titleText ["", "BLACK IN", 1];
                             }] remoteExec ["spawn", _x];
                         };
                     } forEach _members;

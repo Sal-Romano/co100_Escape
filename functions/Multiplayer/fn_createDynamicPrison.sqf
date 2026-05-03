@@ -180,7 +180,7 @@ if (isNil "A3E_EscapeHasStarted") then {
         {_player distance _prisonPos > (_radius * 0.8)}
     };
 
-    if (alive _player && !(_player getVariable ["A3E_InSpawnLobby", false])) then {
+    if (alive _player && !(_player getVariable ["A3E_InSpawnLobby", false]) && !(_player getVariable ["AT_Revive_isUnconscious", false]) && !(_player getVariable ["A3E_MP_InLobby", false])) then {
         // Release from captive - all guards will now engage
         [_player, false] remoteExec ["setCaptive", _player, false];
 
