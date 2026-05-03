@@ -222,8 +222,32 @@ waitUntil {sleep 0.1; !isNull (findDisplay 46)};
 sleep 0.5;
 
 // Create the dialog
-createDialog "A3E_SpawnDialog";
-waitUntil {sleep 0.1; !isNull findDisplay 58000};
+private _dialogOK = createDialog "A3E_SpawnDialog";
+
+if (!_dialogOK) then {
+    diag_log "ERROR: Failed to create A3E_SpawnDialog!";
+    systemChat "Spawn dialog failed to load. Using fallback.";
+    // Fallback: pick a random city
+    private _fallback = selectRandom A3E_MP_Cities;
+    A3E_MP_SpawnPos = _fallback select 1;
+    A3E_MP_SpawnType = "city";
+    A3E_MP_SpawnSelected = true;
+};
+
+// Wait for dialog with timeout (15 seconds)
+private _timeout = diag_tickTime + 15;
+waitUntil {sleep 0.1; !isNull findDisplay 58000 || A3E_MP_SpawnSelected || diag_tickTime > _timeout};
+
+if (A3E_MP_SpawnSelected) exitWith {
+    [A3E_MP_SpawnPos, A3E_MP_SpawnType]
+};
+
+if (isNull findDisplay 58000) exitWith {
+    diag_log "ERROR: Spawn dialog timed out. Using fallback.";
+    systemChat "Spawn dialog timed out. Spawning at random city.";
+    private _fallback = selectRandom A3E_MP_Cities;
+    [_fallback select 1, "city"]
+};
 
 private _display = findDisplay 58000;
 
