@@ -472,8 +472,54 @@ call A3E_fnc_InitTraps;
 // Start DayZ-style building loot system
 call A3E_fnc_buildingLoot;
 
-// Start group wipe monitor (per-group "ESCAPE FAILED" instead of global mission end)
-call A3E_fnc_groupWipeMonitor;
+// Start group wipe monitor INLINE (bypasses CfgFunctions in case of compilation issues)
+[] spawn {
+    sleep 30;
+    diag_log "GROUP WIPE MONITOR: STARTED";
+    "Group wipe monitor active" remoteExec ["systemChat", 0];
+
+    while {true} do {
+        sleep 2;
+
+        private _allPlayers = ([] call BIS_fnc_listPlayers) select {alive _x};
+
+        private _checkedGroups = [];
+        {
+            private _grp = group _x;
+            private _inLobby = (_x getVariable ["A3E_InSpawnLobby", false]) ||
+                               (_x getVariable ["A3E_MP_InLobby", false]);
+            if (!_inLobby && !(_grp in _checkedGroups) && {side _grp == west}) then {
+                _checkedGroups pushBack _grp;
+            };
+        } forEach _allPlayers;
+
+        {
+            private _grp = _x;
+            if (_grp getVariable ["A3E_GroupWipeInProgress", false]) then {continue};
+
+            private _activeMembers = (units _grp) select {
+                isPlayer _x && alive _x &&
+                !(_x getVariable ["A3E_InSpawnLobby", false]) &&
+                !(_x getVariable ["A3E_MP_InLobby", false])
+            };
+
+            if (count _activeMembers == 0) then {continue};
+
+            private _anyoneUp = false;
+            {
+                if (!(_x getVariable ["AT_Revive_isUnconscious", false])) exitWith {
+                    _anyoneUp = true;
+                };
+            } forEach _activeMembers;
+
+            if (!_anyoneUp) then {
+                diag_log format ["GROUP WIPE: %1 - %2 members all unconscious!", groupId _grp, count _activeMembers];
+                _grp setVariable ["A3E_GroupWipeInProgress", true, true];
+                [_grp] spawn A3E_fnc_handleGroupWipe;
+            };
+        } forEach _checkedGroups;
+    };
+};
 
 
 // Spawn creation of start position settings
