@@ -219,6 +219,79 @@ private _wpCycle2 = _interiorGroup addWaypoint [_spawnPos, 3];
 _wpCycle2 setWaypointType "CYCLE";
 _allGuards pushBack _interiorGroup;
 
+// --- 6. ZOMBIE SIEGE (30% chance): Waves of zombies attack the compound ---
+if (random 1 < 0.3) then {
+    [_spawnPos, _compoundRadius, _allGuards] spawn {
+        params ["_prisonPos", "_radius", "_guards"];
+
+        // Delay before first wave - give the player time to orient
+        sleep 45 + (random 30);
+
+        // Zombie uniforms matching Ravage config
+        private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+
+        // Spawn 2-3 waves of zombies converging on the compound
+        private _numWaves = 2 + floor(random 2);
+
+        for "_wave" from 1 to _numWaves do {
+            // Spawn 4-8 zombies per wave from random direction
+            private _spawnDir = random 360;
+            private _spawnDist = _radius + 60 + (random 40);
+            private _spawnPoint = _prisonPos getPos [_spawnDist, _spawnDir];
+
+            private _zombieGroup = createGroup [east, true];
+            private _zombieCount = 4 + floor(random 5);
+
+            for "_i" from 0 to (_zombieCount - 1) do {
+                private _zPos = _spawnPoint getPos [random 10, random 360];
+                private _zombie = _zombieGroup createUnit ["O_Survivor_F", _zPos, [], 0, "FORM"];
+                removeAllWeapons _zombie;
+                removeAllItems _zombie;
+                removeAllAssignedItems _zombie;
+                removeVest _zombie;
+                removeBackpack _zombie;
+                removeHeadgear _zombie;
+
+                // Apply zombie appearance
+                _zombie forceAddUniform (selectRandom _zombieUniforms);
+                _zombie setFace "PersianHead_A3_01";
+
+                // Zombie behavior: fast, aggressive, low accuracy
+                _zombie setSkill ["aimingAccuracy", 0];
+                _zombie setSkill ["spotDistance", 0.5];
+                _zombie setSkill ["courage", 1];
+                _zombie enableAI "ANIM";
+                _zombie disableAI "SUPPRESSION";
+                _zombie disableAI "COVER";
+                _zombie disableAI "AUTOCOMBAT";
+                _zombie setCombatMode "RED";
+                _zombie setBehaviour "COMBAT";
+
+                // Ravage zombie init
+                _zombie setVariable ["SSD_disabledSounds", true];
+            };
+
+            // SAD waypoint toward prison center
+            private _wp = _zombieGroup addWaypoint [_prisonPos, 10];
+            _wp setWaypointType "SAD";
+            _wp setWaypointSpeed "FULL";
+            _wp setWaypointBehaviour "COMBAT";
+            _wp setWaypointCombatMode "RED";
+
+            // Alert guards about zombie attack
+            {
+                _x setCombatMode "RED";
+                _x setBehaviour "COMBAT";
+            } forEach _guards;
+
+            // Wait between waves
+            if (_wave < _numWaves) then {
+                sleep 30 + (random 20);
+            };
+        };
+    };
+};
+
 // Place player inside the prison
 _player setPos _spawnPos;
 _player setCaptive true;
