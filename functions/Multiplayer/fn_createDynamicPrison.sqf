@@ -66,222 +66,93 @@ private _items = missionNamespace getVariable ["a3e_arr_PrisonBackpackItems", []
 private _fenceRotateDir = random 360;
 [_spawnPos, _fenceRotateDir, _backpack] remoteExec [_templateFunc, 0, true];
 
-// === TACTICAL GUARD PLACEMENT ===
-// Wait a frame for the compound objects to be created by remoteExec
+// === GUARD PLACEMENT ===
+// Wait for compound objects to be created
 sleep 0.5;
+
+// Wait for A3E_VAR_Side_Opfor to be defined (server init may still be running)
+waitUntil { sleep 0.5; !isNil "A3E_VAR_Side_Opfor" };
 
 private _guardTypes = missionNamespace getVariable ["a3e_arr_Escape_StartPositionGuardTypes", []];
 if (count _guardTypes == 0) then {
-    _guardTypes = ["CUP_O_RU_Soldier_GL", "CUP_O_RU_Soldier_MG", "CUP_O_RU_Soldier_TL"];
+    // No guard types configured - skip guard spawning entirely
+    // (fallback classnames would cause faction mismatches)
+    diag_log "createDynamicPrison: WARNING - no guard types configured, skipping guards";
 };
 
-private _allGuards = [];
+// ALL guards go in ONE group to prevent any friendly fire issues
+private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
 
-// --- 1. BUILDING GARRISON: Find all buildings/towers in compound and put guards inside ---
-private _buildingGroup = createGroup [A3E_VAR_Side_Opfor, true];
-private _nearBuildings = nearestObjects [_spawnPos, ["Building"], _compoundRadius + 10];
-private _garrisonedCount = 0;
+if (count _guardTypes > 0) then {
 
-{
-    private _building = _x;
-    // Get all building positions (walkable spots inside the building)
-    private _positions = [];
-    private _posIdx = 0;
-    private _bpos = _building buildingPos _posIdx;
-    while { !(_bpos isEqualTo [0,0,0]) } do {
-        _positions pushBack _bpos;
-        _posIdx = _posIdx + 1;
-        _bpos = _building buildingPos _posIdx;
-    };
+    // --- BUILDING GARRISON: Put guards in towers and buildings ---
+    private _nearBuildings = nearestObjects [_spawnPos, ["Building"], _compoundRadius];
+    {
+        private _building = _x;
+        private _positions = [];
+        private _posIdx = 0;
+        private _bpos = _building buildingPos _posIdx;
+        while { !(_bpos isEqualTo [0,0,0]) } do {
+            _positions pushBack _bpos;
+            _posIdx = _posIdx + 1;
+            _bpos = _building buildingPos _posIdx;
+        };
 
-    if (count _positions > 0) then {
-        // Determine how many guards based on building size
-        private _numGuards = (ceil (count _positions / 3)) min 3;
-
-        for "_i" from 0 to (_numGuards - 1) do {
-            // Pick the highest positions first (top of towers)
+        if (count _positions > 0) then {
+            private _numGuards = (ceil (count _positions / 3)) min 2;
             private _sortedPos = [_positions, [], { _x select 2 }, "DESCEND"] call BIS_fnc_sortBy;
-            private _guardPos = _sortedPos select (_i min (count _sortedPos - 1));
 
-            private _guard = _buildingGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
+            for "_i" from 0 to (_numGuards - 1) do {
+                private _guardPos = _sortedPos select (_i min (count _sortedPos - 1));
+                private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
+                _guard setPosATL _guardPos;
+                _guard setDir (random 360);
+                _guard setSkill (0.3 + random 0.15);
+                _guard setBehaviour "SAFE";
+                _guard setCombatMode "YELLOW";
+                _guard setUnitPos "UP";
+                doStop _guard;
+            };
+        };
+    } forEach _nearBuildings;
+
+    // --- GATE GUARDS ---
+    if (!isNil "A3E_PrisonGateObject") then {
+        private _gatePos = getPos A3E_PrisonGateObject;
+        private _gateDir = getDir A3E_PrisonGateObject;
+        for "_i" from 0 to 1 do {
+            private _offset = if (_i == 0) then { -3 } else { 3 };
+            private _guardPos = _gatePos getPos [_offset, _gateDir + 90];
+            private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
             _guard setPosATL _guardPos;
-            _guard setDir (random 360);
-            _guard setSkill (0.3 + random 0.15);
+            _guard setDir _gateDir;
+            _guard setSkill (0.3 + random 0.1);
             _guard setBehaviour "SAFE";
             _guard setCombatMode "YELLOW";
-            _guard setUnitPos "UP";
             doStop _guard;
-
-            _garrisonedCount = _garrisonedCount + 1;
         };
     };
-} forEach _nearBuildings;
 
-if (count units _buildingGroup > 0) then {
-    _allGuards pushBack _buildingGroup;
-};
-
-// --- 2. STATIC WEAPON EMPLACEMENTS: Place manned guns at bunker/nest positions ---
-// Use the same side-appropriate static weapons that comcenters use
-private _staticWeaponClasses = missionNamespace getVariable ["a3e_arr_ComCenStaticWeapons", []];
-if (count _staticWeaponClasses > 0) then {
-    private _fortObjects = nearestObjects [_spawnPos,
-        ["Land_fortified_nest_big", "Land_fortified_nest_small",
-         "Land_BagBunker_Large_F", "Land_BagBunker_Small_F", "Land_BagBunker_Tower_F",
-         "Land_fortified_nest_big_EP1", "Land_fortified_nest_small_EP1"],
-        _compoundRadius + 10];
-
-    {
-        private _fortPos = getPos _x;
-        private _fortDir = getDir _x;
-        private _gunClass = selectRandom _staticWeaponClasses;
-
-        // Spawn static weapon and let the engine create a same-side crew
-        private _gun = createVehicle [_gunClass, _fortPos, [], 0, "CAN_COLLIDE"];
-        _gun setDir _fortDir;
-        _gun setPosATL _fortPos;
-        [_gun, A3E_VAR_Side_Opfor] call A3E_fnc_AddStaticGunner;
-    } forEach _fortObjects;
-};
-
-// --- 3. GATE GUARDS: Standing at the compound entrance ---
-private _gateGroup = createGroup [A3E_VAR_Side_Opfor, true];
-if (!isNil "A3E_PrisonGateObject") then {
-    private _gatePos = getPos A3E_PrisonGateObject;
-    private _gateDir = getDir A3E_PrisonGateObject;
-
-    // Two guards flanking the gate
-    for "_i" from 0 to 1 do {
-        private _offset = if (_i == 0) then { -3 } else { 3 };
-        private _guardPos = _gatePos getPos [_offset, _gateDir + 90];
-        private _guard = _gateGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
-        _guard setPosATL _guardPos;
-        _guard setDir _gateDir;
+    // --- GROUND PATROL: walks around and inside the compound ---
+    for "_i" from 0 to 3 do {
+        private _startPos = _spawnPos getPos [_compoundRadius * 0.5, _i * 90];
+        private _guard = _guardGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
         _guard setSkill (0.3 + random 0.1);
-        _guard setBehaviour "SAFE";
-        _guard setCombatMode "YELLOW";
-        _guard setUnitPos "UP";
-        doStop _guard;
     };
-};
-if (count units _gateGroup > 0) then {
-    _allGuards pushBack _gateGroup;
-};
 
-// --- 4. PERIMETER PATROL: 2-man team walking the outer wall ---
-private _perimeterGroup = createGroup [A3E_VAR_Side_Opfor, true];
-for "_i" from 0 to 1 do {
-    private _startPos = _spawnPos getPos [_compoundRadius * 0.85, _i * 180];
-    private _guard = _perimeterGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
-    _guard setSkill (0.3 + random 0.1);
-};
-
-// 4-point perimeter patrol
-for "_angle" from 0 to 270 step 90 do {
-    private _wpPos = _spawnPos getPos [_compoundRadius * 0.85, _angle];
-    private _wp = _perimeterGroup addWaypoint [_wpPos, 5];
-    _wp setWaypointType "MOVE";
-    _wp setWaypointSpeed "LIMITED";
-    _wp setWaypointBehaviour "SAFE";
-};
-private _wpCycle = _perimeterGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.85, 0], 5];
-_wpCycle setWaypointType "CYCLE";
-_allGuards pushBack _perimeterGroup;
-
-// --- 5. INTERIOR PATROL: 2-man team walking inside the compound ---
-private _interiorGroup = createGroup [A3E_VAR_Side_Opfor, true];
-for "_i" from 0 to 1 do {
-    private _startPos = _spawnPos getPos [_compoundRadius * 0.25, _i * 180];
-    private _guard = _interiorGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
-    _guard setSkill (0.3 + random 0.1);
-};
-
-for "_angle" from 0 to 240 step 120 do {
-    private _wpPos = _spawnPos getPos [_compoundRadius * 0.35, _angle];
-    private _wp = _interiorGroup addWaypoint [_wpPos, 3];
-    _wp setWaypointType "MOVE";
-    _wp setWaypointSpeed "LIMITED";
-    _wp setWaypointBehaviour "SAFE";
-};
-private _wpCycle2 = _interiorGroup addWaypoint [_spawnPos, 3];
-_wpCycle2 setWaypointType "CYCLE";
-_allGuards pushBack _interiorGroup;
-
-/// --- 6. ZOMBIE SIEGE: Waves of zombies attack the compound ---
-private _zombieSiegeChance = missionNamespace getVariable ["A3E_PrisonZombieSiegeChance", 1.0];
-if (random 1 < _zombieSiegeChance) then {
-    [_spawnPos, _compoundRadius, _allGuards] spawn {
-        params ["_prisonPos", "_radius", "_guards"];
-
-        // Delay before first wave - give the player time to orient
-        sleep 45 + (random 30);
-
-        // Zombie uniforms matching Ravage config
-        private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
-
-        // Spawn 2-3 waves of zombies converging on the compound
-        private _numWaves = 2 + floor(random 2);
-
-        for "_wave" from 1 to _numWaves do {
-            // Spawn 4-8 zombies per wave from random direction
-            private _spawnDir = random 360;
-            private _spawnDist = _radius + 60 + (random 40);
-            private _spawnPoint = _prisonPos getPos [_spawnDist, _spawnDir];
-
-            // Zombies on civilian side - hostile to all armed factions
-            private _zombieGroup = createGroup [civilian, true];
-            // Double the normal enemy squad size for zombie waves
-            private _zombieCount = ([-1, -1, 8, 24] call a3e_fnc_getDynamicSquadSize) * 2;
-
-            for "_i" from 0 to (_zombieCount - 1) do {
-                private _zPos = _spawnPoint getPos [random 10, random 360];
-                private _zombie = _zombieGroup createUnit ["O_Survivor_F", _zPos, [], 0, "FORM"];
-                removeAllWeapons _zombie;
-                removeAllItems _zombie;
-                removeAllAssignedItems _zombie;
-                removeVest _zombie;
-                removeBackpack _zombie;
-                removeHeadgear _zombie;
-
-                // Apply zombie appearance
-                _zombie forceAddUniform (selectRandom _zombieUniforms);
-                _zombie setFace "PersianHead_A3_01";
-
-                // Zombie behavior: fast, aggressive, low accuracy
-                _zombie setSkill ["aimingAccuracy", 0];
-                _zombie setSkill ["spotDistance", 0.5];
-                _zombie setSkill ["courage", 1];
-                _zombie enableAI "ANIM";
-                _zombie disableAI "SUPPRESSION";
-                _zombie disableAI "COVER";
-                _zombie disableAI "AUTOCOMBAT";
-                _zombie setCombatMode "RED";
-                _zombie setBehaviour "COMBAT";
-
-                // Ravage zombie init
-                _zombie setVariable ["SSD_disabledSounds", true];
-            };
-
-            // SAD waypoint toward prison center
-            private _wp = _zombieGroup addWaypoint [_prisonPos, 10];
-            _wp setWaypointType "SAD";
-            _wp setWaypointSpeed "FULL";
-            _wp setWaypointBehaviour "COMBAT";
-            _wp setWaypointCombatMode "RED";
-
-            // Alert guards about zombie attack
-            {
-                _x setCombatMode "RED";
-                _x setBehaviour "COMBAT";
-            } forEach _guards;
-
-            // Wait between waves
-            if (_wave < _numWaves) then {
-                sleep 30 + (random 20);
-            };
-        };
+    // Patrol waypoints
+    for "_angle" from 0 to 270 step 90 do {
+        private _wpPos = _spawnPos getPos [_compoundRadius * 0.7, _angle];
+        private _wp = _guardGroup addWaypoint [_wpPos, 5];
+        _wp setWaypointType "MOVE";
+        _wp setWaypointSpeed "LIMITED";
+        _wp setWaypointBehaviour "SAFE";
     };
+    private _wpCycle = _guardGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.7, 0], 5];
+    _wpCycle setWaypointType "CYCLE";
 };
+
+private _allGuards = [_guardGroup];
 
 // Place player inside the prison
 _player setPos _spawnPos;
