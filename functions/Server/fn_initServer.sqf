@@ -578,7 +578,7 @@ call A3E_fnc_buildingLoot;
 
                     // 5. Move to safe position and strip gear
                     {
-                        _x setPos [0, 0, 0];
+                        _x setPos [7700, 8000, 0];
                         removeAllAssignedItems _x;
                         removeAllWeapons _x;
                         removeAllItems _x;

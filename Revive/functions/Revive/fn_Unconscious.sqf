@@ -47,7 +47,7 @@ if (isPlayer _unit) then
 {
 	
 	while { !isNull _unit && alive _unit && (_unit getVariable "AT_Revive_isUnconscious")} do
-	{			
+	{
 		if(vehicle _unit == _unit && _inVehicle) then {
 			_inVehicle = false;
 			_unit enableSimulation true;
@@ -65,16 +65,20 @@ if (isPlayer _unit) then
 		};
 		sleep 0.5;
 	};
-	private _pos = getposATL _unit;
-	
-	// Player got revived
-	//sleep 6;
-	
 
+	// If player is in spawn lobby (group wipe), DON'T re-enable damage or clear captive
+	// The wipe/respawn system manages that separately
+	if (_unit getVariable ["A3E_InSpawnLobby", false] || _unit getVariable ["A3E_MP_InLobby", false]) exitWith {
+		_unit enableSimulation true;
+	};
+
+	private _pos = getposATL _unit;
+
+	// Player got revived normally
 	_unit enableSimulation true;
 	_unit allowDamage true;
 	_unit setCaptive false;
-	
+
 	sleep 0.5;
 	_unit setPosATL _pos; //Fix the stuck in the ground bug
 
