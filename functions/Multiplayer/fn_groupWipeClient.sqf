@@ -13,17 +13,20 @@ if (!isNil "ATHSC_Run") then {
 cutText ["", "BLACK", 2];
 sleep 2;
 
-// Flash the "ESCAPE FAILED" title
-titleText ["ESCAPE FAILED", "PLAIN DOWN", 2];
-sleep 3;
+// Big centered "ESCAPE FAILED" using cutRsc/structured text
+cutText [
+    "<t size='3' color='#cc0000' align='center' shadow='2'>ESCAPE FAILED</t><br/><br/><t size='1.2' color='#999999' align='center'>Your group has been wiped</t>",
+    "PLAIN", -1, true, true
+];
+sleep 4;
 
-titleText ["Your group has been wiped...", "PLAIN", 1];
+cutText [
+    "<t size='1.5' color='#cccccc' align='center' shadow='1'>Regrouping...</t>",
+    "PLAIN", -1, true, true
+];
 sleep 2;
 
-titleText ["Regrouping...", "PLAIN", 1];
-sleep 1;
-
-titleText ["", "BLACK", 0.5];
+cutText ["", "BLACK", 0.5];
 
 // Player is now in spawn lobby state (server already reset us)
 // Mark ourselves as in spawn lobby
