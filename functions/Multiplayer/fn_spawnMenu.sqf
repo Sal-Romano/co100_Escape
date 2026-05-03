@@ -103,9 +103,26 @@ A3E_fnc_spawnUI_spawnCity = {
     if (count A3E_MP_SelectedCity == 0) exitWith {
         hint "Click a city on the map first!";
     };
-    A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
-    A3E_MP_SpawnType = "city";
-    A3E_MP_SpawnSelected = true;
+
+    // Check if leader -- leader spawns the whole group
+    private _grp = group player;
+    private _isLeader = (leader _grp == player);
+    private _lobbyMembers = (units _grp) select {
+        isPlayer _x && _x != player &&
+        (_x getVariable ["A3E_MP_InLobby", false] || _x getVariable ["A3E_InSpawnLobby", false])
+    };
+
+    if (_isLeader && count _lobbyMembers > 0) then {
+        // Leader spawning group -- use server-side group spawn
+        A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
+        A3E_MP_SpawnType = "group_city";
+        A3E_MP_SpawnSelected = true;
+    } else {
+        // Solo player or no lobby members -- normal city spawn
+        A3E_MP_SpawnPos = A3E_MP_SelectedCity select 1;
+        A3E_MP_SpawnType = "city";
+        A3E_MP_SpawnSelected = true;
+    };
 };
 
 A3E_fnc_spawnUI_spawnOnGroup = {

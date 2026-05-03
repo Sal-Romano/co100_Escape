@@ -155,6 +155,9 @@ class CfgFunctions
 			class initTraps {};
 			class updateTraps {};
 			class buildingLoot {};
+			class groupWipeMonitor {};
+			class handleGroupWipe {};
+			class spawnGroupAtCity {};
 		};
 		class Spawning
 		{
@@ -273,6 +276,8 @@ class CfgFunctions
 		{
 			class spawnMenu {};
 			class createDynamicPrison {};
+			class groupBadges {};
+			class groupWipeClient {};
 		};
 	};
 	class drn

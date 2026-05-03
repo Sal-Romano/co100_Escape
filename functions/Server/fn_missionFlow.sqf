@@ -47,12 +47,20 @@ if(isServer) then {
 	_trigger setTriggerActivation["NONE", "PRESENT", false];
 	_trigger setTriggerTimeout [0, 0, 0, false];
 	A3E_fnc_InlineEverybodyUnconscious = {
-		private _return = 	(
-								((([] call A3E_fnc_GetPlayers) findIf {!(_x getVariable ["AT_Revive_isUnconscious",false]);}) == -1) 
-							OR 	((([] call A3E_fnc_GetPlayers) findIf {!(_x getVariable ["ACE_Revive_isUnconscious",false]);}) == -1)
-							);
+		// Only returns true if ALL active (non-lobby) players are unconscious
+		// Players in spawn lobby are excluded so per-group wipes don't end the whole mission
+		private _activePlayers = ([] call A3E_fnc_GetPlayers) select {
+			!(_x getVariable ["A3E_InSpawnLobby", false]) &&
+			!(_x getVariable ["A3E_MP_InLobby", false])
+		};
+		if (count _activePlayers == 0) exitWith {false};
+		private _return = (
+			(_activePlayers findIf {
+				!(_x getVariable ["AT_Revive_isUnconscious", false]) &&
+				!(_x getVariable ["ACE_Revive_isUnconscious", false])
+			}) == -1
+		);
 		_return;
-	
 	};
 	_trigger setTriggerStatements["A3E_EscapeHasStarted && ([] call A3E_fnc_InlineEverybodyUnconscious)", "missionNamespace setvariable [""a3e_var_Escape_AllPlayersDead"",true,true];[] spawn A3E_FNC_FailTasks;", ""];
 	

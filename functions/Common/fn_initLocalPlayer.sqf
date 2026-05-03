@@ -36,13 +36,21 @@ if (_spawnType == "group") then {
 	if (!isNull _nearestMember) then {
 		player setPos (_nearestMember getPos [5 + random 10, random 360]);
 		player setVariable ["A3E_MP_InLobby", false, true];
+		player setVariable ["A3E_InSpawnLobby", false, true];
 		player setCaptive false;
 	};
 } else {
-	// City spawn - request prison on server
-	[_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
-	// Wait for server to place us
-	waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
+	if (_spawnType == "group_city") then {
+		// Leader spawning group at city - server handles prison for all members
+		[group player, _spawnPos] remoteExec ["A3E_fnc_spawnGroupAtCity", 2];
+		// Wait for server to spawn us
+		waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true]) && !(player getVariable ["A3E_InSpawnLobby", false])};
+	} else {
+		// Solo city spawn - request prison on server
+		[_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
+		// Wait for server to place us
+		waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
+	};
 };
 
 // Zeus for server host
@@ -73,6 +81,9 @@ if(A3E_DEBUG) then {
 player addeventhandler["HandleRating","_this call A3E_FNC_handleRating;"];
 
 player addeventhandler["InventoryClosed","_this call A3E_FNC_collectIntel;"];
+
+// Initialize floating group badges above teammates' heads
+[] call A3E_fnc_groupBadges;
 
 
 drn_fnc_Escape_DisableLeaderSetWaypoints = {

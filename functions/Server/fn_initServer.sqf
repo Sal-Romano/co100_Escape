@@ -472,6 +472,9 @@ call A3E_fnc_InitTraps;
 // Start DayZ-style building loot system
 call A3E_fnc_buildingLoot;
 
+// Start group wipe monitor (per-group "ESCAPE FAILED" instead of global mission end)
+call A3E_fnc_groupWipeMonitor;
+
 
 // Spawn creation of start position settings
 [A3E_StartPos, _backPack, _enemyFrequency] spawn {
