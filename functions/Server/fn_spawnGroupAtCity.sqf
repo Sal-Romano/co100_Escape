@@ -109,8 +109,10 @@ sleep 1;
     _x setCaptive true;
     _x setDamage 0;
 
-    // Client-side: nuclear cleanup via execVM
-    "functions\\Multiplayer\\forceConscious.sqf" remoteExec ["execVM", _x];
+    // Client-side: nuclear cleanup + ATR re-init via execVM
+    "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
+    // Re-init ATR revive after player is safely at prison
+    [true] remoteExec ["ATR_FNC_InitPlayer", _x];
 
     // Mark as spawned
     _x setVariable ["A3E_InSpawnLobby", false, true];

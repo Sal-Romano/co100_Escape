@@ -1,6 +1,9 @@
 // forceConscious.sqf
-// Nuclear option: brute-force clear ALL unconscious/camera state on client
-// Called via: "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _targetPlayer];
+// Brute-force clear ALL unconscious/camera state on client.
+// Called via: "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", target];
+
+// Black screen immediately
+cutText ["", "BLACK", 0.5];
 
 // Kill the hindsight spectator camera
 ATHSC_Run = false;
@@ -24,11 +27,8 @@ player setDamage 0;
 player switchMove "";
 player playMoveNow "";
 
-// Clear any cutText/titleText overlays
-cutText ["", "PLAIN", 0];
-titleText ["", "PLAIN", 0];
-
-// Keep hammering for 5 seconds in case something re-sets it
+// Hammer unconscious=false for 5 seconds in case anything re-sets it
+// Do NOT re-init ATR here - that happens later when safely at prison
 [] spawn {
     for "_i" from 0 to 10 do {
         player setVariable ["AT_Revive_isUnconscious", false, true];
@@ -36,9 +36,5 @@ titleText ["", "PLAIN", 0];
         player switchMove "";
         ATHSC_Run = false;
         sleep 0.5;
-    };
-    // Re-init ATR revive after the dust settles
-    if (!isNil "ATR_FNC_InitPlayer") then {
-        [true] call ATR_FNC_InitPlayer;
     };
 };
