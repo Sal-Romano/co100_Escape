@@ -634,39 +634,9 @@ _obj = "Land_CncWall4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 270.0);
 _obj setPosATL _pos;
 
-// === PRISON CELL - razor wire enclosure at center ===
+// === PRISON CELL - building with door at center ===
 
-_pos = [_center, _center vectorAdd [3, 0, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Razorwire_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-3, 0, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Razorwire_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [0, 3, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Razorwire_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [0, -3, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Razorwire_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [3.5, 3.5, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_PortableLight_double_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 225.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-1, 0, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_ChairWood_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [0.5, 0, 0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_WoodenTable_small_F" createVehicleLocal _pos;
+_pos = [_center, _center vectorAdd [0, 0, 0], _rotation] call A3E_fnc_rotatePosition;
+_obj = "Land_Cargo_House_V1_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
