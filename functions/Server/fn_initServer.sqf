@@ -557,12 +557,9 @@ call A3E_fnc_buildingLoot;
                         _x setDamage 0;
                     } forEach _members;
 
-                    // 2. Client-side: clear animation + kill camera (correct remoteExec syntax)
+                    // 2. Client-side: nuclear cleanup via execVM (reliable, no CfgFunctions)
                     {
-                        [_x, ""] remoteExec ["switchMove", 0, false];
-                        [_x, false] remoteExec ["allowDamage", _x];
-                        // Kill hindsight camera on client
-                        {if (!isNil "ATHSC_Run") then {ATHSC_Run = false; if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit}}} remoteExec ["call", _x];
+                        "functions\\Multiplayer\\forceConscious.sqf" remoteExec ["execVM", _x];
                     } forEach _members;
 
                     // 3. Black screen

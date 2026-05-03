@@ -109,18 +109,8 @@ sleep 1;
     _x setCaptive true;
     _x setDamage 0;
 
-    // Client-side: clear animation, camera, re-init ATR (correct remoteExec syntax)
-    [_x, ""] remoteExec ["switchMove", 0, false];
-    [_x, false] remoteExec ["allowDamage", _x];
-    // Kill camera + re-init ATR on client
-    {
-        if (!isNil "ATHSC_Run") then {ATHSC_Run = false; if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit}};
-        player setVariable ["AT_Revive_isUnconscious", false, true];
-        player switchMove "";
-        player setDamage 0;
-        if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
-        cutText ["", "PLAIN", 1];
-    } remoteExec ["call", _x];
+    // Client-side: nuclear cleanup via execVM
+    "functions\\Multiplayer\\forceConscious.sqf" remoteExec ["execVM", _x];
 
     // Mark as spawned
     _x setVariable ["A3E_InSpawnLobby", false, true];

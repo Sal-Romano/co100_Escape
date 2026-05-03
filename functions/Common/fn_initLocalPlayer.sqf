@@ -53,20 +53,8 @@ if (_spawnType == "group") then {
 	};
 };
 
-// FORCE clear unconscious state - undo any lingering ATR state
-player setVariable ["AT_Revive_isUnconscious", false, true];
-player setVariable ["AT_Revive_isDragged", objNull, true];
-player setVariable ["AT_Revive_isDragging", objNull, true];
-player setVariable ["AT_Revive_isCarrying", objNull, true];
-player setVariable ["ACE_Revive_isUnconscious", false, true];
-player enableSimulation true;
-player setDamage 0;
-player switchMove "";
-// Kill hindsight camera if running
-if (!isNil "ATHSC_Run") then {
-    ATHSC_Run = false;
-    if (!isNil "ATHSC_fnc_exit") then {[] call ATHSC_fnc_exit};
-};
+// Nuclear cleanup: force clear ALL unconscious/camera state
+execVM "functions\Multiplayer\forceConscious.sqf";
 
 // Spawn protection - invulnerable for 10 seconds after spawning
 player allowDamage false;
