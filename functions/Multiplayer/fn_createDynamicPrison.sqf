@@ -219,8 +219,9 @@ private _wpCycle2 = _interiorGroup addWaypoint [_spawnPos, 3];
 _wpCycle2 setWaypointType "CYCLE";
 _allGuards pushBack _interiorGroup;
 
-// --- 6. ZOMBIE SIEGE (30% chance): Waves of zombies attack the compound ---
-if (random 1 < 0.3) then {
+/// --- 6. ZOMBIE SIEGE: Waves of zombies attack the compound ---
+private _zombieSiegeChance = missionNamespace getVariable ["A3E_PrisonZombieSiegeChance", 1.0];
+if (random 1 < _zombieSiegeChance) then {
     [_spawnPos, _compoundRadius, _allGuards] spawn {
         params ["_prisonPos", "_radius", "_guards"];
 
@@ -240,7 +241,8 @@ if (random 1 < 0.3) then {
             private _spawnPoint = _prisonPos getPos [_spawnDist, _spawnDir];
 
             private _zombieGroup = createGroup [east, true];
-            private _zombieCount = 4 + floor(random 5);
+            // Double the normal enemy squad size for zombie waves
+            private _zombieCount = ([-1, -1, 8, 24] call a3e_fnc_getDynamicSquadSize) * 2;
 
             for "_i" from 0 to (_zombieCount - 1) do {
                 private _zPos = _spawnPoint getPos [random 10, random 360];
