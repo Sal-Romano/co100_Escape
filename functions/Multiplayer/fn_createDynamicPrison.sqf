@@ -67,130 +67,157 @@ private _fenceRotateDir = random 360;
 [_spawnPos, _fenceRotateDir, _backpack] remoteExec [_templateFunc, 0, true];
 
 // === TACTICAL GUARD PLACEMENT ===
-// Find the guard config for this template
-private _guardData = [];
-{
-    if ((_x select 0) == _templateFunc) exitWith {
-        _guardData = _x select 1;
-    };
-} forEach A3E_PrisonGuardPositions;
+// Wait a frame for the compound objects to be created by remoteExec
+sleep 0.5;
 
 private _guardTypes = missionNamespace getVariable ["a3e_arr_Escape_StartPositionGuardTypes", []];
 if (count _guardTypes == 0) then {
     _guardTypes = ["CUP_O_RU_Soldier_GL", "CUP_O_RU_Soldier_MG", "CUP_O_RU_Soldier_TL"];
 };
 
-// Spawn guards at tactical positions from the guard config
 private _allGuards = [];
 
-if (count _guardData > 0) then {
-    // --- STATIC POSITION GUARDS (tower, bunker, gate) ---
-    private _staticGroup = createGroup [A3E_VAR_Side_Opfor, true];
+// --- 1. BUILDING GARRISON: Find all buildings/towers in compound and put guards inside ---
+private _buildingGroup = createGroup [A3E_VAR_Side_Opfor, true];
+private _nearBuildings = nearestObjects [_spawnPos, ["Building"], _compoundRadius + 10];
+private _garrisonedCount = 0;
 
-    {
-        _x params ["_category", "_relPos", "_dir"];
+{
+    private _building = _x;
+    // Get all building positions (walkable spots inside the building)
+    private _positions = [];
+    private _posIdx = 0;
+    private _bpos = _building buildingPos _posIdx;
+    while { !(_bpos isEqualTo [0,0,0]) } do {
+        _positions pushBack _bpos;
+        _posIdx = _posIdx + 1;
+        _bpos = _building buildingPos _posIdx;
+    };
 
-        if (_category in ["tower", "bunker", "gate"]) then {
-            private _guardPos = [_spawnPos, _spawnPos vectorAdd _relPos, _fenceRotateDir] call A3E_fnc_rotatePosition;
-            private _guard = _staticGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
+    if (count _positions > 0) then {
+        // Determine how many guards based on building size
+        private _numGuards = (ceil (count _positions / 3)) min 3;
+
+        for "_i" from 0 to (_numGuards - 1) do {
+            // Pick the highest positions first (top of towers)
+            private _sortedPos = [_positions, [], { _x select 2 }, "DESCEND"] call BIS_fnc_sortBy;
+            private _guardPos = _sortedPos select (_i min (count _sortedPos - 1));
+
+            private _guard = _buildingGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
             _guard setPosATL _guardPos;
-            _guard setDir (_dir + _fenceRotateDir);
-            _guard setSkill (0.25 + random 0.15);
+            _guard setDir (random 360);
+            _guard setSkill (0.3 + random 0.15);
             _guard setBehaviour "SAFE";
             _guard setCombatMode "YELLOW";
+            _guard setUnitPos "UP";
+            doStop _guard;
 
-            // Tower guards get elevated position and stay put
-            if (_category == "tower") then {
-                _guard setUnitPos "UP";
-                doStop _guard;
-            };
-            // Bunker guards go prone
-            if (_category == "bunker") then {
-                _guard setUnitPos "DOWN";
-                doStop _guard;
-            };
+            _garrisonedCount = _garrisonedCount + 1;
         };
-    } forEach _guardData;
+    };
+} forEach _nearBuildings;
 
+if (count units _buildingGroup > 0) then {
+    _allGuards pushBack _buildingGroup;
+};
+
+// --- 2. STATIC WEAPON EMPLACEMENTS: Place manned guns at bunker/nest positions ---
+private _staticGroup = createGroup [A3E_VAR_Side_Opfor, true];
+private _staticWeaponClasses = missionNamespace getVariable ["a3e_arr_ComCenStaticWeapons",
+    ["CUP_O_DSHKM_RU", "CUP_O_KORD_RU"]];
+// Find fortified nests and bunker positions
+private _fortObjects = nearestObjects [_spawnPos,
+    ["Land_fortified_nest_big", "Land_fortified_nest_small",
+     "Land_BagBunker_Large_F", "Land_BagBunker_Small_F", "Land_BagBunker_Tower_F",
+     "Land_fortified_nest_big_EP1", "Land_fortified_nest_small_EP1"],
+    _compoundRadius + 10];
+
+{
+    private _fortPos = getPos _x;
+    private _fortDir = getDir _x;
+
+    if (count _staticWeaponClasses > 0) then {
+        // Place a static weapon at the fortification
+        private _gunClass = selectRandom _staticWeaponClasses;
+        private _gun = createVehicle [_gunClass, _fortPos, [], 0, "CAN_COLLIDE"];
+        _gun setDir _fortDir;
+        _gun setPosATL _fortPos;
+
+        // Create gunner
+        private _gunner = _staticGroup createUnit [selectRandom _guardTypes, _fortPos, [], 0, "CAN_COLLIDE"];
+        _gunner moveInGunner _gun;
+        _gunner setSkill (0.3 + random 0.1);
+        _gunner setBehaviour "SAFE";
+        _gunner setCombatMode "YELLOW";
+    };
+} forEach _fortObjects;
+
+if (count units _staticGroup > 0) then {
     _allGuards pushBack _staticGroup;
+};
 
-    // --- PERIMETER PATROL ---
-    private _perimeterGroup = createGroup [A3E_VAR_Side_Opfor, true];
+// --- 3. GATE GUARDS: Standing at the compound entrance ---
+private _gateGroup = createGroup [A3E_VAR_Side_Opfor, true];
+if (!isNil "A3E_PrisonGateObject") then {
+    private _gatePos = getPos A3E_PrisonGateObject;
+    private _gateDir = getDir A3E_PrisonGateObject;
 
-    // 2 patrol guards walking the perimeter
+    // Two guards flanking the gate
     for "_i" from 0 to 1 do {
-        private _startPos = _spawnPos getPos [_compoundRadius * 0.85, _i * 180];
-        private _guard = _perimeterGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
+        private _offset = if (_i == 0) then { -3 } else { 3 };
+        private _guardPos = _gatePos getPos [_offset, _gateDir + 90];
+        private _guard = _gateGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "CAN_COLLIDE"];
+        _guard setPosATL _guardPos;
+        _guard setDir _gateDir;
         _guard setSkill (0.3 + random 0.1);
-    };
-
-    // Perimeter waypoints from guard data
-    private _perimeterPositions = _guardData select { (_x select 0) == "perimeter" };
-    {
-        _x params ["", "_relPos", ""];
-        private _wpPos = [_spawnPos, _spawnPos vectorAdd _relPos, _fenceRotateDir] call A3E_fnc_rotatePosition;
-        private _wp = _perimeterGroup addWaypoint [_wpPos, 5];
-        _wp setWaypointType "MOVE";
-        _wp setWaypointSpeed "LIMITED";
-        _wp setWaypointBehaviour "SAFE";
-    } forEach _perimeterPositions;
-
-    // Cycle back to start
-    private _wpCycle = _perimeterGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.85, 0], 5];
-    _wpCycle setWaypointType "CYCLE";
-
-    _allGuards pushBack _perimeterGroup;
-
-    // --- INTERIOR PATROL ---
-    private _interiorGroup = createGroup [A3E_VAR_Side_Opfor, true];
-
-    // 2 guards patrolling inside the compound
-    for "_i" from 0 to 1 do {
-        private _startPos = _spawnPos getPos [_compoundRadius * 0.2, _i * 180];
-        private _guard = _interiorGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
-        _guard setSkill (0.3 + random 0.1);
-    };
-
-    private _interiorPositions = _guardData select { (_x select 0) == "interior" };
-    {
-        _x params ["", "_relPos", ""];
-        private _wpPos = [_spawnPos, _spawnPos vectorAdd _relPos, _fenceRotateDir] call A3E_fnc_rotatePosition;
-        private _wp = _interiorGroup addWaypoint [_wpPos, 3];
-        _wp setWaypointType "MOVE";
-        _wp setWaypointSpeed "LIMITED";
-        _wp setWaypointBehaviour "SAFE";
-    } forEach _interiorPositions;
-
-    private _wpCycle2 = _interiorGroup addWaypoint [_spawnPos, 3];
-    _wpCycle2 setWaypointType "CYCLE";
-
-    _allGuards pushBack _interiorGroup;
-
-} else {
-    // Fallback: no guard data found, use simple ring pattern (legacy behavior)
-    private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
-    for "_i" from 0 to 5 do {
-        private _guardPos = _spawnPos getPos [_compoundRadius * 0.6, _i * 60];
-        private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "FORM"];
-        _guard setDir (random 360);
-        _guard setSkill 0.3;
         _guard setBehaviour "SAFE";
         _guard setCombatMode "YELLOW";
+        _guard setUnitPos "UP";
+        doStop _guard;
     };
+};
+if (count units _gateGroup > 0) then {
+    _allGuards pushBack _gateGroup;
+};
 
-    private _wp = _guardGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.7, 0], 8];
+// --- 4. PERIMETER PATROL: 2-man team walking the outer wall ---
+private _perimeterGroup = createGroup [A3E_VAR_Side_Opfor, true];
+for "_i" from 0 to 1 do {
+    private _startPos = _spawnPos getPos [_compoundRadius * 0.85, _i * 180];
+    private _guard = _perimeterGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
+    _guard setSkill (0.3 + random 0.1);
+};
+
+// 4-point perimeter patrol
+for "_angle" from 0 to 270 step 90 do {
+    private _wpPos = _spawnPos getPos [_compoundRadius * 0.85, _angle];
+    private _wp = _perimeterGroup addWaypoint [_wpPos, 5];
     _wp setWaypointType "MOVE";
     _wp setWaypointSpeed "LIMITED";
     _wp setWaypointBehaviour "SAFE";
-    private _wp2 = _guardGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.7, 120], 8];
-    _wp2 setWaypointType "MOVE";
-    private _wp3 = _guardGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.7, 240], 8];
-    _wp3 setWaypointType "MOVE";
-    private _wp4 = _guardGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.7, 0], 8];
-    _wp4 setWaypointType "CYCLE";
-
-    _allGuards pushBack _guardGroup;
 };
+private _wpCycle = _perimeterGroup addWaypoint [_spawnPos getPos [_compoundRadius * 0.85, 0], 5];
+_wpCycle setWaypointType "CYCLE";
+_allGuards pushBack _perimeterGroup;
+
+// --- 5. INTERIOR PATROL: 2-man team walking inside the compound ---
+private _interiorGroup = createGroup [A3E_VAR_Side_Opfor, true];
+for "_i" from 0 to 1 do {
+    private _startPos = _spawnPos getPos [_compoundRadius * 0.25, _i * 180];
+    private _guard = _interiorGroup createUnit [selectRandom _guardTypes, _startPos, [], 0, "FORM"];
+    _guard setSkill (0.3 + random 0.1);
+};
+
+for "_angle" from 0 to 240 step 120 do {
+    private _wpPos = _spawnPos getPos [_compoundRadius * 0.35, _angle];
+    private _wp = _interiorGroup addWaypoint [_wpPos, 3];
+    _wp setWaypointType "MOVE";
+    _wp setWaypointSpeed "LIMITED";
+    _wp setWaypointBehaviour "SAFE";
+};
+private _wpCycle2 = _interiorGroup addWaypoint [_spawnPos, 3];
+_wpCycle2 setWaypointType "CYCLE";
+_allGuards pushBack _interiorGroup;
 
 // Place player inside the prison
 _player setPos _spawnPos;
