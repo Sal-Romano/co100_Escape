@@ -2,6 +2,7 @@
 // Source: ZEC/CfgGroups/Empty/Guerrilla/HQLarge/MilitaryBase_BLU_G_F
 // Objects: 177, Size: 96x94m, Radius: 51m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 1 objects pruned from center (within 6.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -511,11 +512,6 @@ _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [-9.9779701, 10.8613, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Flag_FIA_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [2.75, 1.125, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HelipadSquare_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 

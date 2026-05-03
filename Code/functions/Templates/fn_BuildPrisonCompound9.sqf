@@ -2,6 +2,7 @@
 // Source: ZEC/CfgGroups/Empty/Military/FieldHQLarge/CargoTower_OPF_F
 // Objects: 132, Size: 74x63m, Radius: 40m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 1 objects pruned from center (within 6.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -122,11 +123,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [-13.3531, -11.1829, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_GarbageBags_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 345.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-2.6168201, -0.49511701, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "O_Truck_02_covered_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 60.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [-30.236, -14.3804, 0.0], _rotation] call A3E_fnc_rotatePosition;

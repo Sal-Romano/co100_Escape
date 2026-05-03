@@ -2,6 +2,7 @@
 // Source: ZECCUP/CfgGroups/Empty/Military_Desert/HQLarge/Headquarters_CUP_O_TK
 // Objects: 45, Size: 56x60m, Radius: 31m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 3 objects pruned from center (within 6.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -129,11 +130,6 @@ _obj = "Land_fortified_nest_big_EP1" createVehicleLocal _pos;
 _obj setDir (_rotation + 15.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [0.49359101, 4.3254399, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier5" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [11.9505, -1.36865, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_HBarrier5" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
@@ -209,11 +205,6 @@ _obj = "Land_GarbagePallet_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 150.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [1.32196, -0.39502001, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Cargo_Tower_V3_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-12.0883, -6.6545401, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_fort_bagfence_corner" createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
@@ -222,11 +213,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [-13.4045, 2.9633801, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_fort_bagfence_corner" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-2.7816801, 4.3393602, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier3" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [16.6031, 5.37183, 0.0], _rotation] call A3E_fnc_rotatePosition;

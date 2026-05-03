@@ -2,6 +2,7 @@
 // Source: ZEC/CfgGroups/Empty/Military/FortLarge/BunkerSystem
 // Objects: 86, Size: 86x42m, Radius: 43m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 1 objects pruned from center (within 6.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -222,11 +223,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [5.9960299, -11.637, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_PaperBox_closed_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 210.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [0.87933302, -4.2985802, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagBunker_Large_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [-1.28766, -10.1968, 0.0], _rotation] call A3E_fnc_rotatePosition;
