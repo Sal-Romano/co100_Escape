@@ -27,15 +27,16 @@ _spawnPos set [2, 0];
 private _backpackType = missionNamespace getVariable ["a3e_arr_PrisonBackpackType", "B_AssaultPack_khk"];
 private _backpack = _backpackType createVehicle _spawnPos;
 
-// Fill backpack with prison weapons
+// Give 1 random pistol + 2 mags (personal ration, not the whole arsenal)
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
-{
-    _x params ["_weapon", "_mag"];
+if (count _weapons > 0) then {
+    private _picked = selectRandom _weapons;
+    _picked params ["_weapon", "_mag"];
     _backpack addWeaponCargoGlobal [_weapon, 1];
-    _backpack addMagazineCargoGlobal [_mag, 3];
-} forEach _weapons;
+    _backpack addMagazineCargoGlobal [_mag, 2];
+};
 
-// Add prison backpack items
+// Add prison backpack items (bandage, flashlight, etc.)
 private _items = missionNamespace getVariable ["a3e_arr_PrisonBackpackItems", []];
 {
     _x params ["_item", "_count"];

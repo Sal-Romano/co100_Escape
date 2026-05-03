@@ -67,16 +67,16 @@ class Params
             texts[] = {""};
             default = 0;
 	};
-	class A3E_Param_TimeOfDay	
-	{	
+	class A3E_Param_TimeOfDay
+	{
 	    title="Time Of Day";
 		values[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26};
 		texts[]={"00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","Random","Daytime","Nighttime"};
 		default = 8;
 		//function = "A3E_fnc_paramDaytime"; // (Optional) Function called when player joins, selected value is passed as an argument
 	};
-	class A3E_Param_TimeMultiplier	
-	{	
+	class A3E_Param_TimeMultiplier
+	{
 	    title="Time Multiplier (Fasttime)";
 		values[]={1,6,12,24,36};
 		texts[]={"1:1 (Normal)","1:6 (Day = 4 Hours)","1:12 (Day = 2 Hours)","1:24 (Day = 1 Hour)","1:36 (Day = 40 Minutes)"};
@@ -113,7 +113,7 @@ class Params
 		default = -1;
 	};
 	class A3E_Param_Grass
-	{	
+	{
 		title="Grass Visibility";
 		values[]={50,25,12,6,2};
 		texts[]={"No Grass", "Proximity", "Normal", "Far", "Very Far"};
@@ -284,6 +284,28 @@ class Params
 		values[]={0,1};
 		texts[]={"Disabled", "Enabled"};
 		default = 1;
+	};
+	class A3E_Param_Spacer_Loot
+	{
+		title = "==================== Building Loot Settings ====================";
+		values[] = {0};
+		texts[] = {""};
+		default = 0;
+	};
+	class A3E_Param_BuildingLoot
+	{
+		title="Building Loot (DayZ-style loot in buildings)";
+		values[]={0,1};
+		texts[]={"Disabled","Enabled"};
+		default = 1;
+	};
+	class A3E_Param_LootDensity
+	{
+		title="Building Loot Density";
+		values[]={1,2,3};
+		texts[]={"Scarce (fewer items, harder)","Normal","Abundant (more items, easier)"};
+		livechanges = 1;
+		default = 2;
 	};
 	class A3E_Param_Spacer7
     {

@@ -154,6 +154,7 @@ class CfgFunctions
 			class createStartpos {};
 			class initTraps {};
 			class updateTraps {};
+			class buildingLoot {};
 		};
 		class Spawning
 		{

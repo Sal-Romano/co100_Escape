@@ -469,6 +469,9 @@ waitUntil {scriptDone _scriptHandle};
 //Init trap spawning system for mines and other roadside surprises
 call A3E_fnc_InitTraps;
 
+// Start DayZ-style building loot system
+call A3E_fnc_buildingLoot;
+
 
 // Spawn creation of start position settings
 [A3E_StartPos, _backPack, _enemyFrequency] spawn {
