@@ -265,9 +265,18 @@ if (isNull findDisplay 58000) exitWith {
 
 private _display = findDisplay 58000;
 
-// BLOCK ESCAPE KEY - player cannot close this dialog
+// Block escape from closing dialog, but open pause menu instead
 _display displayAddEventHandler ["KeyDown", {
-    if ((_this select 1) == 1) then {true} else {false}
+    if ((_this select 1) == 1) then {
+        // Open the pause/abort menu so player can leave
+        [] spawn {
+            sleep 0.1;
+            if (isNull (findDisplay 49)) then {
+                createDialog "RscDisplayMPInterrupt";
+            };
+        };
+        true // consume event so dialog doesn't close
+    } else {false}
 }];
 
 // ============================================================================
