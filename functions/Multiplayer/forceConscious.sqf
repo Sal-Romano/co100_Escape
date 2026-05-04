@@ -2,9 +2,6 @@
 // Brute-force clear ALL unconscious/camera state on client.
 // Called via: "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", target];
 
-// Black screen immediately
-cutText ["", "BLACK", 0.5];
-
 // Kill the hindsight spectator camera
 ATHSC_Run = false;
 if (!isNull (uiNamespace getVariable ["ATHSC_View", displayNull])) then {
@@ -26,6 +23,10 @@ player setCaptive true;
 player setDamage 0;
 player switchMove "";
 player playMoveNow "";
+
+// Clear any black screens or overlays
+cutText ["", "PLAIN", 0];
+titleText ["", "PLAIN", 0];
 
 // Hammer unconscious=false for 5 seconds in case anything re-sets it
 // Do NOT re-init ATR here - that happens later when safely at prison
