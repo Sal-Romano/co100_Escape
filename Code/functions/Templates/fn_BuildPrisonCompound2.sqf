@@ -660,10 +660,7 @@ private _cellTypes = missionNamespace getVariable ["A3E_PrisonCellBuildings", [
     "Land_Cargo_House_V1_F",
     "Land_Cargo_House_V2_F",
     "Land_Cargo_House_V3_F",
-    "Land_i_Shed_Ind_F",
-    "Land_Metal_Shed_F",
-    "Land_SlumArea_01_F",
-    "Land_Shed_Small_F"
+    "Land_i_Shed_Ind_F"
 ]];
 _pos = [_center, _center vectorAdd [0, 0, 0], _rotation] call A3E_fnc_rotatePosition;
 _obj = (selectRandom _cellTypes) createVehicleLocal _pos;
