@@ -555,14 +555,9 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                        // Client: black screen FIRST, then cleanup
-                        [["", "BLACK", 0]] remoteExec ["cutText", _x];
-                        // Teleport to safe holding area
+                        // Teleport to holding area + wipe cleanup (keeps black screen)
                         _x setPos [7700, 8000, 0];
-                        // Full camera/state cleanup (keeps screen clear, we re-black after)
-                        "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
-                        // Re-apply black screen after forceConscious clears it
-                        [["", "BLACK", 0]] remoteExec ["cutText", _x];
+                        "functions\Multiplayer\wipeReset.sqf" remoteExec ["execVM", _x];
                     } forEach _members;
 
                     sleep 2;

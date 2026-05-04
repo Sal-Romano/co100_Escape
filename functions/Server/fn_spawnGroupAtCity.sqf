@@ -101,10 +101,8 @@ sleep 3;
     _x setCaptive true;
     _x setDamage 0;
 
-    // Black screen during setup, run forceConscious, re-black after
-    [["", "BLACK", 0]] remoteExec ["cutText", _x];
-    "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
-    [["", "BLACK", 0]] remoteExec ["cutText", _x];
+    // Cleanup + keep black screen until reveal
+    "functions\Multiplayer\wipeReset.sqf" remoteExec ["execVM", _x];
 
     _x setVariable ["A3E_InSpawnLobby", false, true];
     _x setVariable ["A3E_MP_InLobby", false, true];
