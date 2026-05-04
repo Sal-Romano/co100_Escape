@@ -440,6 +440,51 @@ class A3E_SpawnDialog
                 coefMax = 1;
             };
 
+            class Tourism
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\tourism_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class HandDrawn
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\handdrawn_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class Dominance
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\dominance_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class Task
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\waypoint_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 1;
+                coefMax = 1;
+            };
+            class CustomMark
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\custommark_ca.paa";
+                size = 24;
+                importance = 1;
+                coefMin = 1;
+                coefMax = 1;
+            };
             class Watertower
             {
                 color[] = {0,0,0,1};
