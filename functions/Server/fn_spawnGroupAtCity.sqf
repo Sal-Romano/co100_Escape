@@ -40,23 +40,22 @@ _prisonPos set [2, 0];
 // Clean up terrain
 [_prisonPos, 25] call a3e_fnc_cleanupTerrain;
 
-// Create prison template
-private _fenceRotateDir = random 360;
-private _backpackType = missionNamespace getVariable ["a3e_arr_PrisonBackpackType", "B_AssaultPack_khk"];
-private _backpack = _backpackType createVehicle _prisonPos;
-
-// Fill backpack with one random weapon per group member
+// Give each member a random pistol + mags directly in inventory
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 {
     if (count _weapons > 0) then {
         private _picked = selectRandom _weapons;
         _picked params ["_weapon", "_mag"];
-        _backpack addWeaponCargoGlobal [_weapon, 1];
-        _backpack addMagazineCargoGlobal [_mag, 2];
+        _x addWeapon _weapon;
+        _x addMagazine _mag;
+        _x addMagazine _mag;
+        _x addMagazine _mag;
     };
 } forEach _members;
 
-// Build prison
+// Build prison (no backpack)
+private _fenceRotateDir = random 360;
+private _backpack = objNull;
 private _template = selectRandom (missionNamespace getVariable ["A3E_PrisonTemplates",
     ["a3e_fnc_BuildPrison", "a3e_fnc_BuildPrison1", "a3e_fnc_BuildPrison2",
      "a3e_fnc_BuildPrison3", "a3e_fnc_BuildPrison4", "a3e_fnc_BuildPrison5"]]);

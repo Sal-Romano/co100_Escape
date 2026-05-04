@@ -77,6 +77,10 @@ if (_spawnType == "group") then {
 		player setCaptive false;
 	};
 } else {
+	// BLACK SCREEN before prison build so player doesn't see teleport
+	cutText ["", "BLACK OUT", 0];
+	titleText ["Loading escape...", "PLAIN", 0.5];
+
 	if (_spawnType == "group_city") then {
 		// Leader spawning group at city - server handles prison for all members
 		[group player, _spawnPos] remoteExec ["A3E_fnc_spawnGroupAtCity", 2];
@@ -88,6 +92,10 @@ if (_spawnType == "group") then {
 		// Wait for server to place us
 		waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
 	};
+
+	// Fade in after prison is ready
+	titleText ["", "PLAIN", 0];
+	cutText ["", "BLACK IN", 2];
 };
 
 // Spawn protection - invulnerable for 10 seconds

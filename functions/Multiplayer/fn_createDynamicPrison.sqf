@@ -42,28 +42,20 @@ if (count _spawnPos == 0) then {
 
 _spawnPos set [2, 0];
 
-// Create the weapon backpack for the player
-private _backpackType = missionNamespace getVariable ["a3e_arr_PrisonBackpackType", "B_AssaultPack_khk"];
-private _backpack = _backpackType createVehicle _spawnPos;
-
-// Give 1 random pistol + 2 mags
+// Give player a random pistol + mags directly in their uniform/vest
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 if (count _weapons > 0) then {
     private _picked = selectRandom _weapons;
     _picked params ["_weapon", "_mag"];
-    _backpack addWeaponCargoGlobal [_weapon, 1];
-    _backpack addMagazineCargoGlobal [_mag, 2];
+    _player addWeapon _weapon;
+    _player addMagazine _mag;
+    _player addMagazine _mag;
+    _player addMagazine _mag;
 };
 
-// Add prison backpack items (bandage, flashlight, etc.)
-private _items = missionNamespace getVariable ["a3e_arr_PrisonBackpackItems", []];
-{
-    _x params ["_item", "_count"];
-    _backpack addItemCargoGlobal [_item, _count];
-} forEach _items;
-
-// Build the compound with random rotation
+// Build the compound with random rotation (no backpack arg)
 private _fenceRotateDir = random 360;
+private _backpack = objNull;
 [_spawnPos, _fenceRotateDir, _backpack] remoteExec [_templateFunc, 0, true];
 
 // === GUARD PLACEMENT ===
