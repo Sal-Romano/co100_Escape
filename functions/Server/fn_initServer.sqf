@@ -520,6 +520,22 @@ call A3E_fnc_buildingLoot;
                 [_grp, _activeMembers] spawn {
                     params ["_grp", "_members"];
 
+                    // Clean up old prison guards + objects to free group slots
+                    {
+                        private _oldPos = _x getVariable ["A3E_MP_PrisonPos", [0,0,0]];
+                        if (_oldPos distance2D [0,0,0] > 100) then {
+                            private _nearUnits = _oldPos nearEntities [["Man"], 100];
+                            {
+                                if (side group _x != west && !isPlayer _x) then {
+                                    private _g = group _x;
+                                    deleteVehicle _x;
+                                    if (count units _g == 0) then {deleteGroup _g};
+                                };
+                            } forEach _nearUnits;
+                            diag_log format ["WIPE: Cleaned old prison guards at %1", _oldPos];
+                        };
+                    } forEach _members;
+
                     // Mark as lobby immediately
                     {
                         _x setVariable ["A3E_InSpawnLobby", true, true];

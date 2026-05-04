@@ -62,6 +62,15 @@ if (count _guardTypes == 0) then {
 };
 
 private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
+if (isNull _guardGroup) then {
+    diag_log "SpawnGroupAtCity: ERROR - createGroup failed (group limit hit?). Cleaning up old groups...";
+    // Emergency cleanup: delete all empty or far-away enemy groups
+    {
+        if (side _x != west && {count units _x == 0}) then {deleteGroup _x};
+    } forEach allGroups;
+    _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
+    diag_log format ["SpawnGroupAtCity: Retry createGroup result: %1", _guardGroup];
+};
 for "_i" from 0 to 5 do {
     private _guardPos = _prisonPos getPos [8 + random 8, _i * 60];
     private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "FORM"];
@@ -69,6 +78,7 @@ for "_i" from 0 to 5 do {
     _guard setBehaviour "SAFE";
     _guard setCombatMode "YELLOW";
 };
+diag_log format ["SpawnGroupAtCity: Spawned %1 guards", count units _guardGroup];
 
 // Guard patrol
 private _wp = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
