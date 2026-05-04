@@ -555,10 +555,10 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                        // Black screen BEFORE teleport (instant, no delay)
-                        [["", "BLACK OUT", 0]] remoteExec ["cutText", _x];
-                        _x setPos [7700, 8000, 0];
+                        // wipeReset handles: camera kill -> black screen -> state clear
+                        // Must run BEFORE teleport so camera is dead when cutText fires
                         "functions\Multiplayer\wipeReset.sqf" remoteExec ["execVM", _x];
+                        _x setPos [7700, 8000, 0];
                     } forEach _members;
 
                     sleep 2;
