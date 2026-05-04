@@ -358,6 +358,88 @@ class A3E_SpawnDialog
             colorMainRoadsFill[] = {1,0.6,0.4,1};
             widthRailWay = 1;
 
+            class Cross
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\cross_ca.paa";
+                size = 24;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class Chapel
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\chapel_ca.paa";
+                size = 24;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class Shipwreck
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\shipwreck_ca.paa";
+                size = 24;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class BusStop
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\busstop_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 0.85;
+                coefMax = 1;
+            };
+            class Bunker
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\bunker_ca.paa";
+                size = 16;
+                importance = 1.5;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
+            class Power
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\power_ca.paa";
+                size = 16;
+                importance = 1;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
+            class PowerSolar
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\powersolar_ca.paa";
+                size = 16;
+                importance = 1;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
+            class PowerWave
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\powerwave_ca.paa";
+                size = 16;
+                importance = 1;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
+            class PowerWind
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\powerwind_ca.paa";
+                size = 16;
+                importance = 1;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
+
             class Legend
             {
                 x = "safezoneX + 0.31 * safezoneW";
