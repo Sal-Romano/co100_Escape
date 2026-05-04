@@ -130,9 +130,13 @@ _damage = _oldDamage + _newDamage;
 diag_log format ["HandleDamage: _source: %1 _projectile: %2 _hitSelection: %3 _instigator: %4 _damage: %5 _newDamage: %6 _upperLimit: %7, _damageMultiplier: %8",_source, _projectile, _hitSelection, _instigator, _damage, _newDamage, _upperLimit, _damageMultiplier];
 
 
+// Block unconscious trigger if player has spawn protection or is in lobby
 if (alive _unit
 	&& {_damage >= 1}
 	&& {!(_unit getVariable ["AT_Revive_isUnconscious",false])}
+	&& {!(_unit getVariable ["A3E_SpawnProtection",false])}
+	&& {!(_unit getVariable ["A3E_InSpawnLobby",false])}
+	&& {!(_unit getVariable ["A3E_MP_InLobby",false])}
 	&& {_hitSelection in ["","head","face_hub","head_hit","neck","spine1","spine2","spine3","pelvis","body"]}
 ) then {
 	_unit setDamage 0;

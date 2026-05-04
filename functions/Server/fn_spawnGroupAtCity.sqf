@@ -128,6 +128,7 @@ sleep 3;
     _x enableSimulation true;
     _x setCaptive true;
     _x setDamage 0;
+    _x setVariable ["A3E_SpawnProtection", true, true];
 
     // Player is already black screened from wipe handler. Just clear state.
     [_x, ""] remoteExec ["switchMove", 0, false];
@@ -162,6 +163,7 @@ sleep 3;
     {
         if (alive _x) then {
             _x allowDamage true;
+            _x setVariable ["A3E_SpawnProtection", false, true];
             [_x, true] remoteExec ["allowDamage", _x];
         };
     } forEach _units;

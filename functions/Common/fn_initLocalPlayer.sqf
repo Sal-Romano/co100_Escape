@@ -9,6 +9,7 @@ player allowDamage false;
 player setCaptive true;
 player enableSimulation true;
 player setVariable ["AT_Revive_isUnconscious", false, true];
+player setVariable ["A3E_SpawnProtection", true, true];
 
 // Force clear any unconscious/camera state from previous session or spawn
 execVM "functions\Multiplayer\forceConscious.sqf";
@@ -62,11 +63,11 @@ if (_spawnType == "group") then {
 	};
 };
 
-// Spawn protection - damage stays off for 10 seconds after prison placement
-// (allowDamage false was set at the top before anything else)
+// Spawn protection - invulnerable for 10 seconds
 [] spawn {
     sleep 10;
     player allowDamage true;
+    player setVariable ["A3E_SpawnProtection", false, true];
 };
 
 // Zeus for server host
