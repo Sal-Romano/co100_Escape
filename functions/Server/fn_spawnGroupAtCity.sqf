@@ -119,8 +119,12 @@ sleep 3;
     // Wait for forceConscious to finish
     sleep 2;
 
-    // Re-init ATR revive on each client
-    {[true] remoteExec ["ATR_FNC_InitPlayer", _x]} forEach _units;
+    // Re-init ATR revive + custom actions on each client
+    {
+        [true] remoteExec ["ATR_FNC_InitPlayer", _x];
+        // Re-add hotwire action (removed by wipeReset's removeAllActions)
+        "functions\Multiplayer\addCustomActions.sqf" remoteExec ["execVM", _x];
+    } forEach _units;
 
     // Wait 1 more second, then REVEAL (clear black screen)
     sleep 1;

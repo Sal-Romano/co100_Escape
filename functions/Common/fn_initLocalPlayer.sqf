@@ -113,13 +113,8 @@ player addeventhandler["InventoryClosed","_this call A3E_FNC_collectIntel;"];
 // Initialize floating group badges above teammates' heads
 [] call A3E_fnc_groupBadges;
 
-// Hotwire vehicle action (appears on locked prison vehicles)
-player addAction [
-    "<t color='#FFA500'>Hotwire Vehicle</t>",
-    {_this execVM "functions\Multiplayer\fn_hotwireVehicle.sqf"},
-    nil, 6, true, true, "",
-    "!isNull cursorTarget && {cursorTarget isKindOf 'LandVehicle'} && {cursorTarget getVariable ['A3E_NeedsHotwire', false]} && {player distance cursorTarget < 5} && {!(player getVariable ['A3E_Hotwiring', false])}"
-];
+// Add custom actions (hotwire, etc.)
+execVM "functions\Multiplayer\addCustomActions.sqf";
 
 
 drn_fnc_Escape_DisableLeaderSetWaypoints = {
