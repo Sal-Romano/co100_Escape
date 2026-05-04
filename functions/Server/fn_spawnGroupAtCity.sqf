@@ -82,11 +82,11 @@ _wp3 setWaypointType "MOVE";
 private _wp4 = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
 _wp4 setWaypointType "CYCLE";
 
-// Process prison vehicles (lock, low fuel, some wrecks)
-[_prisonPos, 30] call A3E_fnc_prisonVehicles;
-
 // Wait for compound objects and guards to fully spawn
 sleep 3;
+
+// Process prison vehicles AFTER compound has fully spawned
+[_prisonPos, 80] call A3E_fnc_prisonVehicles;
 
 // Place all members inside the prison with FULL state reset
 // Players are still black screened from forceConscious

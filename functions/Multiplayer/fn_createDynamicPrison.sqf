@@ -175,7 +175,12 @@ _player setVariable ["A3E_MP_InLobby", false, true];
 _player setVariable ["A3E_MP_PrisonPos", _spawnPos, true];
 
 // Process prison vehicles (lock, low fuel, some wrecks for atmosphere)
-[_spawnPos, _compoundRadius + 10] call A3E_fnc_prisonVehicles;
+// Process prison vehicles after a delay to ensure compound is fully spawned
+[_spawnPos] spawn {
+    params ["_pos"];
+    sleep 3;
+    [_pos, 80] call A3E_fnc_prisonVehicles;
+};
 
 // Set A3E_EscapeHasStarted if not already
 if (isNil "A3E_EscapeHasStarted") then {
