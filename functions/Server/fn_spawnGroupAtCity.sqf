@@ -109,20 +109,31 @@ sleep 1;
     _x setCaptive true;
     _x setDamage 0;
 
-    // Client-side: nuclear cleanup + ATR re-init via execVM
+    // Client-side: nuclear cleanup then ATR re-init (delayed so cleanup finishes first)
     "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
-    // Re-init ATR revive after player is safely at prison
-    [true] remoteExec ["ATR_FNC_InitPlayer", _x];
 
     // Mark as spawned
     _x setVariable ["A3E_InSpawnLobby", false, true];
     _x setVariable ["A3E_MP_InLobby", false, true];
 } forEach _members;
 
-// Enable damage after 10 seconds (spawn protection)
+// Re-init ATR revive after 2 seconds (after forceConscious finishes cleanup)
+// Then enable damage after 10 seconds total (spawn protection)
 [_members] spawn {
     params ["_units"];
-    sleep 10;
+
+    // Wait for forceConscious to finish its cleanup
+    sleep 2;
+
+    // Re-init ATR revive system on each client
+    {
+        [true] remoteExec ["ATR_FNC_InitPlayer", _x];
+    } forEach _units;
+
+    // Wait remaining 8 seconds for spawn protection
+    sleep 8;
+
+    // Enable damage - player is now fully in the game
     {
         if (alive _x) then {
             _x allowDamage true;

@@ -16,26 +16,22 @@ player setVariable ["AT_Revive_isDragging", objNull, true];
 player setVariable ["AT_Revive_isCarrying", objNull, true];
 player setVariable ["ACE_Revive_isUnconscious", false, true];
 
-// Force player into normal state
+// Force player into normal standing state
 player enableSimulation true;
 player allowDamage false;
 player setCaptive true;
 player setDamage 0;
 player switchMove "";
 player playMoveNow "";
+player setUnitPos "AUTO";
+player setVelocity [0,0,0];
 
-// Clear any black screens or overlays
+// Detach if attached to anything
+detach player;
+
+// Remove ALL scroll-menu actions (clears residual scream/drag/revive actions)
+removeAllActions player;
+
+// Clear any screen overlays
 cutText ["", "PLAIN", 0];
 titleText ["", "PLAIN", 0];
-
-// Hammer unconscious=false for 5 seconds in case anything re-sets it
-// Do NOT re-init ATR here - that happens later when safely at prison
-[] spawn {
-    for "_i" from 0 to 10 do {
-        player setVariable ["AT_Revive_isUnconscious", false, true];
-        player enableSimulation true;
-        player switchMove "";
-        ATHSC_Run = false;
-        sleep 0.5;
-    };
-};
