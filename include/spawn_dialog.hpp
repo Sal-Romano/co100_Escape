@@ -356,6 +356,7 @@ class A3E_SpawnDialog
             colorRoadsFill[] = {1,1,1,1};
             colorMainRoads[] = {0.9,0.5,0.3,1};
             colorMainRoadsFill[] = {1,0.6,0.4,1};
+            widthRailWay = 1;
 
             class Legend
             {
