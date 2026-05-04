@@ -70,7 +70,19 @@ if (serverCommandAvailable "#kick") then {
     private _zeusModule = (createGroup sideLogic) createUnit ["ModuleCurator_F", [0,0,0], [], 0, "NONE"];
     _zeusModule setVariable ["Addons", 3, true];
     _zeusModule setVariable ["BIS_fnc_intruder_intruderType", -1, true];
+    _zeusModule setVariable ["BIS_fnc_intruder_intruderCoef", -1, true];
     player assignCurator _zeusModule;
+
+    // Auto-add all existing and future objects to Zeus
+    _zeusModule addCuratorEditableObjects [allMissionObjects "", true];
+    // Keep syncing new objects every 30 seconds
+    [_zeusModule] spawn {
+        params ["_module"];
+        while {!isNull _module} do {
+            sleep 30;
+            _module addCuratorEditableObjects [allMissionObjects "", true];
+        };
+    };
     systemChat "Zeus enabled - press Y to open";
 };
 
