@@ -1,53 +1,38 @@
 // fn_hotwireVehicle.sqf
-// Client-side. Hotwire action handler for locked prison vehicles.
-// Called from player addAction.
+// Hotwire a vehicle from the DRIVER SEAT.
+// Player must be in the driver seat of a vehicle that needs hotwiring.
 
-params ["_target", "_caller", "_actionId", "_args"];
+private _veh = vehicle player;
 
-private _veh = cursorTarget;
-
-if (isNull _veh) exitWith {};
+if (_veh == player) exitWith {hint "Get in the driver seat first!"};
+if (driver _veh != player) exitWith {hint "You must be in the driver seat!"};
 if !(_veh getVariable ["A3E_NeedsHotwire", false]) exitWith {};
-
-// Can't hotwire while in combat animation
-if (player getVariable ["A3E_Hotwiring", false]) exitWith {
-    hint "Already hotwiring!";
-};
+if (player getVariable ["A3E_Hotwiring", false]) exitWith {};
 
 player setVariable ["A3E_Hotwiring", true];
-hint "Hotwiring vehicle...";
 
-// Play repair/medic animation (kneeling, working with hands)
-private _origPos = getPos player;
-player playMoveNow "AinvPknlMstpSnonWnonDnon_medic_1";
-
-// Progress loop - 15 seconds
-private _success = true;
+// 12 second hotwire
+private _duration = 12;
 private _startTime = diag_tickTime;
-private _duration = 15;
+private _success = true;
 
 while {diag_tickTime - _startTime < _duration} do {
-    sleep 0.5;
+    private _elapsed = diag_tickTime - _startTime;
+    private _pct = round ((_elapsed / _duration) * 100);
+    hintSilent format ["Hotwiring... %1%%\nStay in the vehicle!", _pct];
 
-    // Check if player moved too far from vehicle
-    if (player distance _veh > 6) exitWith {
+    // Check player is still in driver seat
+    if (vehicle player != _veh || driver _veh != player) exitWith {
         _success = false;
-        hint "Too far from vehicle!";
+        hint "Hotwire cancelled - left vehicle!";
     };
 
-    // Check if player died/went unconscious
     if (!alive player || player getVariable ["AT_Revive_isUnconscious", false]) exitWith {
         _success = false;
     };
 
-    // Show progress
-    private _elapsed = diag_tickTime - _startTime;
-    private _pct = round ((_elapsed / _duration) * 100);
-    hintSilent format ["Hotwiring... %1%%", _pct];
+    sleep 0.5;
 };
-
-// Return to normal stance
-player playMoveNow "";
 
 if (!_success) exitWith {
     player setVariable ["A3E_Hotwiring", false];
@@ -56,7 +41,8 @@ if (!_success) exitWith {
 // 25% chance of failure
 if (random 100 < 25) then {
     hint "Failed! Wires sparked... try again.";
-    // Make noise - alert nearby guards
+
+    // Alert nearby guards
     private _nearGuards = _veh nearEntities [["Man"], 100];
     {
         if (side group _x != west) then {
@@ -64,16 +50,20 @@ if (random 100 < 25) then {
             group _x setBehaviour "AWARE";
         };
     } forEach _nearGuards;
+
     player setVariable ["A3E_Hotwiring", false];
 } else {
-    // Success!
-    hint "Vehicle hotwired!";
+    hintSilent "Vehicle hotwired! Engine starting...";
 
-    // Unlock and start
-    [_veh, 0] remoteExec ["lock", 2]; // unlock on server
-    [_veh, ["A3E_NeedsHotwire", false, true]] remoteExec ["setVariable", 2];
+    // Remove engine block and start
+    _veh setVariable ["A3E_NeedsHotwire", false, true];
+    private _ehId = _veh getVariable ["A3E_EngineBlockEH", -1];
+    if (_ehId >= 0) then {
+        _veh removeEventHandler ["Engine", _ehId];
+    };
+    _veh engineOn true;
 
-    // Alert guards with engine noise
+    // Alert guards - engine noise
     private _nearGuards = _veh nearEntities [["Man"], 150];
     {
         if (side group _x != west) then {
@@ -83,5 +73,7 @@ if (random 100 < 25) then {
         };
     } forEach _nearGuards;
 
+    sleep 2;
+    hint "";
     player setVariable ["A3E_Hotwiring", false];
 };
