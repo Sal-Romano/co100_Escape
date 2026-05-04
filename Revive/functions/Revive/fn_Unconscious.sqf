@@ -1,4 +1,10 @@
 params["_unit", "_killer"];
+
+// CHECK: If player has spawn protection or is in lobby, abort immediately
+if (_unit getVariable ["A3E_SpawnProtection", false]) exitWith {};
+if (_unit getVariable ["A3E_InSpawnLobby", false]) exitWith {};
+if (_unit getVariable ["A3E_MP_InLobby", false]) exitWith {};
+
 _unit setVariable ["AT_Revive_isUnconscious", true, true];
 
 if((side _unit == side _killer) && (_unit != _killer)) then {
@@ -24,6 +30,12 @@ if(vehicle _unit == _unit) then {
 	};
 };
 
+// CHECK AGAIN: lobby state may have changed during ragdoll
+if (_unit getVariable ["A3E_InSpawnLobby", false]) exitWith {
+	_unit setVariable ["AT_Revive_isUnconscious", false, true];
+	_unit enableSimulation true;
+};
+
 _unit setDamage 0.9;
 _unit setVelocity [0,0,0];
 _unit allowDammage false;
@@ -33,7 +45,10 @@ if(surfaceIsWater getpos _unit && ((getPosASL _unit) select 2)<1 && (vehicle _un
 };
 
 if(AT_Revive_Camera==1) then {
-	[] spawn ATHSC_fnc_createCam;
+	// Don't create camera if player entered lobby during setup
+	if !(_unit getVariable ["A3E_InSpawnLobby", false]) then {
+		[] spawn ATHSC_fnc_createCam;
+	};
 };
 sleep 0.5;
 
@@ -43,11 +58,14 @@ if(vehicle _unit == _unit) then {
 _unit enableSimulation false;
 
 // Call this code only on players
-if (isPlayer _unit) then 
+if (isPlayer _unit) then
 {
-	
+
 	while { !isNull _unit && alive _unit && (_unit getVariable "AT_Revive_isUnconscious")} do
 	{
+		// BAIL OUT if player enters lobby mid-loop
+		if (_unit getVariable ["A3E_InSpawnLobby", false] || _unit getVariable ["A3E_MP_InLobby", false]) exitWith {};
+
 		if(vehicle _unit == _unit && _inVehicle) then {
 			_inVehicle = false;
 			_unit enableSimulation true;
@@ -67,7 +85,6 @@ if (isPlayer _unit) then
 	};
 
 	// If player is in spawn lobby (group wipe), DON'T re-enable damage or clear captive
-	// The wipe/respawn system manages that separately
 	if (_unit getVariable ["A3E_InSpawnLobby", false] || _unit getVariable ["A3E_MP_InLobby", false]) exitWith {
 		_unit enableSimulation true;
 	};

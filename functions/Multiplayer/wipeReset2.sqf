@@ -1,9 +1,8 @@
 // wipeReset2.sqf - Client wipe cleanup + loading state
 // Player is FROZEN (can't move) + BLACK SCREEN until prison is ready
 
-// === STEP 1: BLACK SCREEN + FREEZE PLAYER IMMEDIATELY ===
+// === STEP 1: BLACK SCREEN IMMEDIATELY ===
 cutText ["", "BLACK OUT", 0];
-disableUserInput true;
 
 // === STEP 2: Stop unconscious system ===
 player setVariable ["AT_Revive_isUnconscious", false, true];

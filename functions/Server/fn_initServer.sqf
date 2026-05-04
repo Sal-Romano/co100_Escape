@@ -603,7 +603,6 @@ call A3E_fnc_buildingLoot;
                     private _leader = leader _grp;
 
                     [[], {
-                        disableUserInput false;
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];

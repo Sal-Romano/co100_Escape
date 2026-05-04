@@ -159,9 +159,9 @@ sleep 3;
     // Wait 1 more second, then REVEAL (clear black screen + unfreeze input)
     sleep 1;
     {
-        // Unfreeze player input + fade in
-        {disableUserInput false; cutText ["", "BLACK IN", 2]; titleText ["", "PLAIN", 0]} remoteExec ["call", _x];
+        // Fade in
         [["", "BLACK IN", 2]] remoteExec ["cutText", _x];
+        [["", "PLAIN", 0]] remoteExec ["titleText", _x];
     } forEach _units;
 
     // Spawn protection: damage enabled after 10 total seconds
