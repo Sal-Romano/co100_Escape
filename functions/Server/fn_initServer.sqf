@@ -555,7 +555,8 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                        // Teleport to holding area + wipe cleanup (keeps black screen)
+                        // Black screen BEFORE teleport (instant, no delay)
+                        [["", "BLACK OUT", 0]] remoteExec ["cutText", _x];
                         _x setPos [7700, 8000, 0];
                         "functions\Multiplayer\wipeReset.sqf" remoteExec ["execVM", _x];
                     } forEach _members;
