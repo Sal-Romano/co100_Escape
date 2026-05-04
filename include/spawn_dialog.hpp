@@ -177,6 +177,20 @@ class A3E_SpawnDialog
             sizeEx = "0.04 * safezoneH";
             shadow = 2;
         };
+        class BtnAbort: A3E_RscButton
+        {
+            idc = -1;
+            text = "ABORT";
+            x = "safezoneX + safezoneW - 0.07 * safezoneW";
+            y = "safezoneY + 0.008 * safezoneH";
+            w = "0.06 * safezoneW";
+            h = "0.03 * safezoneH";
+            colorBackground[] = {0.5, 0.1, 0.1, 0.8};
+            colorBackgroundActive[] = {0.7, 0.15, 0.15, 1};
+            font = "PuristaBold";
+            sizeEx = "0.022 * safezoneH";
+            onButtonClick = "endMission 'LOSER'";
+        };
         class LeftPanelBG: A3E_RscText
         {
             x = "safezoneX + 0.005 * safezoneW";
