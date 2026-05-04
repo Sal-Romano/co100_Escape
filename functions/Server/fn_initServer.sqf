@@ -573,7 +573,7 @@ call A3E_fnc_buildingLoot;
                         _x setDamage 0;
                         // wipeReset handles: camera kill -> black screen -> state clear
                         // Must run BEFORE teleport so camera is dead when cutText fires
-                        "functions\Multiplayer\wipeReset.sqf" remoteExec ["execVM", _x];
+                        "functions\Multiplayer\wipeReset2.sqf" remoteExec ["execVM", _x];
                         _x setPos [7700, 8000, 0];
                     } forEach _members;
 

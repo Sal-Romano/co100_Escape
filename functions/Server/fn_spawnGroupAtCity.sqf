@@ -71,8 +71,8 @@ if (isNull _guardGroup) then {
     _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
     diag_log format ["SpawnGroupAtCity: Retry createGroup result: %1", _guardGroup];
 };
-for "_i" from 0 to 5 do {
-    private _guardPos = _prisonPos getPos [8 + random 8, _i * 60];
+for "_i" from 0 to 7 do {
+    private _guardPos = _prisonPos getPos [8 + random 8, _i * 45];
     private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "FORM"];
     _guard setSkill 0.3;
     _guard setBehaviour "SAFE";
