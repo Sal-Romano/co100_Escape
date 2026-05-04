@@ -4,10 +4,19 @@ if(!hasInterface) exitwith {};
 
 waituntil {!isnull player};
 
+// IMMEDIATELY make player invulnerable - before ANYTHING else can happen
+player allowDamage false;
+player setCaptive true;
+player enableSimulation true;
+player setVariable ["AT_Revive_isUnconscious", false, true];
+
+// Force clear any unconscious/camera state from previous session or spawn
+execVM "functions\Multiplayer\forceConscious.sqf";
+
 // Multiplayer: mark player as in lobby
 player setVariable ["A3E_MP_InLobby", true, true];
 
-// Strip gear immediately
+// Strip gear
 removeAllAssignedItems player;
 removeAllWeapons player;
 removeAllItems player;
@@ -53,16 +62,11 @@ if (_spawnType == "group") then {
 	};
 };
 
-// Nuclear cleanup: force clear ALL unconscious/camera state
-execVM "functions\Multiplayer\forceConscious.sqf";
-
-// Spawn protection - invulnerable for 10 seconds after spawning
-player allowDamage false;
-player setCaptive true;
+// Spawn protection - damage stays off for 10 seconds after prison placement
+// (allowDamage false was set at the top before anything else)
 [] spawn {
     sleep 10;
     player allowDamage true;
-    // Don't clear captive here - prison escape trigger handles that
 };
 
 // Zeus for server host
