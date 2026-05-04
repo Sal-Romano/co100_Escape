@@ -440,6 +440,13 @@ class A3E_SpawnDialog
                 coefMax = 1;
             };
 
+            class LineMarker
+            {
+                lineWidthThin = 0.008;
+                lineWidthThick = 0.014;
+                lineDistanceMin = 0.00003;
+                lineLengthMin = 5;
+            };
             class Tourism
             {
                 color[] = {0,0,0,1};
