@@ -2,7 +2,7 @@
 // Source: ZEC/CfgGroups/Empty/Military/FortLarge/BunkerSystem_OPF_F
 // Objects: 117, Size: 85x22m, Radius: 43m
 // Auto-generated from ZEC/ZECCUP composition data
-// NOTE: 5 objects pruned from center (within 6.0m) for cell clearance
+// NOTE: 17 objects pruned from center (within 10.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -90,18 +90,8 @@ _obj = "Land_HBarrier_5_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [-8.6262503, -4.3710899, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier_5_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-17.714701, -4.5427198, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_HBarrier_Big_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-5.0219998, -6.36133, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Flag_CSAT_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
@@ -155,11 +145,6 @@ _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 105.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [-8.2486897, 1.4895, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 255.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-10.9895, 2.2485399, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
@@ -183,16 +168,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [-31.748501, 0.38549799, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-8.1235399, -0.239502, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-9.3855305, 2.2514601, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [-28.9895, 2.8735399, 0.0], _rotation] call A3E_fnc_rotatePosition;
@@ -310,11 +285,6 @@ _obj = "Land_CncWall4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [-6.6005902, -4.99756, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_CncWall4_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 165.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-33.156898, -5.6052198, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_CncWall4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
@@ -380,11 +350,6 @@ _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [7.7515001, 0.38549799, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [26.8855, 2.2485399, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
@@ -430,11 +395,6 @@ _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [8.0040903, 2.0097699, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 105.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [12.1145, 2.8764601, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
@@ -443,11 +403,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [13.2513, 2.1145, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 255.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [8.8855, 2.8735399, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_BagFence_Short_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [19.500099, 8.1804199, 0.0], _rotation] call A3E_fnc_rotatePosition;
@@ -490,11 +445,6 @@ _obj = "Land_HBarrier_3_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [7.1138902, -1.1020499, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier_3_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [16.238899, -0.97705102, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_HBarrier_3_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
@@ -505,22 +455,12 @@ _obj = "Land_PaperBox_open_full_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [8.4681101, -5.2302198, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_CncWall4_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [27.649401, -5.87256, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_CncWall4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 165.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [21.0931, -6.1052198, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_CncWall4_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 180.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [3.2181399, -5.2302198, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_CncWall4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;

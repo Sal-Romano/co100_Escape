@@ -86,7 +86,10 @@ private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
 if (count _guardTypes > 0) then {
 
     // --- BUILDING GARRISON: Put guards in towers and buildings ---
-    private _nearBuildings = nearestObjects [_spawnPos, ["Building"], _compoundRadius];
+    // Skip buildings within 10m of center (that's the player's cell)
+    private _nearBuildings = (nearestObjects [_spawnPos, ["Building"], _compoundRadius]) select {
+        (_x distance2D _spawnPos) > 10
+    };
     {
         private _building = _x;
         private _positions = [];

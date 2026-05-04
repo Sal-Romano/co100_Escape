@@ -2,6 +2,7 @@
 // Source: ZEC/CfgGroups/Empty/Military/HQLarge/CommandCentre
 // Objects: 126, Size: 85x78m, Radius: 46m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 4 objects pruned from center (within 10.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -219,11 +220,6 @@ _obj = "Land_JunkPile_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 42.5);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [-3.25, 8.375, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Cargo10_light_blue_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 270.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-22.6245, -16.499901, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_PaperBox_open_empty_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
@@ -389,17 +385,7 @@ _obj = "Land_Wall_IndCnc_4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [9.4133301, 3.2709999, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Wall_IndCnc_4_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 270.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [9.4133301, 9.2709999, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Wall_IndCnc_4_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 270.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [9.4133301, -2.7290001, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_Wall_IndCnc_4_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 270.0);
 _obj setPosATL _pos;
@@ -457,11 +443,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [10.2632, 12.6117, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_LampHalogen_F" createVehicleLocal _pos;
 _obj setDir (_rotation + 315.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [0.75, 6.875, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_Cargo20_red_F" createVehicleLocal _pos;
-_obj setDir (_rotation + 285.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [22.7041, -0.73699999, 0.0], _rotation] call A3E_fnc_rotatePosition;

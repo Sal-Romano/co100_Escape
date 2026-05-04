@@ -2,7 +2,7 @@
 // Source: ZECCUP/CfgGroups/Empty/Military_Desert/HQLarge/Headquarters_CUP_O_TK
 // Objects: 45, Size: 56x60m, Radius: 31m
 // Auto-generated from ZEC/ZECCUP composition data
-// NOTE: 3 objects pruned from center (within 6.0m) for cell clearance
+// NOTE: 7 objects pruned from center (within 10.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -120,11 +120,6 @@ _obj = "Land_fort_rampart_EP1" createVehicleLocal _pos;
 _obj setDir (_rotation + 30.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [2.4682, -8.9177198, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier3" createVehicleLocal _pos;
-_obj setDir (_rotation + 225.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [-11.7794, -29.0142, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_fortified_nest_big_EP1" createVehicleLocal _pos;
 _obj setDir (_rotation + 15.0);
@@ -133,11 +128,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [11.9505, -1.36865, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_HBarrier5" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-4.1314101, -7.1745601, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_HBarrier5" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [14.864, 3.5739701, 0.0], _rotation] call A3E_fnc_rotatePosition;
@@ -175,19 +165,9 @@ _obj = "Land_fort_rampart_EP1" createVehicleLocal _pos;
 _obj setDir (_rotation + 180.0);
 _obj setPosATL _pos;
 
-_pos = [_center, _center vectorAdd [-7.9754601, -1.25, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_fort_rampart_EP1" createVehicleLocal _pos;
-_obj setDir (_rotation + 270.0);
-_obj setPosATL _pos;
-
 _pos = [_center, _center vectorAdd [10.0123, 6.3227501, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_fort_rampart_EP1" createVehicleLocal _pos;
 _obj setDir (_rotation + 210.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-7.01227, 6.5727501, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_fort_rampart_EP1" createVehicleLocal _pos;
-_obj setDir (_rotation + 150.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [10.085, -6.8898902, 0.0], _rotation] call A3E_fnc_rotatePosition;

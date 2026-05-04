@@ -2,6 +2,7 @@
 // Source: ZECCUP/CfgGroups/Empty/Civilian/GeneralLarge/Castle
 // Objects: 31, Size: 100x77m, Radius: 55m
 // Auto-generated from ZEC/ZECCUP composition data
+// NOTE: 1 objects pruned from center (within 10.0m) for cell clearance
 
 private ["_obj","_pos"];
 params ["_center","_rotation","_backpack"];
@@ -137,11 +138,6 @@ _obj setPosATL _pos;
 _pos = [_center, _center vectorAdd [12.7773, 9.02075, 0.0], _rotation] call A3E_fnc_rotatePosition;
 _obj = "Land_A_castle_stairs_a" createVehicleLocal _pos;
 _obj setDir (_rotation + 90.0);
-_obj setPosATL _pos;
-
-_pos = [_center, _center vectorAdd [-4.2104502, 5.9897499, 0.0], _rotation] call A3E_fnc_rotatePosition;
-_obj = "Land_A_castle_walls_5_d" createVehicleLocal _pos;
-_obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
 
 _pos = [_center, _center vectorAdd [11.9016, 34.389198, 0.0], _rotation] call A3E_fnc_rotatePosition;
