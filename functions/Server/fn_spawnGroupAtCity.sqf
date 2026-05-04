@@ -82,19 +82,12 @@ _wp3 setWaypointType "MOVE";
 private _wp4 = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
 _wp4 setWaypointType "CYCLE";
 
-// Wait for compound objects to fully spawn before placing players
-sleep 2;
-
-// Show loading text on each client
-{
-    [["<t size='1.5' color='#cccccc' align='center'>Preparing escape...</t>", "PLAIN", -1, true, true]] remoteExec ["cutText", _x];
-} forEach _members;
-
-sleep 1;
+// Wait for compound objects and guards to fully spawn
+sleep 3;
 
 // Place all members inside the prison with FULL state reset
+// Players are still black screened from forceConscious
 {
-    // Clear ALL unconscious/revive state
     _x setVariable ["AT_Revive_isUnconscious", false, true];
     _x setVariable ["AT_Revive_isDragged", objNull, true];
     _x setVariable ["AT_Revive_isDragging", objNull, true];
@@ -102,38 +95,39 @@ sleep 1;
     _x setVariable ["ACE_Revive_isUnconscious", false, true];
     _x setVariable ["A3E_MP_PrisonPos", _prisonPos, true];
 
-    // Place at prison, invulnerable initially
     _x setPos _prisonPos;
     _x allowDamage false;
     _x enableSimulation true;
     _x setCaptive true;
     _x setDamage 0;
 
-    // Client-side: nuclear cleanup then ATR re-init (delayed so cleanup finishes first)
+    // Black screen during setup, run forceConscious, re-black after
+    [["", "BLACK", 0]] remoteExec ["cutText", _x];
     "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
+    [["", "BLACK", 0]] remoteExec ["cutText", _x];
 
-    // Mark as spawned
     _x setVariable ["A3E_InSpawnLobby", false, true];
     _x setVariable ["A3E_MP_InLobby", false, true];
 } forEach _members;
 
-// Re-init ATR revive after 2 seconds (after forceConscious finishes cleanup)
-// Then enable damage after 10 seconds total (spawn protection)
+// Sequence: wait for cleanup -> ATR init -> reveal -> spawn protection
 [_members] spawn {
     params ["_units"];
 
-    // Wait for forceConscious to finish its cleanup
+    // Wait for forceConscious to finish
     sleep 2;
 
-    // Re-init ATR revive system on each client
+    // Re-init ATR revive on each client
+    {[true] remoteExec ["ATR_FNC_InitPlayer", _x]} forEach _units;
+
+    // Wait 1 more second, then REVEAL (clear black screen)
+    sleep 1;
     {
-        [true] remoteExec ["ATR_FNC_InitPlayer", _x];
+        [["", "BLACK IN", 2]] remoteExec ["cutText", _x];
     } forEach _units;
 
-    // Wait remaining 8 seconds for spawn protection
-    sleep 8;
-
-    // Enable damage - player is now fully in the game
+    // Spawn protection: damage enabled after 10 total seconds
+    sleep 7;
     {
         if (alive _x) then {
             _x allowDamage true;

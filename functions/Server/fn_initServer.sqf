@@ -543,7 +543,7 @@ call A3E_fnc_buildingLoot;
 
                     // === WIPE HANDLER ===
 
-                    // 1. Server: reset state + disable damage. Keep player where they are.
+                    // 1. IMMEDIATELY: black screen + kill camera + teleport to holding
                     {
                         _x setVariable ["AT_Revive_isUnconscious", false, true];
                         _x setVariable ["AT_Revive_isDragged", objNull, true];
@@ -555,22 +555,25 @@ call A3E_fnc_buildingLoot;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                    } forEach _members;
-
-                    // 2. Client: black screen + kill camera + clear unconscious (execVM)
-                    {
+                        // Client: black screen FIRST, then cleanup
+                        [["", "BLACK", 0]] remoteExec ["cutText", _x];
+                        // Teleport to safe holding area
+                        _x setPos [7700, 8000, 0];
+                        // Full camera/state cleanup (keeps screen clear, we re-black after)
                         "functions\Multiplayer\forceConscious.sqf" remoteExec ["execVM", _x];
+                        // Re-apply black screen after forceConscious clears it
+                        [["", "BLACK", 0]] remoteExec ["cutText", _x];
                     } forEach _members;
 
-                    sleep 3;
+                    sleep 2;
 
-                    // 3. ESCAPE FAILED text (on top of black screen)
+                    // 2. ESCAPE FAILED text (on top of black screen)
                     {["ESCAPE FAILED", "PLAIN DOWN", 3] remoteExec ["titleText", _x]} forEach _members;
                     sleep 4;
                     {["Regrouping...", "PLAIN", 1] remoteExec ["titleText", _x]} forEach _members;
                     sleep 2;
 
-                    // 4. Strip gear (player stays in place, black screened)
+                    // 3. Strip gear
                     {
                         removeAllAssignedItems _x;
                         removeAllWeapons _x;

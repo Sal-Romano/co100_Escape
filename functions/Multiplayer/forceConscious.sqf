@@ -65,6 +65,6 @@ player setVelocity [0,0,0];
 detach player;
 removeAllActions player;
 
-// Clear screen overlays
+// Clear screen overlays - caller can black screen separately if needed
 cutText ["", "PLAIN", 0];
 titleText ["", "PLAIN", 0];
