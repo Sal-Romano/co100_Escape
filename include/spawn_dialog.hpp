@@ -291,6 +291,8 @@ class A3E_SpawnDialog
             idc = IDC_SPAWN_MAP;
             type = 101;
             style = 48;
+            font = "PuristaMedium";
+            sizeEx = 0.03;
             x = "safezoneX + 0.31 * safezoneW";
             y = "safezoneY + 0.055 * safezoneH";
             w = "0.685 * safezoneW";
