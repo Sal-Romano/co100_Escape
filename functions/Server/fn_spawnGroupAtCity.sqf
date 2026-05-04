@@ -68,24 +68,32 @@ if (count _guardTypes == 0) then {
     _guardTypes = ["CUP_O_RU_Soldier_GL", "CUP_O_RU_Soldier_MG", "CUP_O_RU_Soldier_TL"];
 };
 
+// Scale guard count based on compound size + enemy frequency param
+private _compoundObjects = nearestObjects [_prisonPos, ["Building", "Wall", "House"], 50];
+private _enemyFreq = missionNamespace getVariable ["A3E_Param_EnemyFrequency", 2];
+private _freqMultiplier = switch (_enemyFreq) do {
+    case 1: {0.7};
+    case 2: {1.0};
+    default {1.3};
+};
+private _guardCount = round ((4 + (count _compoundObjects) * 0.8) * _freqMultiplier);
+_guardCount = _guardCount max 6 min 16;
+
 private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
 if (isNull _guardGroup) then {
-    diag_log "SpawnGroupAtCity: ERROR - createGroup failed (group limit hit?). Cleaning up old groups...";
-    // Emergency cleanup: delete all empty or far-away enemy groups
-    {
-        if (side _x != west && {count units _x == 0}) then {deleteGroup _x};
-    } forEach allGroups;
+    diag_log "SpawnGroupAtCity: createGroup failed - cleaning empty groups...";
+    {if (side _x != west && {count units _x == 0}) then {deleteGroup _x}} forEach allGroups;
     _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
-    diag_log format ["SpawnGroupAtCity: Retry createGroup result: %1", _guardGroup];
 };
-for "_i" from 0 to 7 do {
-    private _guardPos = _prisonPos getPos [8 + random 8, _i * 45];
+private _angleStep = 360 / _guardCount;
+for "_i" from 0 to (_guardCount - 1) do {
+    private _guardPos = _prisonPos getPos [8 + random 10, _i * _angleStep];
     private _guard = _guardGroup createUnit [selectRandom _guardTypes, _guardPos, [], 0, "FORM"];
-    _guard setSkill 0.3;
+    _guard setSkill (0.25 + random 0.2);
     _guard setBehaviour "SAFE";
     _guard setCombatMode "YELLOW";
 };
-diag_log format ["SpawnGroupAtCity: Spawned %1 guards", count units _guardGroup];
+diag_log format ["SpawnGroupAtCity: %1 compound objects, freq=%2, spawned %3 guards", count _compoundObjects, _enemyFreq, count units _guardGroup];
 
 // Guard patrol
 private _wp = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
