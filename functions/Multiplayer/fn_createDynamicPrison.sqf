@@ -174,6 +174,9 @@ _player setCaptive true;
 _player setVariable ["A3E_MP_InLobby", false, true];
 _player setVariable ["A3E_MP_PrisonPos", _spawnPos, true];
 
+// Process prison vehicles (lock, low fuel, some wrecks for atmosphere)
+[_spawnPos, _compoundRadius + 10] call A3E_fnc_prisonVehicles;
+
 // Set A3E_EscapeHasStarted if not already
 if (isNil "A3E_EscapeHasStarted") then {
     A3E_EscapeHasStarted = true;

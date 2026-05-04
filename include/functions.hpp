@@ -295,6 +295,7 @@ class CfgFunctions
 			class createDynamicPrison {};
 			class groupBadges {};
 			class groupWipeClient {};
+			class prisonVehicles {};
 		};
 	};
 	class drn
