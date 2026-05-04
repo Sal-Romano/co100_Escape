@@ -14,6 +14,33 @@ player setVariable ["A3E_SpawnProtection", true, true];
 // Force clear any unconscious/camera state from previous session or spawn
 execVM "functions\Multiplayer\forceConscious.sqf";
 
+// WATCHDOG: continuously prevent unconscious during spawn protection
+[] spawn {
+    while {player getVariable ["A3E_SpawnProtection", false]} do {
+        if (player getVariable ["AT_Revive_isUnconscious", false]) then {
+            player setVariable ["AT_Revive_isUnconscious", false, true];
+            player enableSimulation true;
+            player switchMove "";
+            player playMoveNow "";
+            player setDamage 0;
+            ATHSC_Run = false;
+            if (!isNil "ATHSC_Cam" && {!isNull ATHSC_Cam}) then {
+                ATHSC_Cam cameraEffect ["terminate", "back"];
+                camDestroy ATHSC_Cam;
+                ATHSC_Cam = objNull;
+            };
+            player switchCamera "Internal";
+            ("HSC" call BIS_fnc_rscLayer) cutText ["", "PLAIN"];
+            if (!isNull (uiNamespace getVariable ["ATHSC_View", displayNull])) then {
+                (uiNamespace getVariable "ATHSC_View") closeDisplay 0;
+            };
+            diag_log "WATCHDOG: Killed unconscious state during spawn protection!";
+        };
+        sleep 0.3;
+    };
+    diag_log "WATCHDOG: Spawn protection ended, watchdog stopping.";
+};
+
 // Multiplayer: mark player as in lobby
 player setVariable ["A3E_MP_InLobby", true, true];
 

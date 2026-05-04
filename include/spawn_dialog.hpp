@@ -440,6 +440,15 @@ class A3E_SpawnDialog
                 coefMax = 1;
             };
 
+            class Watertower
+            {
+                color[] = {0,0,0,1};
+                icon = "\A3\ui_f\data\map\mapcontrol\watertower_ca.paa";
+                size = 20;
+                importance = 1;
+                coefMin = 0.9;
+                coefMax = 1;
+            };
             class Legend
             {
                 x = "safezoneX + 0.31 * safezoneW";
