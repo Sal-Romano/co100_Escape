@@ -206,15 +206,6 @@ class CfgFunctions
 			class BuildPrisonCompound3 {};
 			class BuildPrisonCompound4 {};
 			class BuildPrisonCompound5 {};
-			class BuildPrisonCompound6 {};
-			class BuildPrisonCompound7 {};
-			class BuildPrisonCompound8 {};
-			class BuildPrisonCompound9 {};
-			class BuildPrisonCompound10 {};
-			class BuildPrisonCompound11 {};
-			class BuildPrisonCompound12 {};
-			class BuildPrisonCompound13 {};
-			class BuildPrisonCompound14 {};
 			class PrisonCompoundDefs {};
 			class PrisonGuardPositions {};
 			class BuildComCenter {};

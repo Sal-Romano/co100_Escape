@@ -1,4 +1,4 @@
-// Prison Compound: Guerrilla base - battered walls, czech hedgehogs, gritty
+// Prison Compound: Guerrilla base - battered walls, czech hedgehogs
 // Source: ZEC/CfgGroups/Empty/Guerrilla/HQLarge/MilitaryBase_BLU_G_F
 // Objects: 177, Size: 96x94m, Radius: 51m
 // Auto-generated from ZEC/ZECCUP composition data
