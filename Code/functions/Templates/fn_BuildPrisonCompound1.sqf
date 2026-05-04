@@ -945,10 +945,3 @@ _pos = [_center, _center vectorAdd [0, 0, 0], _rotation] call A3E_fnc_rotatePosi
 _obj = (selectRandom _cellTypes) createVehicleLocal _pos;
 _obj setDir (_rotation + 0.0);
 _obj setPosATL _pos;
-// Fix sinking: raise building if its bounding box base is below ground
-private _bb = boundingBoxReal _obj;
-private _bottomZ = (_bb select 0) select 2;
-if (_bottomZ < -0.1) then {
-    _pos set [2, abs _bottomZ];
-    _obj setPosATL _pos;
-};
