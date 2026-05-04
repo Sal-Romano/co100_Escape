@@ -674,7 +674,6 @@ _obj setPosATL _pos;
 private _cellTypes = missionNamespace getVariable ["A3E_PrisonCellBuildings", [
     "Land_Cargo_House_V1_F",
     "Land_Cargo_House_V2_F",
-    "Land_Cargo_House_V3_F",
     "Land_i_Shed_Ind_F"
 ]];
 _pos = [_center, _center vectorAdd [0, 0, 0], _rotation] call A3E_fnc_rotatePosition;
