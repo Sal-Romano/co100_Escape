@@ -19,16 +19,23 @@ if (count _members == 0) exitWith {
     diag_log format ["SpawnGroupAtCity: %1 - no lobby members to spawn.", _grpName];
 };
 
-// Create a dynamic prison at the location (reuse existing system)
-// Use findFlatAreaNear to get a good position
-private _prisonPos = [_spawnPos, 300, 5, 0.1, 500] call A3E_fnc_findFlatAreaNear;
+// Find flat area OUTSIDE the city (offset 200-500m from city center)
+// The city position itself is the center - prisons should be on the outskirts
+private _searchPos = _spawnPos getPos [200 + random 300, random 360];
+private _prisonPos = [_searchPos, 300, 5, 0.1, 500] call A3E_fnc_findFlatAreaNear;
 if (count _prisonPos == 0) then {
-    _prisonPos = [_spawnPos, 600, 3, 0.15, 1000] call A3E_fnc_findFlatAreaNear;
+    _searchPos = _spawnPos getPos [300 + random 400, random 360];
+    _prisonPos = [_searchPos, 600, 3, 0.15, 1000] call A3E_fnc_findFlatAreaNear;
 };
 if (count _prisonPos == 0) then {
-    _prisonPos = _spawnPos;
+    _prisonPos = _spawnPos getPos [250, random 360];
 };
 _prisonPos set [2, 0];
+
+// Aggressive group cleanup before spawning new guards
+{
+    if (side _x != west && {count units _x == 0}) then {deleteGroup _x};
+} forEach allGroups;
 
 // Clean up terrain
 [_prisonPos, 25] call a3e_fnc_cleanupTerrain;

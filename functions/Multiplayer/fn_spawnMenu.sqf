@@ -119,7 +119,7 @@ A3E_fnc_spawnUI_spawnCity = {
         A3E_MP_SpawnSelected = true;
     };
 
-    hint format ["Escaping from: %1", _pick select 0];
+    // Don't reveal spawn location to player
 };
 
 A3E_fnc_spawnUI_spawnOnGroup = {
