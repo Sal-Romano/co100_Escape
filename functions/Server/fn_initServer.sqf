@@ -559,33 +559,34 @@ call A3E_fnc_buildingLoot;
 
                     // === WIPE HANDLER ===
 
-                    // 1. IMMEDIATELY: black screen + kill camera + teleport to holding
+                    // 1. Client-side: freeze + black screen + kill camera
+                    //    MUST complete BEFORE any teleport or state change
+                    {
+                        "functions\Multiplayer\wipeReset2.sqf" remoteExec ["execVM", _x];
+                    } forEach _members;
+
+                    // 2. Wait for client black screen to take effect
+                    sleep 2;
+
+                    // 3. NOW safe to teleport + change state (player is frozen + black)
                     {
                         _x setVariable ["AT_Revive_isUnconscious", false, true];
-                        _x setVariable ["AT_Revive_isDragged", objNull, true];
-                        _x setVariable ["AT_Revive_isDragging", objNull, true];
-                        _x setVariable ["AT_Revive_isCarrying", objNull, true];
                         _x setVariable ["ACE_Revive_isUnconscious", false, true];
                         _x setVariable ["A3E_MP_InLobby", true, true];
                         _x allowDamage false;
                         _x enableSimulation true;
                         _x setCaptive true;
                         _x setDamage 0;
-                        // wipeReset handles: camera kill -> black screen -> state clear
-                        // Must run BEFORE teleport so camera is dead when cutText fires
-                        "functions\Multiplayer\wipeReset2.sqf" remoteExec ["execVM", _x];
                         _x setPos [7700, 8000, 0];
                     } forEach _members;
 
-                    sleep 2;
-
-                    // 2. ESCAPE FAILED text (on top of black screen)
+                    // 4. ESCAPE FAILED text (player is frozen + black)
                     {["ESCAPE FAILED", "PLAIN DOWN", 3] remoteExec ["titleText", _x]} forEach _members;
                     sleep 4;
                     {["Regrouping...", "PLAIN", 1] remoteExec ["titleText", _x]} forEach _members;
                     sleep 2;
 
-                    // 3. Strip gear
+                    // 5. Strip gear (still frozen + black)
                     {
                         removeAllAssignedItems _x;
                         removeAllWeapons _x;
@@ -602,6 +603,7 @@ call A3E_fnc_buildingLoot;
                     private _leader = leader _grp;
 
                     [[], {
+                        disableUserInput false;
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];

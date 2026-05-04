@@ -106,6 +106,11 @@ _wp3 setWaypointType "MOVE";
 private _wp4 = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
 _wp4 setWaypointType "CYCLE";
 
+// Show loading text + ensure black screen on all members
+{
+    {cutText ["", "BLACK OUT", 0]; titleText ["Loading escape...", "PLAIN", 0.5]} remoteExec ["call", _x];
+} forEach _members;
+
 // Wait for compound objects and guards to fully spawn
 sleep 3;
 
@@ -151,9 +156,11 @@ sleep 3;
         "functions\Multiplayer\addCustomActions.sqf" remoteExec ["execVM", _x];
     } forEach _units;
 
-    // Wait 1 more second, then REVEAL (clear black screen)
+    // Wait 1 more second, then REVEAL (clear black screen + unfreeze input)
     sleep 1;
     {
+        // Unfreeze player input + fade in
+        {disableUserInput false; cutText ["", "BLACK IN", 2]; titleText ["", "PLAIN", 0]} remoteExec ["call", _x];
         [["", "BLACK IN", 2]] remoteExec ["cutText", _x];
     } forEach _units;
 
