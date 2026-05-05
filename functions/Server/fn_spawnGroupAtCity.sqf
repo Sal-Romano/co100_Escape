@@ -67,23 +67,29 @@ if (count _guardTypes == 0) then {
     _guardTypes = ["CUP_O_RU_Soldier_GL", "CUP_O_RU_Soldier_MG", "CUP_O_RU_Soldier_TL"];
 };
 
-// Scale guard count based on compound size + enemy frequency param
-private _compoundObjects = nearestObjects [_prisonPos, ["Building", "Wall", "House"], 50];
-private _enemyFreq = missionNamespace getVariable ["A3E_Param_EnemyFrequency", 2];
-private _freqMultiplier = switch (_enemyFreq) do {
-    case 1: {0.7};
-    case 2: {1.0};
-    default {1.3};
-};
-private _guardCount = round ((4 + (count _compoundObjects) * 0.8) * _freqMultiplier);
-_guardCount = _guardCount max 6 min 16;
+// Aggressive cleanup: delete ALL empty groups across all sides
+{if (count units _x == 0) then {deleteGroup _x}} forEach allGroups;
 
-private _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
+// Guard count: base 8, scale with enemy frequency
+private _enemyFreq = missionNamespace getVariable ["A3E_Param_EnemyFrequency", 2];
+private _guardCount = switch (_enemyFreq) do {
+    case 1: {6};
+    case 2: {8};
+    default {12};
+};
+
+// Use SAME side for all prison guards so they don't fight each other
+// Use Ind side (militia/NAPA) - they're the prison guards
+private _guardSide = missionNamespace getVariable ["A3E_VAR_Side_Ind", resistance];
+private _guardGroup = createGroup [_guardSide, true];
 if (isNull _guardGroup) then {
-    diag_log "SpawnGroupAtCity: createGroup failed - cleaning empty groups...";
-    {if (side _x != west && {count units _x == 0}) then {deleteGroup _x}} forEach allGroups;
+    diag_log "SpawnGroupAtCity: createGroup Ind failed, trying Opfor...";
     _guardGroup = createGroup [A3E_VAR_Side_Opfor, true];
 };
+if (isNull _guardGroup) then {
+    diag_log "SpawnGroupAtCity: CRITICAL - all createGroup failed!";
+};
+
 private _angleStep = 360 / _guardCount;
 for "_i" from 0 to (_guardCount - 1) do {
     private _guardPos = _prisonPos getPos [8 + random 10, _i * _angleStep];
@@ -92,7 +98,9 @@ for "_i" from 0 to (_guardCount - 1) do {
     _guard setBehaviour "SAFE";
     _guard setCombatMode "YELLOW";
 };
-diag_log format ["SpawnGroupAtCity: %1 compound objects, freq=%2, spawned %3 guards", count _compoundObjects, _enemyFreq, count units _guardGroup];
+// Mark prison guards as persistent so GC doesn't delete them
+_guardGroup setVariable ["A3E_Persistent", true, true];
+diag_log format ["SpawnGroupAtCity: freq=%1, spawned %2 guards (side %3)", _enemyFreq, count units _guardGroup, _guardSide];
 
 // Guard patrol
 private _wp = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
