@@ -174,6 +174,39 @@ if (_warTorn == 1) then {
     };
 };
 
+// Spawn zombies swarming the prison
+// Inner ring: 10-15 close to the walls (5-20m out)
+// Outer ring: 15-20 closing in from further away (30-80m out)
+private _zombieGroup = createGroup [civilian, true];
+if (!isNull _zombieGroup) then {
+    private _innerCount = 10 + floor random 5;
+    private _outerCount = 15 + floor random 5;
+
+    // Inner ring - right at the prison
+    for "_i" from 0 to (_innerCount - 1) do {
+        private _zPos = _prisonPos getPos [5 + random 15, random 360];
+        private _zombie = _zombieGroup createUnit ["rvg_fzombie", _zPos, [], 3, "NONE"];
+        if (!isNull _zombie) then {
+            _zombie setSkill 0.4;
+        };
+    };
+
+    // Outer ring - shambling toward the prison
+    for "_i" from 0 to (_outerCount - 1) do {
+        private _zPos = _prisonPos getPos [30 + random 50, random 360];
+        private _zombie = _zombieGroup createUnit ["rvg_fzombie", _zPos, [], 5, "NONE"];
+        if (!isNull _zombie) then {
+            _zombie setSkill 0.4;
+        };
+    };
+
+    // Send outer ring toward prison
+    private _wp = _zombieGroup addWaypoint [_prisonPos, 15];
+    _wp setWaypointType "SAD";
+
+    diag_log format ["SpawnGroupAtCity: Spawned %1 zombies (%2 inner, %3 outer)", count units _zombieGroup, _innerCount, _outerCount];
+};
+
 diag_log format ["SpawnGroupAtCity: freq=%1, spawned %2 guards (side %3)", _enemyFreq, count units _guardGroup, _guardSide];
 
 // Guard patrol
