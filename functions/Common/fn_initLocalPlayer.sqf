@@ -77,9 +77,13 @@ if (_spawnType == "group") then {
 		player setCaptive false;
 	};
 } else {
-	// BLACK SCREEN before prison build so player doesn't see teleport
-	cutText ["", "BLACK OUT", 0];
-	titleText ["Loading escape...", "PLAIN", 0.5];
+	// BLACK SCREEN via GUI overlay before prison build
+	("A3E_BlackScreen" call BIS_fnc_rscLayer) cutRsc ["A3E_BlackScreen", "PLAIN", 0, true];
+	sleep 0.1;
+	private _bsDisp = uiNamespace getVariable ["A3E_BlackScreenDisplay", displayNull];
+	if (!isNull _bsDisp) then {
+		(_bsDisp displayCtrl 620102) ctrlSetStructuredText parseText "<t size='1.5' color='#cccccc' align='center'>Loading escape...</t>";
+	};
 
 	if (_spawnType == "group_city") then {
 		// Leader spawning group at city - server handles prison for all members
@@ -93,8 +97,8 @@ if (_spawnType == "group") then {
 		waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
 	};
 
-	// Fade in after prison is ready
-	titleText ["", "PLAIN", 0];
+	// Fade in after prison is ready - remove GUI overlay
+	("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
 	cutText ["", "BLACK IN", 2];
 };
 

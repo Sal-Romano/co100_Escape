@@ -106,9 +106,16 @@ _wp3 setWaypointType "MOVE";
 private _wp4 = _guardGroup addWaypoint [_prisonPos getPos [12, 0], 8];
 _wp4 setWaypointType "CYCLE";
 
-// Show loading text + ensure black screen on all members
+// Show loading screen via GUI overlay on all members
 {
-    {cutText ["", "BLACK OUT", 0]; titleText ["Loading escape...", "PLAIN", 0.5]} remoteExec ["call", _x];
+    {
+        ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutRsc ["A3E_BlackScreen", "PLAIN", 0, true];
+        sleep 0.1;
+        private _d = uiNamespace getVariable ["A3E_BlackScreenDisplay", displayNull];
+        if (!isNull _d) then {
+            (_d displayCtrl 620102) ctrlSetStructuredText parseText "<t size='1.5' color='#cccccc' align='center'>Loading escape...</t>";
+        };
+    } remoteExec ["call", _x];
 } forEach _members;
 
 // Wait for compound objects and guards to fully spawn
@@ -159,9 +166,9 @@ sleep 3;
     // Wait 1 more second, then REVEAL (clear black screen + unfreeze input)
     sleep 1;
     {
-        // Fade in
+        // Remove GUI black overlay + fade in
+        {("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0]} remoteExec ["call", _x];
         [["", "BLACK IN", 2]] remoteExec ["cutText", _x];
-        [["", "PLAIN", 0]] remoteExec ["titleText", _x];
     } forEach _units;
 
     // Spawn protection: damage enabled after 10 total seconds

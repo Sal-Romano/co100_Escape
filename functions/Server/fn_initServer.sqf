@@ -542,8 +542,7 @@ call A3E_fnc_buildingLoot;
                     } forEach _members;
 
                     // Grace period - let player experience being downed
-                    // (camera, ragdoll, scream action all need time to set up)
-                    sleep 15;
+                    sleep 8;
 
                     // Re-verify
                     private _stillDown = true;
@@ -581,11 +580,9 @@ call A3E_fnc_buildingLoot;
                         _x setPos [7700, 8000, 0];
                     } forEach _members;
 
-                    // 4. ESCAPE FAILED text (player is frozen + black)
-                    {["ESCAPE FAILED", "PLAIN DOWN", 3] remoteExec ["titleText", _x]} forEach _members;
-                    sleep 4;
-                    {["Regrouping...", "PLAIN", 1] remoteExec ["titleText", _x]} forEach _members;
-                    sleep 2;
+                    // 4. ESCAPE FAILED text is shown by wipeReset2.sqf on the GUI overlay
+                    //    Just wait for player to see it
+                    sleep 6;
 
                     // 5. Strip gear (still frozen + black)
                     {

@@ -1,8 +1,8 @@
-// wipeReset2.sqf - Client wipe cleanup + loading state
-// Player is FROZEN (can't move) + BLACK SCREEN until prison is ready
+// wipeReset2.sqf - Client wipe cleanup
+// Uses GUI black overlay (cannot be interrupted by camera/cutText)
 
-// === STEP 1: BLACK SCREEN IMMEDIATELY ===
-cutText ["", "BLACK OUT", 0];
+// === STEP 1: UNBREAKABLE BLACK SCREEN VIA GUI ===
+("A3E_BlackScreen" call BIS_fnc_rscLayer) cutRsc ["A3E_BlackScreen", "PLAIN", 0, true];
 
 // === STEP 2: Stop unconscious system ===
 player setVariable ["AT_Revive_isUnconscious", false, true];
@@ -48,10 +48,16 @@ player setVelocity [0,0,0];
 detach player;
 removeAllActions player;
 showCinemaBorder false;
-titleText ["Loading escape...", "PLAIN", 0.5];
 
-// === STEP 5: Background hammer - catch fn_createCam delayed spawn ===
-// NO MORE re-applying cutText (that caused pulsing)
+// === STEP 5: Show ESCAPE FAILED on the black overlay ===
+sleep 0.5;
+private _display = uiNamespace getVariable ["A3E_BlackScreenDisplay", displayNull];
+if (!isNull _display) then {
+    (_display displayCtrl 620102) ctrlSetStructuredText parseText
+        "<t size='3' color='#cc0000' align='center' shadow='2'>ESCAPE FAILED</t><br/><br/><t size='1.2' color='#999999' align='center'>Your group has been wiped</t>";
+};
+
+// === STEP 6: Hammer to catch fn_createCam delayed spawn ===
 [] spawn {
     for "_i" from 0 to 10 do {
         ATHSC_Run = false;

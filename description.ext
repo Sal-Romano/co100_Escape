@@ -122,7 +122,50 @@ class CfgRemoteExec
 };
 
 class RscTitles {
-	titles[] = {HSC_View}; 
+	titles[] = {HSC_View, A3E_BlackScreen};
+	class A3E_BlackScreen {
+		idd = 620100;
+		duration = 9999;
+		name = "A3E_BlackScreen";
+		onLoad = "uiNamespace setVariable ['A3E_BlackScreenDisplay', _this select 0]";
+		onUnload = "uiNamespace setVariable ['A3E_BlackScreenDisplay', displayNull]";
+		class controlsBackground {
+			class BlackBG {
+				idc = 620101;
+				type = 0;
+				style = 0;
+				x = -2;
+				y = -2;
+				w = 6;
+				h = 6;
+				colorText[] = {0,0,0,1};
+				colorBackground[] = {0,0,0,1};
+				text = "";
+				font = "PuristaMedium";
+				sizeEx = 0.01;
+			};
+		};
+		class controls {
+			class StatusText {
+				idc = 620102;
+				type = 13;
+				style = 0;
+				x = "safezoneX";
+				y = "safezoneY + safezoneH * 0.4";
+				w = "safezoneW";
+				h = "safezoneH * 0.3";
+				colorBackground[] = {0,0,0,0};
+				size = "0.05 * safezoneH";
+				shadow = 2;
+				class Attributes {
+					font = "PuristaBold";
+					color = "#ffffff";
+					align = "center";
+					shadow = 2;
+				};
+			};
+		};
+	};
 	class HSC_View {
 			idd = 620000;
 			duration = 15000;
