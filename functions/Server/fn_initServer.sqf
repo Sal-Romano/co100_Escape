@@ -601,6 +601,8 @@ call A3E_fnc_buildingLoot;
                     private _leader = leader _grp;
 
                     [[], {
+                        // Hide the ESCAPE FAILED overlay before showing spawn menu
+                        ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];
