@@ -21,23 +21,27 @@ if (isNil "A3E_PrisonGuardPositions") then {
 private _compoundDef = selectRandom A3E_PrisonCompoundTemplates;
 _compoundDef params ["_templateFunc", "_flatRadius", "_compoundRadius"];
 
+// Offset 200-500m from city center so prison isn't in the middle of town
+private _searchPos = _pos getPos [200 + random 300, random 360];
+
 // Find flat ground - use the compound's flatness requirement
-// First attempt: tight constraints near the requested position
-private _spawnPos = [_pos, 300, _flatRadius, 0.08, 500] call A3E_fnc_findFlatAreaNear;
+private _spawnPos = [_searchPos, 300, _flatRadius, 0.08, 500] call A3E_fnc_findFlatAreaNear;
 
-// Second attempt: relax gradient and expand search
+// Second attempt: different direction, relax constraints
 if (count _spawnPos == 0) then {
-    _spawnPos = [_pos, 600, (_flatRadius * 0.7), 0.12, 1000] call A3E_fnc_findFlatAreaNear;
+    _searchPos = _pos getPos [300 + random 400, random 360];
+    _spawnPos = [_searchPos, 600, (_flatRadius * 0.7), 0.12, 1000] call A3E_fnc_findFlatAreaNear;
 };
 
-// Third attempt: even more relaxed for large compounds
+// Third attempt: even more relaxed
 if (count _spawnPos == 0) then {
-    _spawnPos = [_pos, 800, (_flatRadius * 0.5), 0.15, 1500] call A3E_fnc_findFlatAreaNear;
+    _searchPos = _pos getPos [250, random 360];
+    _spawnPos = [_searchPos, 800, (_flatRadius * 0.5), 0.15, 1500] call A3E_fnc_findFlatAreaNear;
 };
 
-// Last resort: use the original position
+// Last resort: offset from city center
 if (count _spawnPos == 0) then {
-    _spawnPos = _pos;
+    _spawnPos = _pos getPos [250, random 360];
 };
 
 _spawnPos set [2, 0];
@@ -173,6 +177,33 @@ _player setVariable ["A3E_MP_PrisonPos", _spawnPos, true];
     params ["_pos"];
     sleep 3;
     [_pos, 80] call A3E_fnc_prisonVehicles;
+};
+
+// Spawn zombies swarming the prison
+private _zombieGroup = createGroup [civilian, true];
+if (!isNull _zombieGroup) then {
+    private _zombieTypes = ["zombie_runner", "zombie_bolter", "zombie_walker"];
+    private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+    private _innerCount = 10 + floor random 5;
+    private _outerCount = 15 + floor random 5;
+
+    for "_i" from 0 to (_innerCount - 1) do {
+        private _zPos = _spawnPos getPos [5 + random 15, random 360];
+        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 3, "NONE"];
+        if (!isNull _zombie) then {
+            _zombie forceAddUniform (selectRandom _zombieUniforms);
+        };
+    };
+    for "_i" from 0 to (_outerCount - 1) do {
+        private _zPos = _spawnPos getPos [30 + random 50, random 360];
+        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 5, "NONE"];
+        if (!isNull _zombie) then {
+            _zombie forceAddUniform (selectRandom _zombieUniforms);
+        };
+    };
+    private _wp = _zombieGroup addWaypoint [_spawnPos, 15];
+    _wp setWaypointType "SAD";
+    diag_log format ["createDynamicPrison: Spawned %1 zombies", count units _zombieGroup];
 };
 
 // Set A3E_EscapeHasStarted if not already
