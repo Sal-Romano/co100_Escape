@@ -97,6 +97,38 @@ for "_i" from 0 to (_guardCount - 1) do {
     _guard setSkill (0.25 + random 0.2);
     _guard setBehaviour "SAFE";
     _guard setCombatMode "YELLOW";
+
+    // Strip down to basic gear - prison guards shouldn't be fully kitted
+    private _primaryWeapon = primaryWeapon _guard;
+    private _primaryMags = primaryWeaponMagazine _guard;
+    private _uniform = uniform _guard;
+    private _headgear = headgear _guard;
+
+    removeAllWeapons _guard;
+    removeAllItems _guard;
+    removeAllAssignedItems _guard;
+    removeBackpack _guard;
+    removeVest _guard;
+
+    // Give back primary weapon + limited ammo only
+    if (_primaryWeapon != "") then {
+        _guard addWeapon _primaryWeapon;
+        {_guard addMagazine _x} forEach _primaryMags;
+        _guard addMagazine (_primaryMags select 0);
+    };
+
+    // 30% chance: no vest at all (scrappy militia look)
+    if (random 100 > 30) then {
+        _guard addVest "CUP_V_OI_TKI_Jacket1_06";
+    };
+
+    // 80% chance: remove primary weapon attachments
+    if (random 100 < 80) then {
+        removeAllPrimaryWeaponItems _guard;
+    };
+
+    // Set ammo low
+    _guard setVehicleAmmo (0.3 + random 0.4);
 };
 // Mark prison guards as persistent so GC doesn't delete them
 _guardGroup setVariable ["A3E_Persistent", true, true];
@@ -116,6 +148,20 @@ if (_warTorn == 1) then {
                 private _pos = _prisonPos getPos [_attackDist + random 10, _attackDir + (_i * 15)];
                 private _unit = _opforGroup createUnit [selectRandom _opforTypes, _pos, [], 0, "FORM"];
                 _unit setSkill (0.3 + random 0.2);
+
+                // Strip to basic gear
+                private _pw = primaryWeapon _unit;
+                private _pm = primaryWeaponMagazine _unit;
+                removeAllWeapons _unit;
+                removeAllItems _unit;
+                removeAllAssignedItems _unit;
+                removeBackpack _unit;
+                if (_pw != "") then {
+                    _unit addWeapon _pw;
+                    {_unit addMagazine _x} forEach _pm;
+                };
+                if (random 100 < 80) then {removeAllPrimaryWeaponItems _unit};
+                _unit setVehicleAmmo (0.3 + random 0.4);
             };
             _opforGroup setCombatMode "RED";
             _opforGroup setBehaviour "AWARE";
