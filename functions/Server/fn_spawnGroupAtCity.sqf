@@ -100,6 +100,34 @@ for "_i" from 0 to (_guardCount - 1) do {
 };
 // Mark prison guards as persistent so GC doesn't delete them
 _guardGroup setVariable ["A3E_Persistent", true, true];
+
+// War-torn mode: spawn a small Opfor patrol nearby that will fight the Ind guards
+// Adds atmosphere - player spawns into an active skirmish
+private _warTorn = missionNamespace getVariable ["A3E_Param_War_Torn", 0];
+if (_warTorn == 1) then {
+    private _opforTypes = missionNamespace getVariable ["a3e_arr_Escape_InfantryTypes", []];
+    if (count _opforTypes > 0) then {
+        private _opforGroup = createGroup [A3E_VAR_Side_Opfor, true];
+        if (!isNull _opforGroup) then {
+            // 2-4 Opfor soldiers approaching from one direction
+            private _attackDir = random 360;
+            private _attackDist = 40 + random 30;
+            for "_i" from 0 to (1 + floor random 2) do {
+                private _pos = _prisonPos getPos [_attackDist + random 10, _attackDir + (_i * 15)];
+                private _unit = _opforGroup createUnit [selectRandom _opforTypes, _pos, [], 0, "FORM"];
+                _unit setSkill (0.3 + random 0.2);
+            };
+            _opforGroup setCombatMode "RED";
+            _opforGroup setBehaviour "AWARE";
+            // Send them toward the prison
+            private _wp = _opforGroup addWaypoint [_prisonPos, 15];
+            _wp setWaypointType "SAD";
+            _opforGroup setVariable ["A3E_Persistent", true, true];
+            diag_log format ["SpawnGroupAtCity: War-torn skirmish - %1 Opfor attackers from dir %2", count units _opforGroup, round _attackDir];
+        };
+    };
+};
+
 diag_log format ["SpawnGroupAtCity: freq=%1, spawned %2 guards (side %3)", _enemyFreq, count units _guardGroup, _guardSide];
 
 // Guard patrol
