@@ -179,31 +179,44 @@ _player setVariable ["A3E_MP_PrisonPos", _spawnPos, true];
     [_pos, 80] call A3E_fnc_prisonVehicles;
 };
 
-// Spawn zombies swarming the prison
-private _zombieGroup = createGroup [civilian, true];
-if (!isNull _zombieGroup) then {
-    private _zombieTypes = ["zombie_runner", "zombie_bolter", "zombie_walker"];
-    private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
-    private _innerCount = 10 + floor random 5;
-    private _outerCount = 15 + floor random 5;
+// Zombie spawn - variable intensity
+// 10% none, 30% few, 40% medium, 20% horde
+private _zombieRoll = floor random 100;
+private _zInner = 0;
+private _zOuter = 0;
+if (_zombieRoll < 10) then {
+    diag_log "createDynamicPrison: No zombies (10% roll)";
+} else {
+    if (_zombieRoll < 40) then {
+        _zInner = 2 + floor random 4; _zOuter = 3 + floor random 4;
+    } else {
+        if (_zombieRoll < 80) then {
+            _zInner = 8 + floor random 8; _zOuter = 10 + floor random 8;
+        } else {
+            _zInner = 15 + floor random 10; _zOuter = 20 + floor random 10;
+        };
+    };
+};
 
-    for "_i" from 0 to (_innerCount - 1) do {
-        private _zPos = _spawnPos getPos [5 + random 15, random 360];
-        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 3, "NONE"];
-        if (!isNull _zombie) then {
-            _zombie forceAddUniform (selectRandom _zombieUniforms);
+if ((_zInner + _zOuter) > 0) then {
+    private _zombieGroup = createGroup [civilian, true];
+    if (!isNull _zombieGroup) then {
+        private _zombieTypes = ["zombie_runner", "zombie_bolter", "zombie_walker"];
+        private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+        for "_i" from 0 to (_zInner - 1) do {
+            private _zPos = _spawnPos getPos [5 + random 15, random 360];
+            private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 3, "NONE"];
+            if (!isNull _zombie) then {_zombie forceAddUniform (selectRandom _zombieUniforms)};
         };
-    };
-    for "_i" from 0 to (_outerCount - 1) do {
-        private _zPos = _spawnPos getPos [30 + random 50, random 360];
-        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 5, "NONE"];
-        if (!isNull _zombie) then {
-            _zombie forceAddUniform (selectRandom _zombieUniforms);
+        for "_i" from 0 to (_zOuter - 1) do {
+            private _zPos = _spawnPos getPos [30 + random 50, random 360];
+            private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 5, "NONE"];
+            if (!isNull _zombie) then {_zombie forceAddUniform (selectRandom _zombieUniforms)};
         };
+        private _wp = _zombieGroup addWaypoint [_spawnPos, 15];
+        _wp setWaypointType "SAD";
+        diag_log format ["createDynamicPrison: Zombies - %1 total (%2+%3) roll=%4", count units _zombieGroup, _zInner, _zOuter, _zombieRoll];
     };
-    private _wp = _zombieGroup addWaypoint [_spawnPos, 15];
-    _wp setWaypointType "SAD";
-    diag_log format ["createDynamicPrison: Spawned %1 zombies", count units _zombieGroup];
 };
 
 // Set A3E_EscapeHasStarted if not already

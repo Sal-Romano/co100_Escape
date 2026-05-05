@@ -178,11 +178,34 @@ if (_warTorn == 1) then {
 // Spawn zombies swarming the prison
 // Inner ring: 10-15 close to the walls (5-20m out)
 // Outer ring: 15-20 closing in from further away (30-80m out)
-private _zombieGroup = createGroup [civilian, true];
-if (!isNull _zombieGroup) then {
-    private _innerCount = 10 + floor random 5;
-    private _outerCount = 15 + floor random 5;
+// Zombie spawn - variable intensity each time
+// 10% none, 30% few (5-10), 40% medium (15-25), 20% horde (30-50)
+private _zombieRoll = floor random 100;
+private _innerCount = 0;
+private _outerCount = 0;
+if (_zombieRoll < 10) then {
+    // 10% - no zombies (eerie silence)
+    diag_log "SpawnGroupAtCity: No zombies this time (10% roll)";
+} else {
+    if (_zombieRoll < 40) then {
+        // 30% - a few stragglers
+        _innerCount = 2 + floor random 4;
+        _outerCount = 3 + floor random 4;
+    } else {
+        if (_zombieRoll < 80) then {
+            // 40% - medium presence
+            _innerCount = 8 + floor random 8;
+            _outerCount = 10 + floor random 8;
+        } else {
+            // 20% - horde
+            _innerCount = 15 + floor random 10;
+            _outerCount = 20 + floor random 10;
+        };
+    };
+};
 
+private _zombieGroup = createGroup [civilian, true];
+if (!isNull _zombieGroup && {(_innerCount + _outerCount) > 0}) then {
     private _zombieTypes = ["zombie_runner", "zombie_bolter", "zombie_walker"];
     private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
 
@@ -212,7 +235,7 @@ if (!isNull _zombieGroup) then {
     private _wp = _zombieGroup addWaypoint [_prisonPos, 15];
     _wp setWaypointType "SAD";
 
-    diag_log format ["SpawnGroupAtCity: Spawned %1 zombies (%2 inner, %3 outer)", count units _zombieGroup, _innerCount, _outerCount];
+    diag_log format ["SpawnGroupAtCity: Zombies - %1 total (%2 inner, %3 outer) roll=%4", count units _zombieGroup, _innerCount, _outerCount, _zombieRoll];
 };
 
 diag_log format ["SpawnGroupAtCity: freq=%1, spawned %2 guards (side %3)", _enemyFreq, count units _guardGroup, _guardSide];
