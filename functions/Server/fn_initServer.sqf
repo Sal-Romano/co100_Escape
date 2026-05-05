@@ -478,7 +478,7 @@ call A3E_fnc_buildingLoot;
     diag_log "GROUP WIPE MONITOR: STARTED";
 
     while {true} do {
-        sleep 2;
+        sleep 15;
 
         private _allPlayers = ([] call BIS_fnc_listPlayers) select {alive _x};
 
@@ -541,8 +541,9 @@ call A3E_fnc_buildingLoot;
                         _x setVariable ["A3E_InSpawnLobby", true, true];
                     } forEach _members;
 
-                    // Grace period
-                    sleep 3;
+                    // Grace period - let player experience being downed
+                    // (camera, ragdoll, scream action all need time to set up)
+                    sleep 15;
 
                     // Re-verify
                     private _stillDown = true;
