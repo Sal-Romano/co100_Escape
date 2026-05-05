@@ -40,9 +40,10 @@ _prisonPos set [2, 0];
 // Clean up terrain
 [_prisonPos, 25] call a3e_fnc_cleanupTerrain;
 
-// Give each member a random pistol + mags directly in inventory
+// Give each member prisoner uniform + random pistol
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 {
+    _x forceAddUniform (selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"]);
     if (count _weapons > 0) then {
         private _picked = selectRandom _weapons;
         _picked params ["_weapon", "_mag"];
@@ -182,21 +183,28 @@ if (!isNull _zombieGroup) then {
     private _innerCount = 10 + floor random 5;
     private _outerCount = 15 + floor random 5;
 
+    private _zombieTypes = ["zombie_runner", "zombie_bolter", "zombie_walker"];
+    private _zombieUniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+
     // Inner ring - right at the prison
     for "_i" from 0 to (_innerCount - 1) do {
         private _zPos = _prisonPos getPos [5 + random 15, random 360];
-        private _zombie = _zombieGroup createUnit ["rvg_fzombie", _zPos, [], 3, "NONE"];
+        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 3, "NONE"];
         if (!isNull _zombie) then {
             _zombie setSkill 0.4;
+            _zombie forceAddUniform (selectRandom _zombieUniforms);
+            (_zombie select 0) setVariable ["SSD_disabledSounds", true];
         };
     };
 
     // Outer ring - shambling toward the prison
     for "_i" from 0 to (_outerCount - 1) do {
         private _zPos = _prisonPos getPos [30 + random 50, random 360];
-        private _zombie = _zombieGroup createUnit ["rvg_fzombie", _zPos, [], 5, "NONE"];
+        private _zombie = _zombieGroup createUnit [selectRandom _zombieTypes, _zPos, [], 5, "NONE"];
         if (!isNull _zombie) then {
             _zombie setSkill 0.4;
+            _zombie forceAddUniform (selectRandom _zombieUniforms);
+            (_zombie select 0) setVariable ["SSD_disabledSounds", true];
         };
     };
 

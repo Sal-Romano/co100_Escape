@@ -42,7 +42,8 @@ if (count _spawnPos == 0) then {
 
 _spawnPos set [2, 0];
 
-// Give player a random pistol + mags directly in their uniform/vest
+// Give player prisoner uniform + random pistol
+_player forceAddUniform (selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"]);
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 if (count _weapons > 0) then {
     private _picked = selectRandom _weapons;
