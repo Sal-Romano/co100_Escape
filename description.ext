@@ -150,6 +150,7 @@ class RscTitles {
 				idc = 620102;
 				type = 13;
 				style = 0;
+				text = "";
 				x = "safezoneX";
 				y = "safezoneY + safezoneH * 0.4";
 				w = "safezoneW";
