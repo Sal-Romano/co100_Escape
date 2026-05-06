@@ -45,11 +45,8 @@ _prisonPos set [2, 0];
 // Give each member prisoner uniform + random pistol
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 {
-    // Give prisoner uniform on CLIENT side (avoids faction change)
-    {
-        removeUniform player;
-        player addUniform (selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"]);
-    } remoteExec ["call", _x];
+    // Give prisoner uniform on CLIENT side via execVM (reliable)
+    "functions\Multiplayer\setPrisonerUniform.sqf" remoteExec ["execVM", _x];
     if (count _weapons > 0) then {
         private _picked = selectRandom _weapons;
         _picked params ["_weapon", "_mag"];
