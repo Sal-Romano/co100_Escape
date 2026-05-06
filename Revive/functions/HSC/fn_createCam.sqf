@@ -46,7 +46,7 @@ painscream = player addAction ["<t color='#C00000'>Scream in Agonizing Pain</t>"
 		"sounds\screams\SSD_scream37.ogg","sounds\screams\SSD_scream38.ogg","sounds\screams\SSD_scream39.ogg",
 		"sounds\screams\SSD_scream40.ogg","sounds\screams\SSD_scream41.ogg"
 	 ];
-	 private _file = selectRandom _screamFiles;
+	 private _file = getMissionPath (selectRandom _screamFiles);
 	 // playSound3D stacks (plays immediately, never queues)
 	 [_file, player, false, getPosASL player, 1, 1, 500] remoteExec ["playSound3D", 0];
 

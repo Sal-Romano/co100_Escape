@@ -600,15 +600,25 @@ call A3E_fnc_buildingLoot;
                     _grp setVariable ["A3E_GroupSpawnReady", false, true];
                     private _leader = leader _grp;
 
+                    // Leader picks city on client, stores result in group variable
                     [[], {
-                        // Hide the ESCAPE FAILED overlay before showing spawn menu
                         ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];
-                        diag_log format ["WIPE RESPAWN: Leader selected pos=%1 type=%2", _spawnPos, _spawnType];
-                        [group player, _spawnPos] remoteExec ["A3E_fnc_spawnGroupAtCity", 2];
+                        // Store spawn pos in group variable so server can read it
+                        (group player) setVariable ["A3E_GroupRespawnPos", _spawnPos, true];
                     }] remoteExec ["spawn", _leader];
+
+                    // Server waits for leader to pick, then spawns group directly
+                    [_grp] spawn {
+                        params ["_g"];
+                        waitUntil {sleep 0.5; !isNil {_g getVariable "A3E_GroupRespawnPos"}};
+                        private _pos = _g getVariable "A3E_GroupRespawnPos";
+                        _g setVariable ["A3E_GroupRespawnPos", nil, true];
+                        diag_log format ["WIPE RESPAWN: Server spawning group %1 at %2", groupId _g, _pos];
+                        [_g, _pos] call A3E_fnc_spawnGroupAtCity;
+                    };
 
                     {
                         if (_x != _leader) then {
