@@ -595,49 +595,16 @@ call A3E_fnc_buildingLoot;
                         removeGoggles _x;
                     } forEach _members;
 
-                    // 5. Open spawn menu on first member (acts as leader)
-                    _grp setVariable ["A3E_GroupInLobby", true, true];
-                    _grp setVariable ["A3E_GroupSpawnReady", false, true];
-
-                    // Use first member directly (leader ref can be null if group changed)
-                    private _spawnLeader = _members select 0;
-                    diag_log format ["WIPE: Spawn leader = %1 (isNull=%2)", name _spawnLeader, isNull _spawnLeader];
-
-                    // Leader picks city, server spawns group
-                    [[], {
-                        ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
-                        cutText ["", "BLACK", 0];
-                        private _spawnResult = call A3E_fnc_spawnMenu;
-                        _spawnResult params ["_spawnPos", "_spawnType"];
-                        (group player) setVariable ["A3E_GroupRespawnPos", _spawnPos, true];
-                    }] remoteExec ["spawn", _spawnLeader];
-
-                    // Server waits for pick, then spawns
-                    [_grp, _members] spawn {
-                        params ["_g", "_m"];
-                        // Timeout after 120s in case spawn menu fails
-                        private _timeout = diag_tickTime + 120;
-                        waitUntil {sleep 0.5; !isNil {_g getVariable "A3E_GroupRespawnPos"} || diag_tickTime > _timeout};
-                        if (isNil {_g getVariable "A3E_GroupRespawnPos"}) exitWith {
-                            diag_log "WIPE RESPAWN: TIMEOUT - leader never picked. Using random city.";
-                            private _fallback = selectRandom [[6731,2570,0],[10500,2100,0],[12300,9100,0],[4500,8200,0],[8600,12700,0]];
-                            [_g, _fallback] call A3E_fnc_spawnGroupAtCity;
-                        };
-                        private _pos = _g getVariable "A3E_GroupRespawnPos";
-                        _g setVariable ["A3E_GroupRespawnPos", nil, true];
-                        diag_log format ["WIPE RESPAWN: Server spawning group %1 at %2", groupId _g, _pos];
-                        [_g, _pos] call A3E_fnc_spawnGroupAtCity;
-                    };
-
-                    // Non-leaders wait
-                    {
-                        if (_x != _spawnLeader) then {
-                            [[], {
-                                titleText [format ["Waiting for %1...", name (leader (group player))], "BLACK", 0.5];
-                                waitUntil {sleep 0.5; (group player) getVariable ["A3E_GroupSpawnReady", false]};
-                            }] remoteExec ["spawn", _x];
-                        };
-                    } forEach _members;
+                    // 5. Auto-spawn at random city (no spawn menu on respawn)
+                    // Spawn menu causes group-change issues that break the respawn flow
+                    private _cities = [[6731,2570,0],[10500,2100,0],[12300,9100,0],[13300,6200,0],
+                        [12100,3500,0],[4500,2400,0],[1900,2200,0],[2700,5300,0],[4500,8200,0],
+                        [6100,7700,0],[7100,7700,0],[9700,8800,0],[10700,8100,0],[11300,12200,0],
+                        [8600,12700,0],[11200,14600,0],[13900,13200,0],[10400,9800,0],
+                        [3100,7900,0],[5800,4700,0]];
+                    private _respawnPos = selectRandom _cities;
+                    diag_log format ["WIPE RESPAWN: Auto-spawning group %1 at %2", groupId _grp, _respawnPos];
+                    [_grp, _respawnPos] call A3E_fnc_spawnGroupAtCity;
 
                     _grp setVariable ["A3E_GroupWipeInProgress", false, true];
                 };
