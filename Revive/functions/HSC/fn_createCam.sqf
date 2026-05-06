@@ -30,9 +30,25 @@ sleep 0.5;
 
 painscream = player addAction ["<t color='#C00000'>Scream in Agonizing Pain</t>",{
 
-	 _randomElement = selectRandom["Scream","Scream2","Scream3","Scream4","Scream5","Scream6","Scream7","Scream8","Scream9","Scream10","Scream11","Scream12","Scream13","Scream14","Scream15","Scream16","Scream17","Scream18","Scream19","Scream20","Scream21","Scream22","Scream23","Scream24","Scream25","Scream26","Scream27","Scream28","Scream29","Scream30","Scream31","Scream32","Scream33","Scream34","Scream35","Scream36","Scream37","Scream38","Scream39","Scream40","Scream41"];
-
-	 [player, _randomElement, 500] call CBA_fnc_globalSay3d;
+	 private _screamFiles = [
+		"sounds\screams\SSD_scream1.ogg","sounds\screams\SSD_scream2.ogg","sounds\screams\SSD_scream3.ogg",
+		"sounds\screams\SSD_scream4.ogg","sounds\screams\SSD_scream5.ogg","sounds\screams\SSD_scream6.ogg",
+		"sounds\screams\SSD_scream7.ogg","sounds\screams\SSD_scream8.ogg","sounds\screams\SSD_scream9.ogg",
+		"sounds\screams\SSD_scream10.ogg","sounds\screams\SSD_scream11.ogg","sounds\screams\SSD_scream12.ogg",
+		"sounds\screams\SSD_scream13.ogg","sounds\screams\SSD_scream14.ogg","sounds\screams\SSD_scream15.ogg",
+		"sounds\screams\SSD_scream16.ogg","sounds\screams\SSD_scream17.ogg","sounds\screams\SSD_scream18.ogg",
+		"sounds\screams\SSD_scream19.ogg","sounds\screams\SSD_scream20.ogg","sounds\screams\SSD_scream21.ogg",
+		"sounds\screams\SSD_scream22.ogg","sounds\screams\SSD_scream23.ogg","sounds\screams\SSD_scream24.ogg",
+		"sounds\screams\SSD_scream25.ogg","sounds\screams\SSD_scream26.ogg","sounds\screams\SSD_scream27.ogg",
+		"sounds\screams\SSD_scream28.ogg","sounds\screams\SSD_scream29.ogg","sounds\screams\SSD_scream30.ogg",
+		"sounds\screams\SSD_scream31.ogg","sounds\screams\SSD_scream32.ogg","sounds\screams\SSD_scream33.ogg",
+		"sounds\screams\SSD_scream34.ogg","sounds\screams\SSD_scream35.ogg","sounds\screams\SSD_scream36.ogg",
+		"sounds\screams\SSD_scream37.ogg","sounds\screams\SSD_scream38.ogg","sounds\screams\SSD_scream39.ogg",
+		"sounds\screams\SSD_scream40.ogg","sounds\screams\SSD_scream41.ogg"
+	 ];
+	 private _file = selectRandom _screamFiles;
+	 // playSound3D stacks (plays immediately, never queues)
+	 [_file, player, false, getPosASL player, 1, 1, 500] remoteExec ["playSound3D", 0];
 
 },[],1,false]; 
 
