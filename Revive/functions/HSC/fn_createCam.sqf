@@ -46,9 +46,13 @@ painscream = player addAction ["<t color='#C00000'>Scream in Agonizing Pain</t>"
 		"sounds\screams\SSD_scream37.ogg","sounds\screams\SSD_scream38.ogg","sounds\screams\SSD_scream39.ogg",
 		"sounds\screams\SSD_scream40.ogg","sounds\screams\SSD_scream41.ogg"
 	 ];
-	 private _file = getMissionPath (selectRandom _screamFiles);
-	 // playSound3D stacks (plays immediately, never queues)
-	 [_file, player, false, getPosASL player, 1, 1, 500] remoteExec ["playSound3D", 0];
+	 private _file = selectRandom _screamFiles;
+	 // playSound3D via say3D on all clients (stacks, doesn't queue)
+	 private _pos = getPos player;
+	 [[_file, _pos], {
+		 params ["_f", "_p"];
+		 playSound3D [getMissionPath _f, objNull, false, _p, 1, 1, 500];
+	 }] remoteExec ["call", 0];
 
 },[],1,false]; 
 

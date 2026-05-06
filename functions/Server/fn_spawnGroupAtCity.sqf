@@ -237,6 +237,7 @@ if (!isNull _zombieGroup && {(_innerCount + _outerCount) > 0}) then {
     // Send outer ring toward prison
     private _wp = _zombieGroup addWaypoint [_prisonPos, 15];
     _wp setWaypointType "SAD";
+    _zombieGroup setVariable ["A3E_Persistent", true, true];
 
     diag_log format ["SpawnGroupAtCity: Zombies - %1 total (%2 inner, %3 outer) roll=%4", count units _zombieGroup, _innerCount, _outerCount, _zombieRoll];
 };

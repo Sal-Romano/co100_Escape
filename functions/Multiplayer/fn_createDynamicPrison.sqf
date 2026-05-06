@@ -216,6 +216,7 @@ if ((_zInner + _zOuter) > 0) then {
         };
         private _wp = _zombieGroup addWaypoint [_spawnPos, 15];
         _wp setWaypointType "SAD";
+        _zombieGroup setVariable ["A3E_Persistent", true, true];
         diag_log format ["createDynamicPrison: Zombies - %1 total (%2+%3) roll=%4", count units _zombieGroup, _zInner, _zOuter, _zombieRoll];
     };
 };
