@@ -46,13 +46,8 @@ painscream = player addAction ["<t color='#C00000'>Scream in Agonizing Pain</t>"
 		"sounds\screams\SSD_scream37.ogg","sounds\screams\SSD_scream38.ogg","sounds\screams\SSD_scream39.ogg",
 		"sounds\screams\SSD_scream40.ogg","sounds\screams\SSD_scream41.ogg"
 	 ];
-	 private _file = selectRandom _screamFiles;
-	 // playSound3D via say3D on all clients (stacks, doesn't queue)
-	 private _pos = getPos player;
-	 [[_file, _pos], {
-		 params ["_f", "_p"];
-		 playSound3D [getMissionPath _f, objNull, false, _p, 1, 1, 500];
-	 }] remoteExec ["call", 0];
+	 private _randomElement = selectRandom["Scream","Scream2","Scream3","Scream4","Scream5","Scream6","Scream7","Scream8","Scream9","Scream10","Scream11","Scream12","Scream13","Scream14","Scream15","Scream16","Scream17","Scream18","Scream19","Scream20","Scream21","Scream22","Scream23","Scream24","Scream25","Scream26","Scream27","Scream28","Scream29","Scream30","Scream31","Scream32","Scream33","Scream34","Scream35","Scream36","Scream37","Scream38","Scream39","Scream40","Scream41"];
+	 [player, _randomElement, 500] call CBA_fnc_globalSay3d;
 
 },[],1,false]; 
 
