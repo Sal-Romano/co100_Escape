@@ -595,16 +595,45 @@ call A3E_fnc_buildingLoot;
                         removeGoggles _x;
                     } forEach _members;
 
-                    // 5. Auto-spawn at random city (no spawn menu on respawn)
-                    // Spawn menu causes group-change issues that break the respawn flow
-                    private _cities = [[6731,2570,0],[10500,2100,0],[12300,9100,0],[13300,6200,0],
-                        [12100,3500,0],[4500,2400,0],[1900,2200,0],[2700,5300,0],[4500,8200,0],
-                        [6100,7700,0],[7100,7700,0],[9700,8800,0],[10700,8100,0],[11300,12200,0],
-                        [8600,12700,0],[11200,14600,0],[13900,13200,0],[10400,9800,0],
-                        [3100,7900,0],[5800,4700,0]];
-                    private _respawnPos = selectRandom _cities;
-                    diag_log format ["WIPE RESPAWN: Auto-spawning group %1 at %2", groupId _grp, _respawnPos];
-                    [_grp, _respawnPos] call A3E_fnc_spawnGroupAtCity;
+                    // 5. Show spawn menu on each member individually
+                    // Each member picks their own spawn (they may change groups in the menu)
+                    // After menu closes, use whatever group they're in now
+                    {
+                        private _unit = _x;
+                        [[], {
+                            ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
+                            cutText ["", "BLACK", 0];
+                            private _spawnResult = call A3E_fnc_spawnMenu;
+                            _spawnResult params ["_spawnPos", "_spawnType"];
+
+                            if (_spawnType == "group") then {
+                                // Spawn on group member
+                                private _nearestMember = objNull;
+                                {
+                                    if (alive _x && !(_x getVariable ["A3E_MP_InLobby", true])) exitWith {
+                                        _nearestMember = _x;
+                                    };
+                                } forEach ((units group player) - [player]);
+                                if (!isNull _nearestMember) then {
+                                    player setPos (_nearestMember getPos [5 + random 10, random 360]);
+                                    player setVariable ["A3E_MP_InLobby", false, true];
+                                    player setVariable ["A3E_InSpawnLobby", false, true];
+                                    player allowDamage true;
+                                    player setVariable ["A3E_SpawnProtection", false, true];
+                                    player setCaptive false;
+                                    execVM "functions\Multiplayer\forceConscious.sqf";
+                                    execVM "functions\Multiplayer\addCustomActions.sqf";
+                                    if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
+                                };
+                            } else {
+                                // New escape - request prison from server
+                                [_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
+                                waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
+                                execVM "functions\Multiplayer\hideBlackScreen.sqf";
+                                cutText ["", "BLACK IN", 2];
+                            };
+                        }] remoteExec ["spawn", _unit];
+                    } forEach _members;
 
                     _grp setVariable ["A3E_GroupWipeInProgress", false, true];
                 };
