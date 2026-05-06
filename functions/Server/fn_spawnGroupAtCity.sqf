@@ -312,8 +312,8 @@ sleep 3;
     // Wait 1 more second, then REVEAL (clear black screen + unfreeze input)
     sleep 1;
     {
-        // Remove GUI black overlay + fade in
-        {("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0]} remoteExec ["call", _x];
+        // Remove GUI black overlay + fade in via execVM (reliable)
+        "functions\Multiplayer\hideBlackScreen.sqf" remoteExec ["execVM", _x];
         [["", "BLACK IN", 2]] remoteExec ["cutText", _x];
     } forEach _units;
 

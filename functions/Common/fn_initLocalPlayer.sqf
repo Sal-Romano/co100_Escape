@@ -98,7 +98,7 @@ if (_spawnType == "group") then {
 	};
 
 	// Fade in after prison is ready - remove GUI overlay
-	("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
+	execVM "functions\Multiplayer\hideBlackScreen.sqf";
 	cutText ["", "BLACK IN", 2];
 };
 
