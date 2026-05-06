@@ -606,6 +606,7 @@ call A3E_fnc_buildingLoot;
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];
+                        diag_log format ["WIPE RESPAWN: Leader selected pos=%1 type=%2", _spawnPos, _spawnType];
                         [group player, _spawnPos] remoteExec ["A3E_fnc_spawnGroupAtCity", 2];
                     }] remoteExec ["spawn", _leader];
 

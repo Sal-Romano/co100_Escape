@@ -15,8 +15,10 @@ private _members = (units _grp) select {
     (_x getVariable ["A3E_InSpawnLobby", false] || _x getVariable ["A3E_MP_InLobby", false])
 };
 
+diag_log format ["SpawnGroupAtCity: %1 - found %2 lobby members out of %3 total units", _grpName, count _members, count units _grp];
 if (count _members == 0) exitWith {
-    diag_log format ["SpawnGroupAtCity: %1 - no lobby members to spawn.", _grpName];
+    diag_log format ["SpawnGroupAtCity: %1 - no lobby members to spawn! Unit states:", _grpName];
+    {diag_log format ["  Unit: %1 isPlayer=%2 InSpawnLobby=%3 MP_InLobby=%4", name _x, isPlayer _x, _x getVariable ["A3E_InSpawnLobby", false], _x getVariable ["A3E_MP_InLobby", false]]} forEach units _grp;
 };
 
 // Find flat area OUTSIDE the city (offset 200-500m from city center)
