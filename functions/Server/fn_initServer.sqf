@@ -595,33 +595,43 @@ call A3E_fnc_buildingLoot;
                         removeGoggles _x;
                     } forEach _members;
 
-                    // 5. Open spawn menu on leader, wait screen on others
+                    // 5. Open spawn menu on first member (acts as leader)
                     _grp setVariable ["A3E_GroupInLobby", true, true];
                     _grp setVariable ["A3E_GroupSpawnReady", false, true];
-                    private _leader = leader _grp;
 
-                    // Leader picks city on client, stores result in group variable
+                    // Use first member directly (leader ref can be null if group changed)
+                    private _spawnLeader = _members select 0;
+                    diag_log format ["WIPE: Spawn leader = %1 (isNull=%2)", name _spawnLeader, isNull _spawnLeader];
+
+                    // Leader picks city, server spawns group
                     [[], {
                         ("A3E_BlackScreen" call BIS_fnc_rscLayer) cutText ["", "PLAIN", 0];
                         cutText ["", "BLACK", 0];
                         private _spawnResult = call A3E_fnc_spawnMenu;
                         _spawnResult params ["_spawnPos", "_spawnType"];
-                        // Store spawn pos in group variable so server can read it
                         (group player) setVariable ["A3E_GroupRespawnPos", _spawnPos, true];
-                    }] remoteExec ["spawn", _leader];
+                    }] remoteExec ["spawn", _spawnLeader];
 
-                    // Server waits for leader to pick, then spawns group directly
-                    [_grp] spawn {
-                        params ["_g"];
-                        waitUntil {sleep 0.5; !isNil {_g getVariable "A3E_GroupRespawnPos"}};
+                    // Server waits for pick, then spawns
+                    [_grp, _members] spawn {
+                        params ["_g", "_m"];
+                        // Timeout after 120s in case spawn menu fails
+                        private _timeout = diag_tickTime + 120;
+                        waitUntil {sleep 0.5; !isNil {_g getVariable "A3E_GroupRespawnPos"} || diag_tickTime > _timeout};
+                        if (isNil {_g getVariable "A3E_GroupRespawnPos"}) exitWith {
+                            diag_log "WIPE RESPAWN: TIMEOUT - leader never picked. Using random city.";
+                            private _fallback = selectRandom [[6731,2570,0],[10500,2100,0],[12300,9100,0],[4500,8200,0],[8600,12700,0]];
+                            [_g, _fallback] call A3E_fnc_spawnGroupAtCity;
+                        };
                         private _pos = _g getVariable "A3E_GroupRespawnPos";
                         _g setVariable ["A3E_GroupRespawnPos", nil, true];
                         diag_log format ["WIPE RESPAWN: Server spawning group %1 at %2", groupId _g, _pos];
                         [_g, _pos] call A3E_fnc_spawnGroupAtCity;
                     };
 
+                    // Non-leaders wait
                     {
-                        if (_x != _leader) then {
+                        if (_x != _spawnLeader) then {
                             [[], {
                                 titleText [format ["Waiting for %1...", name (leader (group player))], "BLACK", 0.5];
                                 waitUntil {sleep 0.5; (group player) getVariable ["A3E_GroupSpawnReady", false]};
