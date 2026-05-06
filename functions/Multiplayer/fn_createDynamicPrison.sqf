@@ -47,8 +47,13 @@ if (count _spawnPos == 0) then {
 _spawnPos set [2, 0];
 
 // Give player prisoner uniform + random pistol
-removeUniform _player;
-_player addUniform (selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"]);
+// Try to give prisoner uniform - if it fails, player stays in underwear (still a prisoner look)
+private _uniform = selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+if (isClass (configFile >> "CfgWeapons" >> _uniform)) then {
+    _player forceAddUniform _uniform;
+    // forceAddUniform can change faction model - rejoin own group to fix side
+    [_player] joinSilent (group _player);
+};
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 if (count _weapons > 0) then {
     private _picked = selectRandom _weapons;
