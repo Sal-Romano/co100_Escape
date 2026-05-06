@@ -45,11 +45,7 @@ _prisonPos set [2, 0];
 // Give each member prisoner uniform + random pistol
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 {
-    private _uniform = selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
-    if (isClass (configFile >> "CfgWeapons" >> _uniform)) then {
-        _x forceAddUniform _uniform;
-        [_x] joinSilent (group _x);
-    };
+    // Player spawns stripped (underwear) - no uniform to avoid faction change
     if (count _weapons > 0) then {
         private _picked = selectRandom _weapons;
         _picked params ["_weapon", "_mag"];
