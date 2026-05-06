@@ -42,19 +42,25 @@ _prisonPos set [2, 0];
 // Clean up terrain
 [_prisonPos, 25] call a3e_fnc_cleanupTerrain;
 
-// Give each member prisoner uniform + random pistol
+// Give each member uniform + weapon on CLIENT side
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
 {
-    // Give prisoner uniform on CLIENT side via execVM (reliable)
-    "functions\Multiplayer\setPrisonerUniform.sqf" remoteExec ["execVM", _x];
+    private _weaponData = [];
     if (count _weapons > 0) then {
-        private _picked = selectRandom _weapons;
-        _picked params ["_weapon", "_mag"];
-        _x addWeapon _weapon;
-        _x addMagazine _mag;
-        _x addMagazine _mag;
-        _x addMagazine _mag;
+        _weaponData = selectRandom _weapons;
     };
+    [_weaponData, {
+        params ["_wd"];
+        execVM "functions\Multiplayer\setPrisonerUniform.sqf";
+        sleep 0.5;
+        if (count _wd > 0) then {
+            _wd params ["_weapon", "_mag"];
+            player addWeapon _weapon;
+            player addMagazine _mag;
+            player addMagazine _mag;
+            player addMagazine _mag;
+        };
+    }] remoteExec ["spawn", _x];
 } forEach _members;
 
 // Build prison (no backpack)

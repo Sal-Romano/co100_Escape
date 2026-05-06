@@ -46,18 +46,28 @@ if (count _spawnPos == 0) then {
 
 _spawnPos set [2, 0];
 
-// Give player prisoner uniform + random pistol
-// Give prisoner uniform on CLIENT side via execVM (reliable)
-"functions\Multiplayer\setPrisonerUniform.sqf" remoteExec ["execVM", _player];
+// Pick a random weapon for this player
 private _weapons = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
+private _weaponData = [];
 if (count _weapons > 0) then {
-    private _picked = selectRandom _weapons;
-    _picked params ["_weapon", "_mag"];
-    _player addWeapon _weapon;
-    _player addMagazine _mag;
-    _player addMagazine _mag;
-    _player addMagazine _mag;
+    _weaponData = selectRandom _weapons;
 };
+
+// Give uniform + weapon on CLIENT side (uniform must be set before adding items)
+[_weaponData, {
+    params ["_wd"];
+    // Set uniform first
+    execVM "functions\Multiplayer\setPrisonerUniform.sqf";
+    sleep 0.5;
+    // Then add weapon + mags (into the uniform container)
+    if (count _wd > 0) then {
+        _wd params ["_weapon", "_mag"];
+        player addWeapon _weapon;
+        player addMagazine _mag;
+        player addMagazine _mag;
+        player addMagazine _mag;
+    };
+}] remoteExec ["spawn", _player];
 
 // Build the compound with random rotation (no backpack arg)
 private _fenceRotateDir = random 360;

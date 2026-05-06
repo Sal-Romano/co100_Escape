@@ -1,22 +1,30 @@
 // setPrisonerUniform.sqf
-// Client-side. Gives the player a prisoner uniform without changing faction.
-// Called via: "functions\Multiplayer\setPrisonerUniform.sqf" remoteExec ["execVM", _player];
+// Client-side. Gives the player a basic stripped-down look.
+// The mgsr_robe uniforms are civilian-class and CANNOT be worn by
+// west units without changing faction. Use west-compatible options.
 
-private _uniforms = ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
-private _pick = selectRandom _uniforms;
-
-// Remove current uniform first
+// Remove current uniform
 removeUniform player;
 
-// Try addUniform first (doesn't change faction but may fail for cross-faction)
-player addUniform _pick;
+// Try CUP basic uniforms that are west-compatible
+private _westUniforms = [
+    "CUP_U_B_USArmy_TShirt",
+    "CUP_U_B_FR_Scout",
+    "CUP_U_B_FR_Scout2",
+    "CUP_U_B_FR_Scout3",
+    "U_BG_Guerrilla_6_1",
+    "U_BG_Guerilla2_2",
+    "U_BG_Guerilla2_3",
+    "U_BG_Guerilla3_1",
+    "U_I_G_Story_Protagonist_F"
+];
 
-// If addUniform failed (empty uniform slot), force it and fix faction
-if (uniform player == "") then {
-    private _grp = group player;
-    player forceAddUniform _pick;
-    // forceAddUniform changes faction model - rejoin to fix
-    [player] joinSilent _grp;
-};
+// Try each until one works
+{
+    if (isClass (configFile >> "CfgWeapons" >> _x)) then {
+        player addUniform _x;
+        if (uniform player != "") exitWith {};
+    };
+} forEach _westUniforms;
 
-diag_log format ["setPrisonerUniform: uniform=%1 result=%2 side=%3", _pick, uniform player, side player];
+diag_log format ["setPrisonerUniform: result=%1 side=%2", uniform player, side player];
