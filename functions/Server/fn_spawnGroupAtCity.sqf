@@ -219,7 +219,7 @@ if (!isNull _zombieGroup && {(_innerCount + _outerCount) > 0}) then {
         if (!isNull _zombie) then {
             _zombie setSkill 0.4;
             _zombie forceAddUniform (selectRandom _zombieUniforms);
-            (_zombie select 0) setVariable ["SSD_disabledSounds", true];
+            _zombie setVariable ["SSD_disabledSounds", true];
         };
     };
 
@@ -230,7 +230,7 @@ if (!isNull _zombieGroup && {(_innerCount + _outerCount) > 0}) then {
         if (!isNull _zombie) then {
             _zombie setSkill 0.4;
             _zombie forceAddUniform (selectRandom _zombieUniforms);
-            (_zombie select 0) setVariable ["SSD_disabledSounds", true];
+            _zombie setVariable ["SSD_disabledSounds", true];
         };
     };
 
