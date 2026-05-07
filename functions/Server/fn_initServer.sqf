@@ -642,8 +642,21 @@ call A3E_fnc_buildingLoot;
                                 execVM "functions\Multiplayer\hideBlackScreen.sqf";
                                 cutText ["", "BLACK IN", 2];
                                 execVM "functions\Multiplayer\addCustomActions.sqf";
-                                // Re-init ATR revive + enable damage after 10s spawn protection
-                                if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
+                                // Re-init ATR revive (adds HandleDamage EH for unconscious system)
+                                if (!isNil "ATR_FNC_InitPlayer") then {
+                                    [true] call ATR_FNC_InitPlayer;
+                                    diag_log "RESPAWN: ATR_FNC_InitPlayer called successfully";
+                                } else {
+                                    diag_log "RESPAWN: ATR_FNC_InitPlayer IS NIL - revive system broken!";
+                                    // Manual fallback: add HandleDamage EH directly
+                                    player removeAllEventHandlers "HandleDamage";
+                                    player addEventHandler ["HandleDamage", ATR_FNC_HandleDamage];
+                                    player setVariable ["AT_Revive_isUnconscious", false, true];
+                                    player setVariable ["AT_Revive_isDragged", objNull, true];
+                                    player setVariable ["AT_Revive_isDragging", objNull, true];
+                                    player setVariable ["AT_Revive_isCarrying", objNull, true];
+                                    [] spawn ATR_FNC_Actions;
+                                };
                                 [] spawn {
                                     sleep 10;
                                     player allowDamage true;
