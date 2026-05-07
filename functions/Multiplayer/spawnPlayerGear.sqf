@@ -1,6 +1,5 @@
 // spawnPlayerGear.sqf
 // Client-side. Sets uniform + weapon.
-// Weapon data passed via player variable A3E_SpawnWeapon
 
 private _weaponData = player getVariable ["A3E_SpawnWeapon", []];
 player setVariable ["A3E_SpawnWeapon", nil];
@@ -13,34 +12,27 @@ removeBackpack player;
 removeVest player;
 removeHeadgear player;
 removeGoggles player;
-
-// Step 2: Give a west-compatible basic uniform (NOT civilian class)
-// Try the mgsr robes first with forceAddUniform, then check if side changed
 removeUniform player;
-private _robe = selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
-player forceAddUniform _robe;
 
-// If side changed from the uniform, we need to fix it
-// The player's GROUP is still west, but AI might treat us wrong
-// Force all enemy groups to consider us an enemy
-if (side player != west) then {
-    // Player model changed to civilian - enemies won't auto-engage
-    // Fix: explicitly make all nearby enemies aware of us after spawn protection ends
-    [] spawn {
-        // Wait for spawn protection to end
-        waitUntil {sleep 1; !(player getVariable ["A3E_SpawnProtection", false])};
-        sleep 2;
-        // Make nearby enemies know we're hostile
-        {
-            if (side _x != west && !isPlayer _x && _x distance player < 300) then {
-                _x reveal [player, 4];
-            };
-        } forEach allUnits;
-    };
+// Step 2: Reset to west model FIRST (undo any previous forceAddUniform damage)
+// forceAddUniform with a west-compatible uniform resets the unit model to west
+player forceAddUniform "CUP_U_B_USMC_FROG_WDL";
+removeUniform player;
+
+// Step 3: Now addUniform with the prisoner robe (won't change model since we just reset)
+private _robe = selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+player addUniform _robe;
+
+// Step 4: If addUniform failed, use a west-compatible basic uniform as fallback
+if (uniform player == "") then {
+    player addUniform "U_BG_Guerrilla_6_1";
+};
+// If still empty, force the USMC one back on
+if (uniform player == "") then {
+    player forceAddUniform "CUP_U_B_USMC_FROG_WDL";
 };
 
-// Step 3: Add mags FIRST (need uniform container to exist)
-// Then add weapon (addWeapon auto-loads a mag if available)
+// Step 5: Add mags FIRST, then weapon
 if (count _weaponData > 0) then {
     _weaponData params ["_weapon", "_mag"];
     player addMagazine _mag;
