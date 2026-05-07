@@ -629,8 +629,13 @@ call A3E_fnc_buildingLoot;
                                 // New escape - request prison from server
                                 [_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
                                 waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
+                                // Apply gear CLIENT-SIDE directly (server remoteExec was unreliable)
+                                execVM "functions\Multiplayer\spawnPlayerGear.sqf";
+                                sleep 0.5;
                                 execVM "functions\Multiplayer\hideBlackScreen.sqf";
                                 cutText ["", "BLACK IN", 2];
+                                execVM "functions\Multiplayer\addCustomActions.sqf";
+                                if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
                             };
                         }] remoteExec ["spawn", _unit];
                     } forEach _members;
