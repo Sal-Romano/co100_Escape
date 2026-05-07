@@ -629,13 +629,27 @@ call A3E_fnc_buildingLoot;
                                 // New escape - request prison from server
                                 [_spawnPos, player] remoteExec ["A3E_fnc_createDynamicPrison", 2];
                                 waitUntil {sleep 0.1; !(player getVariable ["A3E_MP_InLobby", true])};
-                                // Apply gear CLIENT-SIDE directly (server remoteExec was unreliable)
+                                // Set weapon data client-side (server may not have set it yet)
+                                if (isNil {player getVariable "A3E_SpawnWeapon"}) then {
+                                    private _weps = missionNamespace getVariable ["a3e_arr_PrisonBackpackWeapons", []];
+                                    if (count _weps > 0) then {
+                                        player setVariable ["A3E_SpawnWeapon", selectRandom _weps];
+                                    };
+                                };
+                                // Apply gear CLIENT-SIDE directly
                                 execVM "functions\Multiplayer\spawnPlayerGear.sqf";
                                 sleep 0.5;
                                 execVM "functions\Multiplayer\hideBlackScreen.sqf";
                                 cutText ["", "BLACK IN", 2];
                                 execVM "functions\Multiplayer\addCustomActions.sqf";
+                                // Re-init ATR revive + enable damage after 10s spawn protection
                                 if (!isNil "ATR_FNC_InitPlayer") then {[true] call ATR_FNC_InitPlayer};
+                                [] spawn {
+                                    sleep 10;
+                                    player allowDamage true;
+                                    player setVariable ["A3E_SpawnProtection", false, true];
+                                    player setCaptive false;
+                                };
                             };
                         }] remoteExec ["spawn", _unit];
                     } forEach _members;
