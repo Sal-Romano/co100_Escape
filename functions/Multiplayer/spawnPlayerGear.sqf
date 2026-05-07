@@ -1,11 +1,11 @@
 // spawnPlayerGear.sqf
-// Client-side. Sets uniform + weapon. Called via execVM.
-// Params passed via missionNamespace variable (remoteExec can't pass args to execVM)
+// Client-side. Sets uniform + weapon.
+// Weapon data passed via player variable A3E_SpawnWeapon
 
 private _weaponData = player getVariable ["A3E_SpawnWeapon", []];
 player setVariable ["A3E_SpawnWeapon", nil];
 
-// Step 1: Strip EVERYTHING clean
+// Step 1: Strip everything
 removeAllWeapons player;
 removeAllItems player;
 removeAllAssignedItems player;
@@ -13,21 +13,34 @@ removeBackpack player;
 removeVest player;
 removeHeadgear player;
 removeGoggles player;
+
+// Step 2: Give a west-compatible basic uniform (NOT civilian class)
+// Try the mgsr robes first with forceAddUniform, then check if side changed
 removeUniform player;
+private _robe = selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"];
+player forceAddUniform _robe;
 
-// Step 2: Add uniform - use the mgsr_robe that works on first spawn
-// Try addUniform first. If it fails, the player is in underwear (still west).
-player addUniform (selectRandom ["mgsr_robe_olive_dirty", "mgsr_robe_olive_muddy"]);
-
-// Step 3: Verify we're still west. If not, fix it.
+// If side changed from the uniform, we need to fix it
+// The player's GROUP is still west, but AI might treat us wrong
+// Force all enemy groups to consider us an enemy
 if (side player != west) then {
-    diag_log format ["spawnPlayerGear: FACTION CHANGED to %1! Fixing...", side player];
-    // Remove the problematic uniform
-    removeUniform player;
-    // Player stays in underwear but stays west
+    // Player model changed to civilian - enemies won't auto-engage
+    // Fix: explicitly make all nearby enemies aware of us after spawn protection ends
+    [] spawn {
+        // Wait for spawn protection to end
+        waitUntil {sleep 1; !(player getVariable ["A3E_SpawnProtection", false])};
+        sleep 2;
+        // Make nearby enemies know we're hostile
+        {
+            if (side _x != west && !isPlayer _x && _x distance player < 300) then {
+                _x reveal [player, 4];
+            };
+        } forEach allUnits;
+    };
 };
 
-// Step 4: Add weapon + mags
+// Step 3: Add mags FIRST (need uniform container to exist)
+// Then add weapon (addWeapon auto-loads a mag if available)
 if (count _weaponData > 0) then {
     _weaponData params ["_weapon", "_mag"];
     player addMagazine _mag;
@@ -36,4 +49,5 @@ if (count _weaponData > 0) then {
     player addWeapon _weapon;
 };
 
-diag_log format ["spawnPlayerGear: uniform=%1 side=%2 weapon=%3", uniform player, side player, primaryWeapon player + handgunWeapon player];
+diag_log format ["spawnPlayerGear: uniform=%1 side=%2 weapon=%3 mags=%4",
+    uniform player, side player, currentWeapon player, count magazines player];
