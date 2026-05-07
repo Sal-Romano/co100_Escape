@@ -642,6 +642,10 @@ call A3E_fnc_buildingLoot;
                                 execVM "functions\Multiplayer\hideBlackScreen.sqf";
                                 cutText ["", "BLACK IN", 2];
                                 execVM "functions\Multiplayer\addCustomActions.sqf";
+                                // Clear lobby flags so HandleDamage doesn't block unconscious
+                                player setVariable ["A3E_InSpawnLobby", false, true];
+                                player setVariable ["A3E_MP_InLobby", false, true];
+
                                 // Re-init ATR revive (adds HandleDamage EH for unconscious system)
                                 if (!isNil "ATR_FNC_InitPlayer") then {
                                     [true] call ATR_FNC_InitPlayer;
